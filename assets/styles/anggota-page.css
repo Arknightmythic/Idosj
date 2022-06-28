@@ -1,0 +1,44 @@
+table.dataless td:nth-child(1) {
+	padding-right: 3rem;
+}
+
+section {
+	margin: 2rem 15rem;
+}
+
+section h3 {
+	margin: 1.5rem 0;
+}
+
+.form-file-profile {
+	height: 200px;
+	width: 200px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.form-file-profile img {
+	width: 100%;
+	height: auto;
+}
+
+.form-file-profile:hover {
+	cursor: pointer;
+}
+
+/* // Large devices (desktops, 992px and up) */
+@media screen and (max-width: 992px) {
+	section {
+		margin: 2rem 8rem;
+	}
+}
+
+/* // Medium devices (tablets, 768px and up) */
+@media screen and (max-width: 768px) {
+	section {
+		margin: 1rem 0;
+	}
+}

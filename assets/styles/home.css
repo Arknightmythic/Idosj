@@ -1,0 +1,28 @@
+.submenu {
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.submenu .links {
+	text-decoration: none;
+	background-color: var(--ihs-orange);
+	color: white;
+	text-align: center;
+	padding: 1rem 0;
+	transition: all 0.3s ease-in-out;
+}
+
+.submenu .links:hover {
+	background-color: var(--ihs-orange-hover);
+	color: white;
+}
+
+.board-jumlah {
+	background-color: var(--ihs-orange);
+	color: white;
+	border-radius: 5px;
+}
+
+#tableAnggota tr:nth-child(even) {
+	background-color: #ed83021e;
+}

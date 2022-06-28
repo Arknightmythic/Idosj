@@ -1,0 +1,25 @@
+.auth-container {
+	display: flex;
+}
+
+.auth-container .img-wrapper {
+	display: flex;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.auth-container .img-wallpaper {
+	height: 100vh;
+	width: auto;
+}
+
+.auth-container .img-logo {
+	height: 200px;
+	width: 200px;
+}
+
+.login-header {
+	transform: translateY(-100%);
+	width: 100%;
+	align-items: center;
+}

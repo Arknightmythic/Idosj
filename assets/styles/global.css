@@ -1,0 +1,79 @@
+:root {
+	--ihs-orange: #ed8202;
+	--ihs-orange-hover: #da7a05;
+	--ihs-red: #c33;
+	--ihs-red-hover: rgb(168, 41, 41);
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+body > .container {
+	margin-bottom: 3rem;
+}
+
+.nav-container,
+.nav-container * {
+	transition: all 0.5s ease-in-out;
+}
+
+.nav-container *:not(button) {
+	color: var(--ihs-red);
+}
+
+.nav-container h1 {
+	font-size: 2rem;
+	font-weight: 700;
+}
+
+.nav-container.onscroll h1 {
+	font-size: 1.2rem;
+}
+
+.nav-container h3 {
+	font-size: 1.5rem;
+}
+.nav-container.onscroll h3 {
+	font-size: 1rem;
+}
+
+.nav-container.onscroll {
+	background-color: white;
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	width: 100%;
+	transition: all 0.5s ease-in-out;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nav-container.onscroll nav img {
+	width: 50px;
+}
+
+nav a {
+	text-decoration: none;
+	color: black;
+}
+
+nav a:hover {
+	color: black;
+}
+
+nav img {
+	width: 80px;
+	height: auto;
+}
+
+footer {
+	margin-top: auto;
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	background-color: var(--ihs-orange);
+	color: white;
+}
