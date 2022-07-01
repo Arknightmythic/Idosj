@@ -112,5 +112,25 @@
 
             $this->load->view('page/PerjalananPage.php', $data, FALSE);
         }
+
+        public function formasi(){
+            $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
+            $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
+            $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["title"] = "IDO SJ | Perutusan";
+
+            if(!empty($this->input->get('edit'))){
+                $data["editStatus"] = true;
+            } else {
+                $data["editStatus"] = false;
+            }
+            
+            $idAnggota = $this->input->get('id');
+            $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
+            $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
+            $data["dataSerikat"] = $this->anggota_model->getDataSerikat($idAnggota);
+            $this->load->view('page/FormasiPage.php', $data, FALSE);
+        }
     }
 ?>

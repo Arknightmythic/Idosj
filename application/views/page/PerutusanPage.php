@@ -31,8 +31,9 @@
                     <th>Tugas dan Jabatan</th>
                     <th>Tahun Masuk</th>
                     <th>Tahun Berakhir</th>
+                    <?php if(!$editStatus): ?>
                     <th>Surat Keterangan</th>
-                    <?php if($editStatus): ?>
+                    <?php else: ?>
                     <th>Aksi</th>
                     <?php endif; ?>
                 </thead>
@@ -43,6 +44,7 @@
                         <td><?= !empty($data->keterangan) ? $data->keterangan : "-" ?></td>
                         <td><?= !empty($data->tahunMasuk) ? $data->tahunMasuk : "-" ?></td>
                         <td><?= !empty($data->tahunBerakhir) ? $data->tahunBerakhir : "now" ?></td>
+                        <?php if(!$editStatus): ?>
                         <?php if(!empty($data->fileSK)):?>
                         <td><a class="btn btn-primary" href="<?= base_url('/uploads/sk-perutusan/') . $data->fileSK ?>"
                                 type="file" download>Download</a>
@@ -50,7 +52,7 @@
                         <?php else: ?>
                         <td>-</td>
                         <?php endif ?>
-                        <?php if($editStatus): ?>
+                        <?php else: ?>
                         <td>
                             <button class="btn btn-danger btn-sm" onclick="hapusPerutusan(<?= $data->id ?>)">
                                 <i class="fa fa-trash"></i>
@@ -106,7 +108,7 @@
                         </div>
                         <div class="mb-1">
                             <label class="form-label">Surat Keterangan</label>
-                            <input name="fileData" type="file" class="form-control" required />
+                            <input name="fileData" type="file" class="form-control" accept="application/pdf" required />
                         </div>
                         <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
                             <button class="btn btn-primary px-5">Tambah</button>
@@ -179,7 +181,8 @@
                         </div>
                         <div class="mb-1">
                             <label class="form-label">Surat Keterangan</label>
-                            <input name="fileData" class="form-control" value="${tempData.fileSK}" disabled />
+                            <input name="fileData" type="file" class="form-control" accept="application/pdf" />
+                            <small class="form-text text-muted">${tempData.fileSK}</small>
                         </div>
                         <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
                             <button class="btn btn-primary px-5">Simpan</button>
@@ -196,6 +199,7 @@
                     const formData = new FormData($("#formEditPerutusan")[0]);
                     formData.append("editPerutusan", 1);
                     formData.append("id", id);
+                    formData.append("lastFile", tempData.fileSK);
                     axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;
@@ -227,40 +231,46 @@
     }
 
     const hapusPerutusan = (id) => {
-        Swal.fire({
-            title: 'Hapus Data Perutusan',
-            text: "Apakah anda yakin ingin menghapus data ini?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya, Hapus!"
-        }).then(result => {
-            if (result.isConfirmed) {
-                const formData = new FormData();
-                formData.append("hapusPerutusan", 1);
-                formData.append("id", id);
-                axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
-                    res => {
-                        const data = res.data;
-                        if (data.status == "success") {
-                            Swal.fire({
-                                title: data.title,
-                                text: data.message,
-                                icon: "success",
-                            }).then(() => {
-                                document.location.reload(true)
-                            });
-                        } else {
-                            Swal.fire({
-                                title: data.title,
-                                text: data.message,
-                                icon: data.status,
-                            });
-                        }
-                    })
-            }
-        })
+        let tempData;
+        axios.get(`<?= base_url("/index.php/api/dataPerutusan") ?>?idPerutusan=${id}`).then(
+            res => {
+                tempData = res.data;
+                Swal.fire({
+                    title: 'Hapus Data Perutusan',
+                    text: "Apakah anda yakin ingin menghapus data ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, Hapus!"
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData();
+                        formData.append("hapusPerutusan", 1);
+                        formData.append("id", id);
+                        formData.append("lastFile", tempData.fileSK);
+                        axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                            res => {
+                                const data = res.data;
+                                if (data.status == "success") {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: "success",
+                                    }).then(() => {
+                                        document.location.reload(true)
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: data.status,
+                                    });
+                                }
+                            })
+                    }
+                })
+            })
     }
     </script>
     <?php endif; ?>

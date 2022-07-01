@@ -55,6 +55,10 @@
         public function getAllJenisRelasi(){
             return $this->db->get('jenis_relasi')->result();
         }
+
+        public function getDataSerikat($idAnggota){
+            return $this->db->get_where('serikat_jesus', array('idAnggota' => $idAnggota))->result();
+        }
     }
 
 ?>

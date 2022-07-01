@@ -23,6 +23,7 @@
                 $result = $this->db->query($query, array($cookies['userId']))->row();
                 $this->session->namaLengkap = $result->namaLengkap;
                 $this->session->role = $result->namaRole;
+                $this->session->idAnggota = $result->idAnggota;
                 if(!empty($result)){
                     if($result->password == urldecode($cookies['key'])){
                         return true;

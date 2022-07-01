@@ -336,6 +336,10 @@
                 'tahunMasuk' => $data->tahunMasuk,
                 'tahunBerakhir' => $data->tahunBerakhir,
             );
+
+            if(!empty($data->fileSK)){
+                $dataPerutusan['fileSK'] = $data->fileSK;
+            }
             
             $this->db->where('id', $data->id);
             $this->db->update('perutusan_anggota', $dataPerutusan);
@@ -355,6 +359,46 @@
             return $this->db->get_where('perutusan_anggota', array('idAnggota' => $idAnggota))->result();
         }
 
+        public function addSerikat($data){
+            $dataSerikat = array(
+                'keterangan' => $data->keterangan,
+                'tanggalTempat' => $data->tanggalTempat,
+                'pembimbing' => $data->pembimbing,
+                'dokumen' => $data->dokumen,
+                'idAnggota' => $data->id,
+            );
+
+            $this->db->insert('serikat_jesus', $dataSerikat);
+        }
+
+        public function getDataSerikatById($id){
+            $this->db->where("id", $id);
+            return $this->db->get('serikat_jesus')->row();
+        }
+
+        public function getAllSerikatAnggota($idAnggota){
+            return $this->db->get_where('serikat_jesus', array('idAnggota' => $idAnggota))->result();
+        }
+
+        public function updateSerikat($data){
+            $dataSerikat = array(
+            'keterangan' => $data->keterangan,
+            'tanggalTempat' => $data->tanggalTempat,
+            'pembimbing' => $data->pembimbing,
+        );
+
+            if(!empty($data->dokumen)){
+                $dataSerikat['dokumen'] = $data->dokumen;
+            }
+
+            $this->db->where('id', $data->id);
+            $this->db->update('serikat_jesus', $dataSerikat);
+        }
+
+        public function deleteSerikat($id){
+            $this->db->where('id', $id);
+            $this->db->delete('serikat_jesus');
+        }
     }   
 
 ?>
