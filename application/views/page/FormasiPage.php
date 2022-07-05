@@ -76,7 +76,7 @@
             <table class="table table-stiped">
                 <thead>
                     <th>Institusi</th>
-                    <th>Sebelum Teologist</th>
+                    <th>Sebelum Teologi</th>
                     <th>Sebelum Tahbisan</th>
                     <th>Sebelum Kaul Akhir</th>
                     <?php if($editStatus): ?>
@@ -334,6 +334,165 @@
                     if (result.isConfirmed) {
                         const formData = new FormData();
                         formData.append("hapusSerikat", 1);
+                        formData.append("id", id);
+                        formData.append("lastFile", tempData.dokumen);
+                        axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                            res => {
+                                const data = res.data;
+                                if (data.status == "success") {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: "success",
+                                    }).then(() => {
+                                        document.location.reload(true)
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: data.status,
+                                    });
+                                }
+                            })
+                    }
+                })
+            })
+    }
+
+    $("#tambahInfo").click(() => {
+        Swal.fire({
+            title: 'Tambah Data Informationes',
+            html: `
+                    <form id="formInfo" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
+                        <div class="mb-1">
+                            <label>Jenis Informationes</label>
+                            <select class="form-select" name="jenisInformationes" required>
+                                <option value="" hidden>Pilih Jenis Informationes</option>
+                                <option value="Institusi">Institusi</option>
+                                <option value="Sebelum Teologi">Sebelum Teologi</option>
+                                <option value="Sebelum Tahbisan">Sebelum Tahbisan</option>
+                                <option value="Sebelum Kaul Akhir">Sebelum Kaul Akhir</option>
+                            </select>
+                        </div>
+                        <div class="mb-1">
+                            <label>Dokumen</label>
+                            <input type="file" class="form-control" name="fileData" required />
+                        </div>
+                        <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
+                            <button class="btn btn-primary px-5">Tambah</button>
+                        </div>
+                    </form>
+                `,
+            showConfirmButton: false,
+            showCloseButton: true,
+            allowOutsideClick: false,
+        })
+
+        $("#formInfo").submit(() => {
+            event.preventDefault();
+            const formData = new FormData($("#formInfo")[0]);
+            formData.append("tambahInfo", 1);
+            formData.append("id", "<?= $dataPribadi->id ?>");
+            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+                const data = res.data;
+                if (data.status == "success") {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: "success",
+                    }).then(() => {
+                        document.location.reload(true)
+                    });
+                } else {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: data.status,
+                    });
+                }
+            })
+        });
+    })
+
+    const editInfo = (id) => {
+        let tempData;
+        axios.get(`<?= base_url("/index.php/api/dataInformationes") ?>?idInformationes=${id}`).then(
+            res => {
+                tempData = res.data;
+                Swal.fire({
+                    title: 'Edit Data Informationes',
+                    html: `
+                    <form id="formEditInfo" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
+                        <div class="mb-1">
+                            <label>Jenis Informationes</label>
+                            <select class="form-select" name="jenisInformationes" required>
+                                <option value="" hidden>Pilih Jenis Informationes</option>
+                                <option value=1>Institusi</option>
+                                <option value=2>Sebelum Teologi</option>
+                                <option value=3>Sebelum Tahbisan</option>
+                                <option value=4>Sebelum Kaul Akhir</option>
+                            </select>
+                        </div>
+                        <div class="mb-1">
+                            <label>Dokumen</label>
+                            <input type="file" class="form-control" name="fileData" required />
+                        </div>
+                        <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
+                            <button class="btn btn-primary px-5">Tambah</button>
+                        </div>
+                    </form>
+                `,
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                })
+
+                $("#formEditInfo").submit(() => {
+                    event.preventDefault();
+                    const formData = new FormData($("#formEditInfo")[0]);
+                    formData.append("editInfo", 1);
+                    formData.append("id", id);
+                    formData.append("lastFile", tempData.dokumen);
+                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                        res => {
+                            const data = res.data;
+                            if (data.status == "success") {
+                                Swal.fire({
+                                    title: data.title,
+                                    text: data.message,
+                                    icon: "success",
+                                }).then(() => {
+                                    document.location.reload(true)
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: data.title,
+                                    text: data.message,
+                                    icon: data.status,
+                                });
+                            }
+                        })
+                });
+            })
+    }
+
+    const hapusInfo = (id) => {
+        axios.get(`<?= base_url("/index.php/api/dataInformationes") ?>?idInformationes=${id}`).then(
+            res => {
+                tempData = res.data;
+                Swal.fire({
+                    title: 'Hapus Data Informationes',
+                    text: "Apakah anda yakin ingin menghapus data ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, Hapus!"
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData();
+                        formData.append("hapusInfo", 1);
                         formData.append("id", id);
                         formData.append("lastFile", tempData.dokumen);
                         axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(

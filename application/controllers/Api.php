@@ -228,7 +228,41 @@
                 unlink(FCPATH.'/uploads/dokumen-serikat/'.$data->lastFile);
                 $this->api_model->deleteSerikat($data->id);
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Serikat anggota berhasil dihapus.");
-            } 
+
+            } else if(!empty($this->input->post('tambahInfo'))){
+                $config['upload_path'] = FCPATH.'/uploads/dokumen-informationes/';
+                $config['allowed_types'] = 'pdf';
+                $config['file_name'] = "Dokumen_" . $data->jenisInformationes . "_" . $data->id ."_". time() . rand(100, 999);
+                $config['overwrite'] = true;
+                $this->load->library('upload', $config);
+                $data->dokumen = NULL;
+                if ($this->upload->do_upload('fileData')){
+                    $data->dokumen = $this->upload->data('file_name');
+                }
+
+                $this->api_model->addInformationes($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Informationes anggota berhasil ditambahkan.");
+
+            } else if(!empty($this->input->post('editInfo'))){
+                $config['upload_path'] = FCPATH.'/uploads/dokumen-informationes/';
+                $config['allowed_types'] = 'pdf';
+                $config['file_name'] = $data->lastFile;
+                $config['overwrite'] = true;
+                $this->load->library('upload', $config);
+                $data->dokumen = NULL;
+                if ($this->upload->do_upload('fileData')){
+                    $data->dokumen = $this->upload->data('file_name');
+                }
+
+                $this->api_model->updateInformationes($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Informationes anggota berhasil ditambahkan.");
+
+            } else if(!empty($this->input->post('hapusInfo'))){
+                unlink(FCPATH.'/uploads/dokumen-informationes/'.$data->lastFile);
+                $this->api_model->deleteInformationes($data->id);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Informationes anggota berhasil dihapus.");
+                
+            }
             
             else {
                 $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
@@ -314,6 +348,18 @@
                 $result = $this->api_model->getDataSerikatById($this->input->get("idSerikat"));
             } else if(!empty($this->input->get("idAnggota"))){
                 $result = $this->api_model->getAllSerikatAnggota($this->input->get("idAnggota"));
+            } else {
+                $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
+            }
+            header('Content-Type: application/json');
+            echo json_encode($result, JSON_PRETTY_PRINT);
+        }
+
+        public function dataInformationes(){
+            if(!empty($this->input->get("idInformationes"))){
+                $result = $this->api_model->getDataInformationesById($this->input->get("idInformationes"));
+            } else if(!empty($this->input->get("idAnggota"))){
+                $result = $this->api_model->getAllInformationesAnggota($this->input->get("idAnggota"));
             } else {
                 $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
             }

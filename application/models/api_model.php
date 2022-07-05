@@ -385,7 +385,7 @@
             'keterangan' => $data->keterangan,
             'tanggalTempat' => $data->tanggalTempat,
             'pembimbing' => $data->pembimbing,
-        );
+            );
 
             if(!empty($data->dokumen)){
                 $dataSerikat['dokumen'] = $data->dokumen;
@@ -398,6 +398,50 @@
         public function deleteSerikat($id){
             $this->db->where('id', $id);
             $this->db->delete('serikat_jesus');
+        }
+
+        public function addInformationes($data){
+            $dataInformationes = array('idAnggota' => $data->id);
+            if($data->jenisInformationes == "Institusi"){
+                $dataInformationes['institusi'] = $data->dokumen;
+            } else if($data->jenisInformationes == "Sebelum Teologi"){
+                $dataInformationes['sebelumTeologi'] = $data->dokumen;
+            } else if($data->jenisInformationes == "Sebelum Tahbisan"){
+                $dataInformationes['sebelumTahbisan'] = $data->dokumen;
+            } else if($data->jenisInformationes == "Sebelum Kaul Akhir"){
+                $dataInformationes['sebelumKaulAkhir'] = $data->dokumen;
+            }
+
+            $this->db->insert('informationes_anggota', $dataInformationes);
+        }
+
+        public function updateInformationes($data){
+            if($data->jenisInformationes == "Institusi"){
+                $dataInformationes['institusi'] = $data->dokumen;
+            } else if($data->jenisInformationes == "Sebelum Teologi"){
+                $dataInformationes['sebelumTeologi'] = $data->dokumen;
+            } else if($data->jenisInformationes == "Sebelum Tahbisan"){
+                $dataInformationes['sebelumTahbisan'] = $data->dokumen;
+            } else if($data->jenisInformationes == "Sebelum Kaul Akhir"){
+                $dataInformationes['sebelumKaulAkhir'] = $data->dokumen;
+            }
+
+            $this->db->where('id', $data->id);
+            $this->db->update('informationes_anggota', $dataInformationes);
+        }
+
+        public function deleteInformationes($id){
+            $this->db->where('id', $id);
+            $this->db->delete('informationes_anggota');
+        }
+
+        public function getDataInformationesById($id){
+            $this->db->where("id", $id);
+            return $this->db->get('informationes_anggota')->row();
+        }
+
+        public function getAllInformationesAnggota($idAnggota){
+            return $this->db->get_where('informationes_anggota', array('idAnggota' => $idAnggota))->result();
         }
     }   
 
