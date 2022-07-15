@@ -6,18 +6,26 @@
             return $this->db->get('anggota')->result();
         }
 
-        public function getAnggotaByLetter($letter){
-            $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan FROM anggota a, gradasi_anggota g WHERE a.jenisGradasi = g.kodeGradasi AND namaBelakang LIKE '$letter%'";
+        public function getAnggotaByLetter($letter, $idSupDeg = NULL){
+            $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan FROM anggota a, gradasi_anggota g WHERE a.jenisGradasi = g.id";
+            if($idSupDeg != NULL){
+                $query .= " AND (a.idSuperior = '$idSupDeg' OR a.idDelegat = '$idSupDeg' OR a.id = '$idSupDeg')";
+            }
+            $query .= " AND namaBelakang LIKE '$letter%'";
             return $this->db->query($query)->result();
         }
 
-        public function getAnggotaBySearch($name){
-            $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan FROM anggota a, gradasi_anggota g WHERE a.jenisGradasi = g.kodeGradasi AND (namaDepan LIKE '%$name%' OR namaBelakang LIKE '%$name%')";
+        public function getAnggotaBySearch($name, $idSupDeg = NULL){
+            $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan FROM anggota a, gradasi_anggota g WHERE a.jenisGradasi = g.id";
+            if($idSupDeg != NULL){
+                $query .= " AND (a.idSuperior = '$idSupDeg' OR a.idDelegat = '$idSupDeg' OR a.id = '$idSupDeg')";
+            }
+            $query .= " AND (namaDepan LIKE '%$name%' OR namaBelakang LIKE '%$name%')";
             return $this->db->query($query)->result();
         }
 
         public function getJumlahAnggota(){
-            $query = "SELECT g.statusKeanggotaan, COUNT(*) `jumlah` FROM anggota a, gradasi_anggota g WHERE a.jenisGradasi = g.kodeGradasi GROUP BY g.statusKeanggotaan UNION ALL SELECT 'Total',count(*) FROM anggota";
+            $query = "SELECT g.statusKeanggotaan, COUNT(*) `jumlah` FROM anggota a, gradasi_anggota g WHERE a.jenisGradasi = g.id AND statusMeninggal = false GROUP BY g.statusKeanggotaan UNION ALL SELECT 'Total',count(*) FROM anggota WHERE statusMeninggal = false";
             return $this->db->query($query)->result();
         }
 
@@ -97,12 +105,25 @@
                 'alamat' => $data->alamat,
                 'komunitas' => $data->komunitas,
                 'email' => $data->email,
-                'nomorTelepon' => $data->nomorTelepon,
-                'jenisGradasi' => $data->jenisGradasi,
-                'statusMeninggal' => $data->statusMeninggal,
-                'idSuperior' => !empty($data->idSuperior) ? $data->idSuperior : NULL,
-                'idDelegat' => !empty($data->idDelegat) ? $data->idDelegat : NULL,
+                'nomorTelepon' => $data->nomorTelepon
             );
+
+            if(isset($data->jenisGradasi)){
+                $dataDiri['jenisGradasi'] = $data->jenisGradasi;
+            }
+
+            if(isset($data->statusMeninggal)){
+                $dataDiri['statusMeninggal'] = $data->statusMeninggal;
+            }
+
+            if(isset($data->idSuperior)){
+                $dataDiri['idSuperior'] = !empty($data->idSuperior) ? $data->idSuperior : NULL;
+            }
+
+            if(isset($data->idDelegat)){
+                $dataDiri['idDelegat'] = !empty($data->idDelegat) ? $data->idDelegat : NULL;
+            }
+
             if($data->fotoProfile != NULL){
                 $dataDiri["fotoProfile"] = $data->fotoProfile;
             }
@@ -412,7 +433,14 @@
                 $dataInformationes['sebelumKaulAkhir'] = $data->dokumen;
             }
 
-            $this->db->insert('informationes_anggota', $dataInformationes);
+            $isExist = $this->db->get_where("informationes_anggota", array('idAnggota' => $data->id))->num_rows();
+            if($isExist > 0 ){
+                $this->db->where('idAnggota', $data->id);
+                $this->db->update('informationes_anggota', $dataInformationes);
+            } else {
+                $this->db->insert("informationes_anggota", $dataInformationes);
+            }
+            
         }
 
         public function updateInformationes($data){
@@ -430,11 +458,6 @@
             $this->db->update('informationes_anggota', $dataInformationes);
         }
 
-        public function deleteInformationes($id){
-            $this->db->where('id', $id);
-            $this->db->delete('informationes_anggota');
-        }
-
         public function getDataInformationesById($id){
             $this->db->where("id", $id);
             return $this->db->get('informationes_anggota')->row();
@@ -442,6 +465,65 @@
 
         public function getAllInformationesAnggota($idAnggota){
             return $this->db->get_where('informationes_anggota', array('idAnggota' => $idAnggota))->result();
+        }
+
+        public function addKomentar($data){
+            $isExist = $this->db->get_where("komentar_anggota", array('idAnggota' => $data->idAnggota))->num_rows();
+            if($isExist > 0){
+                $this->db->where('idAnggota', $data->idAnggota);
+                $this->db->update('komentar_anggota', array('textKomentar' => $data->textKomentar));
+            } else {
+                $this->db->insert("komentar_anggota", array('idAnggota' => $data->idAnggota, 'textKomentar' => $data->textKomentar));
+            }
+        }
+
+        public function updateKaul($data){
+            $dataKaul = array(
+                'tanggalKaulAkhir' => $data->tanggalKaulAkhir,
+                'jenisGradasi' => $data->jenisGradasi,
+                'idAnggota' => $data->id,
+            );
+            if(!empty($data->suratPribadi)){
+                $dataKaul['suratPribadi'] = $data->suratPribadi;
+            }
+            if(!empty($data->dekritKaul)){
+                $dataKaul['dekritKaul'] = $data->dekritKaul;
+            }
+            if(!empty($data->teksKaul)){
+                $dataKaul['teksKaul'] = $data->teksKaul;
+            }
+            if(!empty($data->teksPelepasan)){
+                $dataKaul['teksPelepasan'] = $data->teksPelepasan;
+            }
+            if(!empty($data->testamenNotaris)){
+                $dataKaul['testamenNotaris'] = $data->testamenNotaris;
+            }
+            $isExist = $this->db->get_where("kaul_akhir", array('idAnggota' => $data->id))->num_rows();
+            if($isExist > 0){
+                $this->db->where('idAnggota', $data->id);
+                $this->db->update('kaul_akhir', $dataKaul);
+            } else {
+                $this->db->insert("kaul_akhir", $dataKaul);
+            }
+        }
+
+        public function addFormKuning($data){
+            $dataPermohonan = array(
+                'q1' => $data->q1,
+                'q2' => $data->q2,
+                'q3' => $data->q3,
+                'q4' => $data->q4,
+                'q5' => $data->q5,
+                'q6' => $data->q6,
+                'q7' => $data->q7,
+                'q8' => $data->q8,
+                'q9' => $data->q9,
+                'q10' => $data->q10,
+                'idSuperior' => $data->idSuperior,
+                'idAnggota' => $data->idAnggota
+            );
+            
+            $this->db->insert('form_kuning_anggota', $dataPermohonan);
         }
     }   
 

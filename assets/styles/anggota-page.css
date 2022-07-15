@@ -29,6 +29,12 @@ section h3 {
 	cursor: pointer;
 }
 
+.hi-block {
+	background-color: #fed7d7;
+	border-radius: 5px;
+	padding: 0.3rem;
+}
+
 /* // Large devices (desktops, 992px and up) */
 @media screen and (max-width: 992px) {
 	section {

@@ -34,14 +34,14 @@
             </div>
         </div>
         <div class="row submenu mt-3">
-            <a href="<?= base_url('/index.php/home/kuria') ?>" class="links col-12 col-md-3">Kuria</a>
-            <a href="<?= base_url('/index.php/home/komunitas') ?>" class="links col-12 col-md-3">Komunitas</a>
-            <a href="<?= base_url('/index.php/home/formasi') ?>" class="links col-12 col-md-3">Formasi</a>
-            <a href="<?= base_url('/index.php/home/karya') ?>" class="links col-12 col-md-3">Karya</a>
-            <a href="<?= base_url('/index.php/home/indexdata') ?>" class="links col-12 col-md-3">Index</a>
-            <a href="<?= base_url('/index.php/home/statistik') ?>" class="links col-12 col-md-3">Statistik</a>
-            <a href="<?= base_url('/index.php/home/admin') ?>" class="links col-12 col-md-3">User Admin</a>
-            <a href="<?= base_url('/index.php/home/user') ?>" class="links col-12 col-md-3">User</a>
+            <a href="<?= base_url('home/kuria') ?>" class="links col-12 col-md-3">Kuria</a>
+            <a href="<?= base_url('home/komunitas') ?>" class="links col-12 col-md-3">Komunitas</a>
+            <a href="<?= base_url('home/formasi') ?>" class="links col-12 col-md-3">Formasi</a>
+            <a href="<?= base_url('home/karya') ?>" class="links col-12 col-md-3">Karya</a>
+            <a href="<?= base_url('home/indexdata') ?>" class="links col-12 col-md-3">Index</a>
+            <a href="<?= base_url('home/statistik') ?>" class="links col-12 col-md-3">Statistik</a>
+            <a href="<?= base_url('home/admin') ?>" class="links col-12 col-md-3">User Admin</a>
+            <a href="<?= base_url('home/user') ?>" class="links col-12 col-md-3">User</a>
         </div>
         <div class="my-5 d-flex flex-column align-items-center">
             <div class="my-3 col-6">
@@ -64,20 +64,22 @@
             </div>
         </div>
         <div>
-            <table id="tableAnggota" class="table table-striped">
-                <thead>
-                    <th>No</th>
-                    <th>ID Anggota</th>
-                    <th>Nama</th>
-                    <th>Status Keanggotaan</th>
-                    <th>Kategori</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center" colspan="5">Cari data terlebih dahulu!</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table id="tableAnggota" class="table table-striped">
+                    <thead>
+                        <th>No</th>
+                        <th>ID Anggota</th>
+                        <th>Nama</th>
+                        <th>Gradus</th>
+                        <th>Kategori</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center" colspan="5">Cari data terlebih dahulu!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <?= $footer ?>
@@ -91,7 +93,7 @@
             var search = $('#searchInput').val();
             if (search.length > 0) {
                 $.ajax({
-                    url: '<?= base_url("/index.php/api/anggota") ?>',
+                    url: '<?= base_url("api/anggota") ?>',
                     type: 'GET',
                     data: {
                         search: search
@@ -103,7 +105,7 @@
                                     <td>${index+1}</td>
                                     <td>${anggota.id}</td>
                                     <td class="fw-bold"><a href="${baseURL}index.php/anggota?id=${anggota.id}">${anggota.namaBelakang}, ${anggota.namaDepan}</a></td>
-                                    <td>${anggota.jenisGradasi}</td>
+                                    <td>${anggota.namaGradasi}</td>
                                     <td>${anggota.statusKeanggotaan}</td>
                                 </tr>
                             `)
@@ -123,7 +125,7 @@
     const searchByLetter = (letter) => {
         $('#tableAnggota tbody').html('');
         $.ajax({
-            url: '<?= base_url("/index.php/api/anggota") ?>',
+            url: '<?= base_url("api/anggota") ?>',
             type: 'GET',
             data: {
                 letter: letter,
@@ -136,7 +138,7 @@
                                     <td>${index+1}</td>
                                     <td>${anggota.id}</td>
                                     <td class="fw-bold"><a href="${baseURL}index.php/anggota?id=${anggota.id}">${anggota.namaBelakang}, ${anggota.namaDepan}</a></td>
-                                    <td>${anggota.jenisGradasi}</td>
+                                    <td>${anggota.namaGradasi}</td>
                                     <td>${anggota.statusKeanggotaan}</td>
                                 </tr>
                             `)

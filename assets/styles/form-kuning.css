@@ -1,0 +1,47 @@
+.container.formkuning {
+	margin-top: 2rem;
+	margin-bottom: 5rem;
+	padding: 0 15rem !important;
+}
+
+form label {
+	margin-bottom: 0.5rem;
+}
+
+form .form-group {
+	margin-top: 1.5rem;
+}
+
+textarea {
+	height: 100%;
+}
+
+.box-pengajuan {
+	background-color: #fed7d7;
+	border-radius: 15px;
+}
+
+.box-pengajuan label {
+	margin-bottom: 0;
+}
+
+/* breakpoints xl */
+@media screen and (max-width: 80em) {
+	.container.formkuning {
+		padding: 0 10rem !important;
+	}
+}
+
+/* breakpoints lg */
+@media screen and (max-width: 62em) {
+	.container.formkuning {
+		padding: 0 5rem !important;
+	}
+}
+
+/* breakpoints md */
+@media screen and (max-width: 48em) {
+	.container.formkuning {
+		padding: 0 1rem !important;
+	}
+}

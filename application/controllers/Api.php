@@ -8,9 +8,15 @@
             $this->load->model('api_model');
             $this->form_validation->set_error_delimiters('', '');
 
-            // if(!$this->auth_model->verifyCookies()){
-            //     redirect('/auth');
-            // }
+            if(!$this->auth_model->verifyCookies()){
+                if (!empty($_SERVER['QUERY_STRING'])) {
+                    $uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
+                } else {
+                    $uri = uri_string();
+                }
+                $this->session->set_userdata('redirect', $uri);
+                redirect('/auth');
+            }
         }
 
         public function index() {
@@ -20,10 +26,10 @@
         public function anggota(){
             if(!empty($this->input->get('letter'))){
                 $letter = $this->input->get('letter');
-                $data = $this->api_model->getAnggotaByLetter($letter);
+                $data = $this->api_model->getAnggotaByLetter($letter, $this->session->role != "Administrator" ? $this->session->idAnggota : NULL);
             } else if(!empty($this->input->get('search'))){
                 $name = $this->input->get('search');
-                $data = $this->api_model->getAnggotaBySearch($name);
+                $data = $this->api_model->getAnggotaBySearch($name, $this->session->role != "Administrator" ? $this->session->idAnggota : NULL);
             }
             else {
                 $data = $this->api_model->getAllAnggota();
@@ -229,10 +235,10 @@
                 $this->api_model->deleteSerikat($data->id);
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Serikat anggota berhasil dihapus.");
 
-            } else if(!empty($this->input->post('tambahInfo'))){
+            } else if(!empty($this->input->post('editInfo'))){
                 $config['upload_path'] = FCPATH.'/uploads/dokumen-informationes/';
                 $config['allowed_types'] = 'pdf';
-                $config['file_name'] = "Dokumen_" . $data->jenisInformationes . "_" . $data->id ."_". time() . rand(100, 999);
+                $config['file_name'] = "Dokumen_" . $data->jenisInformationes . "_" . $data->id;
                 $config['overwrite'] = true;
                 $this->load->library('upload', $config);
                 $data->dokumen = NULL;
@@ -243,25 +249,67 @@
                 $this->api_model->addInformationes($data);
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Informationes anggota berhasil ditambahkan.");
 
-            } else if(!empty($this->input->post('editInfo'))){
-                $config['upload_path'] = FCPATH.'/uploads/dokumen-informationes/';
+            } else if(!empty($this->input->post('komentar'))){
+                $this->api_model->addKomentar($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Komentar berhasil disimpan.");
+
+            } else if(!empty($this->input->post('editKaul'))){
+                $config['upload_path'] = FCPATH.'/uploads/dokumen-kaul-akhir/';
                 $config['allowed_types'] = 'pdf';
-                $config['file_name'] = $data->lastFile;
                 $config['overwrite'] = true;
-                $this->load->library('upload', $config);
-                $data->dokumen = NULL;
-                if ($this->upload->do_upload('fileData')){
-                    $data->dokumen = $this->upload->data('file_name');
+                $data->suratPribadi = NULL;
+                $data->dekritKaul = NULL;
+                $data->teksKaul = NULL;
+                $data->teksPelepasan = NULL;
+                $data->testamenNotaris = NULL;
+
+                if(!empty($_FILES['fileSuratPribadi'])){
+                    $config['file_name'] = "Dokumen_Surat_Pribadi_" . $data->id;
+                    $this->load->library('upload', $config);
+                    
+                    if ($this->upload->do_upload('fileSuratPribadi')){
+                        $data->suratPribadi = $this->upload->data('file_name');
+                    }
                 }
 
-                $this->api_model->updateInformationes($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Informationes anggota berhasil ditambahkan.");
+                if(!empty($_FILES['fileDekritKaul'])){
+                    $config['file_name'] = "Dokumen_Dekrit_Kaul_" . $data->id;
+                    $this->load->library('upload', $config);
 
-            } else if(!empty($this->input->post('hapusInfo'))){
-                unlink(FCPATH.'/uploads/dokumen-informationes/'.$data->lastFile);
-                $this->api_model->deleteInformationes($data->id);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Informationes anggota berhasil dihapus.");
-                
+                    if ($this->upload->do_upload('fileDekritKaul')){
+                        $data->dekritKaul = $this->upload->data('file_name');
+                    }
+                }
+
+                if(!empty($_FILES['fileTeksKaul'])){
+                    $config['file_name'] = "Dokumen_Teks_Kaul_" . $data->id;
+                    $this->load->library('upload', $config);
+
+                    if ($this->upload->do_upload('fileTeksKaul')){
+                        $data->teksKaul = $this->upload->data('file_name');
+                    }
+                }
+
+                if(!empty($_FILES['fileTeksPelepasan'])){   
+                    $config['file_name'] = "Dokumen_Teks_Pelepasan_Harta_Milik_" . $data->id;
+                    $this->load->library('upload', $config);
+
+                    if ($this->upload->do_upload('fileTeksPelepasan')){
+                        $data->teksPelepasan = $this->upload->data('file_name');
+                    }
+                }
+
+                if(!empty($_FILES['fileTestamenNotaris'])){
+                    $config['file_name'] = "Dokumen_Tetamen_Notaris_" . $data->id;
+                    $this->load->library('upload', $config);
+
+                    if ($this->upload->do_upload('fileTestamenNotaris')){
+                        $data->testamenNotaris = $this->upload->data('file_name');
+                    }
+                }
+
+                $this->api_model->updateKaul($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data Kaul Akhir berhasil diubah.");
             }
             
             else {
@@ -391,6 +439,19 @@
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Email berhasil dikirim.");
             }else{
                 $result = (object) array("status" => "error", "title" => "Gagal!", "message" => "Email gagal dikirim.");
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode($result, JSON_PRETTY_PRINT);
+        }
+
+        public function formKuning(){
+            if(!empty($this->input->post("addFormKuning"))){
+                $data = (object) $_POST;
+                $this->api_model->addFormKuning($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Permohonan berhasil dikirim.");
+            } else {
+                $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
             }
 
             header('Content-Type: application/json');

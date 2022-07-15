@@ -3,7 +3,7 @@
 
     class Anggota_Model extends CI_Model {
         public function getDataPribadi($idAnggota){
-            $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan, u.idRole, r.namaRole FROM anggota a, gradasi_anggota g, user u, `role` r WHERE a.jenisGradasi = g.kodeGradasi AND u.idRole = r.id AND u.idAnggota = a.id AND a.id = ?";
+            $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan, u.idRole, r.namaRole FROM anggota a, gradasi_anggota g, user u, `role` r WHERE a.jenisGradasi = g.id AND u.idRole = r.id AND u.idAnggota = a.id AND a.id = ?";
             return $this->db->query($query, array($idAnggota))->row();
         }
 
@@ -48,8 +48,9 @@
         }
 
         public function getDataPerjalanan($idAnggota){
-            $query = "select * from perjalanan_anggota pa where idAnggota = ? order by tanggalMulai";
-            return $this->db->query($query, array($idAnggota))->result();
+            $this->db->where('idAnggota', $idAnggota);
+            $this->db->order_by('q1', 'asc');
+            return $this->db->get('form_kuning_anggota')->result();
         }
 
         public function getAllJenisRelasi(){
@@ -58,6 +59,18 @@
 
         public function getDataSerikat($idAnggota){
             return $this->db->get_where('serikat_jesus', array('idAnggota' => $idAnggota))->result();
+        }
+
+        public function getDataInformationes($idAnggota){
+            return $this->db->get_where("informationes_anggota", array('idAnggota' => $idAnggota))->row();
+        }
+
+        public function getDataKomentar($idAnggota){
+            return $this->db->get_where("komentar_anggota", array('idAnggota' => $idAnggota))->row();
+        }
+
+        public function getDataKaulAkhir($idAnggota){
+            return $this->db->get_where("kaul_akhir", array('idAnggota' => $idAnggota))->row();
         }
     }
 

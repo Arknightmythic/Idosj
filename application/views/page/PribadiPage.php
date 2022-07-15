@@ -25,55 +25,55 @@
                 <button id="editDataDiri" class="btn btn-secondary"><i class="fa fa-pencil"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="dataless">
-                <tr>
-                    <td>Peran</td>
-                    <td><?= $dataPribadi->namaRole ?></td>
-                </tr>
-                <?php if($dataPribadi->namaRole != "Superior"): ?>
-                <tr>
-                    <td>ID Superior</td>
-                    <td>
-                        <?= !empty($dataPribadi->idSuperior) ? ("<a href='". base_url("index.php/anggota/pribadi?id=$dataPribadi->idSuperior") . "' target='_blank'>$dataPribadi->idSuperior</a>") : "-" ?>
-                    </td>
-                </tr>
-                <?php if($dataPribadi->namaRole != "Delegat"): ?>
-                <tr>
-                    <td>ID Delegat</td>
-                    <td>
-                        <?= !empty($dataPribadi->idDelegat) ? ("<a href='". base_url("index.php/anggota/pribadi?id=$dataPribadi->idDelegat") . "' target='_blank'>$dataPribadi->idDelegat</a>") : "-" ?>
-                    </td>
-                </tr>
-                <?php endif; ?>
-                <?php endif; ?>
-                <tr>
-                    <td>Tempat / Tanggal Lahir</td>
-                    <td><?= !empty($dataPribadi->tempatLahir) ? $dataPribadi->tempatLahir  : "-" ?> /
-                        <?= !empty($dataPribadi->tanggalLahir) ? date_format(date_create($dataPribadi->tanggalLahir), 'd F Y') : "-" ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Golongan Darah</td>
-                    <td><?= !empty($dataPribadi->golonganDarah) ? $dataPribadi->golonganDarah : "-" ?></td>
-                </tr>
-                <tr>
-                    <td>Status Keanggotaan</td>
-                    <td><?= $dataPribadi->jenisGradasi ?></td>
-                </tr>
-                <tr>
-                    <td>Jenis Gradasi</td>
-                    <td><?= $dataPribadi->namaGradasi ?></td>
-                </tr>
-                <tr>
-                    <td>Kategori Keanggotaan</td>
-                    <td><?= $dataPribadi->statusKeanggotaan ?></td>
-                </tr>
-                <tr>
-                    <td>Status</td>
-                    <td><?= $dataPribadi->statusMeninggal != NULL ? $dataPribadi->statusMeninggal ? "Sudah Meninggal" : "Masih Hidup" : "-" ?>
-                    </td>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class="dataless">
+                    <?php if($this->session->role == 'Administrator'): ?>
+                    <tr>
+                        <td>Peran</td>
+                        <td><?= $dataPribadi->namaRole ?></td>
+                    </tr>
+                    <?php if($dataPribadi->namaRole != "Superior"): ?>
+                    <tr>
+                        <td>ID Superior</td>
+                        <td>
+                            <?= !empty($dataPribadi->idSuperior) ? ("<a href='". base_url("anggota/pribadi?id=$dataPribadi->idSuperior") . "' target='_blank'>$dataPribadi->idSuperior</a>") : "-" ?>
+                        </td>
+                    </tr>
+                    <?php if($dataPribadi->namaRole != "Delegat"): ?>
+                    <tr>
+                        <td>ID Delegat</td>
+                        <td>
+                            <?= !empty($dataPribadi->idDelegat) ? ("<a href='". base_url("anggota/pribadi?id=$dataPribadi->idDelegat") . "' target='_blank'>$dataPribadi->idDelegat</a>") : "-" ?>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
+                    <?php endif; ?>
+                    <?php endif; ?>
+                    <tr>
+                        <td>Tempat / Tanggal Lahir</td>
+                        <td><?= !empty($dataPribadi->tempatLahir) ? $dataPribadi->tempatLahir  : "-" ?> /
+                            <?= !empty($dataPribadi->tanggalLahir) ? date_format(date_create($dataPribadi->tanggalLahir), 'd F Y') : "-" ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Golongan Darah</td>
+                        <td><?= !empty($dataPribadi->golonganDarah) ? $dataPribadi->golonganDarah : "-" ?></td>
+                    </tr>
+                    <tr>
+                        <td>Gradus</td>
+                        <td><?= $dataPribadi->namaGradasi ?></td>
+                    </tr>
+                    <tr>
+                        <td>Kategori Keanggotaan</td>
+                        <td><?= $dataPribadi->statusKeanggotaan ?></td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td><?= $dataPribadi->statusMeninggal != NULL ? $dataPribadi->statusMeninggal ? "Sudah Meninggal" : "Masih Hidup" : "-" ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </section>
         <section>
             <div class="d-flex justify-content-between align-items-center">
@@ -82,43 +82,45 @@
                 <button id="tambahPendidikan" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-striped">
-                <thead>
-                    <th>Institusi</th>
-                    <th>Tahun</th>
-                    <th>Ijazah</th>
-                    <th>Jenjang Pendidikan</th>
-                    <?php if($editStatus): ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                    <?php if(count($dataPendidikan) > 0) : foreach ($dataPendidikan as $pendidikan) : ?>
-                    <tr>
-                        <td><?= $pendidikan->namaInstitusi ?></td>
-                        <td><?= $pendidikan->tahunMasuk ?> - <?= $pendidikan->tahunLulus ?></td>
-                        <td><?= $pendidikan->kelengkapanIjazah ? "Ya" : "Tidak" ?></td>
-                        <td><?= $pendidikan->namaJenjang ?></td>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th>Institusi</th>
+                        <th>Tahun</th>
+                        <th>Ijazah</th>
+                        <th>Jenjang Pendidikan</th>
                         <?php if($editStatus): ?>
-                        <td>
-                            <button class="btn btn-danger btn-sm hapusPendidikan"
-                                onclick="hapusPendidikan(<?= $pendidikan->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm editPendidikan"
-                                onclick="editPendidikan(<?= $pendidikan->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
+                        <th>Aksi</th>
                         <?php endif; ?>
-                    </tr>
-                    <?php endforeach; else: ?>
-                    <tr>
-                        <td class="text-center" colspan="<?= $editStatus ? 5 : 4 ?>">Tidak ada data</td>
-                    </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if(count($dataPendidikan) > 0) : foreach ($dataPendidikan as $pendidikan) : ?>
+                        <tr>
+                            <td><?= $pendidikan->namaInstitusi ?></td>
+                            <td><?= $pendidikan->tahunMasuk ?> - <?= $pendidikan->tahunLulus ?></td>
+                            <td><?= $pendidikan->kelengkapanIjazah ? "Ya" : "Tidak" ?></td>
+                            <td><?= $pendidikan->namaJenjang ?></td>
+                            <?php if($editStatus): ?>
+                            <td>
+                                <button class="btn btn-danger btn-sm hapusPendidikan"
+                                    onclick="hapusPendidikan(<?= $pendidikan->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm editPendidikan"
+                                    onclick="editPendidikan(<?= $pendidikan->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
+                            <?php endif; ?>
+                        </tr>
+                        <?php endforeach; else: ?>
+                        <tr>
+                            <td class="text-center" colspan="<?= $editStatus ? 5 : 4 ?>">Tidak ada data</td>
+                        </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <section>
             <div class="d-flex justify-content-between align-items-center">
@@ -127,42 +129,44 @@
                 <button id="tambahSakramen" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-striped">
-                <thead>
-                    <th>Nama Sakramen</th>
-                    <th>Tanggal Penerimaan</th>
-                    <th>Keterangan</th>
-                    <?php if($editStatus): ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                    <?php if(count($dataSakramen) > 0) : foreach ($dataSakramen as $sakramen) : ?>
-                    <tr>
-                        <td><?= $sakramen->namaSakramen ?></td>
-                        <td><?= date_format(date_create($sakramen->tanggalPenerimaan), 'd F Y') ?>
-                        </td>
-                        <td><?= !empty($sakramen->keterangan) ? $sakramen->keterangan  : "-" ?></td>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th>Nama Sakramen</th>
+                        <th>Tanggal Penerimaan</th>
+                        <th>Keterangan</th>
                         <?php if($editStatus): ?>
-                        <td>
-                            <button class="btn btn-danger btn-sm hapusSakramen"
-                                onclick="hapusSakramen(<?= $sakramen->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm editSakramen"
-                                onclick="editSakramen(<?= $sakramen->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
+                        <th>Aksi</th>
                         <?php endif; ?>
-                    </tr>
-                    <?php endforeach; else: ?>
-                    <tr>
-                        <td class="text-center" colspan="<?= $editStatus ? 5 : 4 ?>">Tidak ada data</td>
-                    </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if(count($dataSakramen) > 0) : foreach ($dataSakramen as $sakramen) : ?>
+                        <tr>
+                            <td><?= $sakramen->namaSakramen ?></td>
+                            <td><?= date_format(date_create($sakramen->tanggalPenerimaan), 'd F Y') ?>
+                            </td>
+                            <td><?= !empty($sakramen->keterangan) ? $sakramen->keterangan  : "-" ?></td>
+                            <?php if($editStatus): ?>
+                            <td>
+                                <button class="btn btn-danger btn-sm hapusSakramen"
+                                    onclick="hapusSakramen(<?= $sakramen->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm editSakramen"
+                                    onclick="editSakramen(<?= $sakramen->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
+                            <?php endif; ?>
+                        </tr>
+                        <?php endforeach; else: ?>
+                        <tr>
+                            <td class="text-center" colspan="<?= $editStatus ? 5 : 4 ?>">Tidak ada data</td>
+                        </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <section>
             <div class="d-flex justify-content-between align-items-center">
@@ -171,41 +175,45 @@
                 <button id="tambahBahasa" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-striped">
-                <thead>
-                    <th>Bahasa</th>
-                    <th>Reading</th>
-                    <th>Writing</th>
-                    <th>Speaking</th>
-                    <?php if($editStatus): ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                    <?php if(count($dataBahasa) > 0): foreach ($dataBahasa as $bahasa) : ?>
-                    <tr>
-                        <td><?= $bahasa->namaBahasa ?></td>
-                        <td><?= $bahasa->statusReading ? "Ya" : "Tidak" ?></td>
-                        <td><?= $bahasa->statusWriting ? "Ya" : "Tidak" ?></td>
-                        <td><?= $bahasa->statusSpeaking ? "Ya" : "Tidak" ?></td>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th>Bahasa</th>
+                        <th>Reading</th>
+                        <th>Writing</th>
+                        <th>Speaking</th>
                         <?php if($editStatus): ?>
-                        <td>
-                            <button class="btn btn-danger btn-sm hapusBahasa" onclick="hapusBahasa(<?= $bahasa->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm editBahasa" onclick="editBahasa(<?= $bahasa->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
+                        <th>Aksi</th>
                         <?php endif; ?>
-                    </tr>
-                    <?php endforeach; else: ?>
-                    <tr>
-                        <td class="text-center" colspan="<?= $editStatus ? 5 : 4 ?>">Tidak ada data</td>
-                    </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if(count($dataBahasa) > 0): foreach ($dataBahasa as $bahasa) : ?>
+                        <tr>
+                            <td><?= $bahasa->namaBahasa ?></td>
+                            <td><?= $bahasa->statusReading ? "Ya" : "Tidak" ?></td>
+                            <td><?= $bahasa->statusWriting ? "Ya" : "Tidak" ?></td>
+                            <td><?= $bahasa->statusSpeaking ? "Ya" : "Tidak" ?></td>
+                            <?php if($editStatus): ?>
+                            <td>
+                                <button class="btn btn-danger btn-sm hapusBahasa"
+                                    onclick="hapusBahasa(<?= $bahasa->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm editBahasa"
+                                    onclick="editBahasa(<?= $bahasa->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
+                            <?php endif; ?>
+                        </tr>
+                        <?php endforeach; else: ?>
+                        <tr>
+                            <td class="text-center" colspan="<?= $editStatus ? 5 : 4 ?>">Tidak ada data</td>
+                        </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <section>
             <div class="d-flex justify-content-between align-items-center">
@@ -214,41 +222,43 @@
                 <button id="tambahDokumen" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-striped">
-                <thead>
-                    <th>Nama Dokumen</th>
-                    <th>Nomor</th>
-                    <?php if($editStatus): ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                    <?php if(count($dataDokumen) > 0): foreach ($dataDokumen as $dokumen) : ?>
-                    <tr>
-                        <td><?= $dokumen->namaDokumen ?></td>
-                        <td>
-                            <?= !empty($dokumen->nomorDokumen) ? $dokumen->nomorDokumen : "-" ?>
-                        </td>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th>Nama Dokumen</th>
+                        <th>Nomor</th>
                         <?php if($editStatus): ?>
-                        <td>
-                            <button class="btn btn-danger btn-sm hapusDokumen"
-                                onclick="hapusDokumen(<?= $dokumen->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm editDokumen"
-                                onclick="editDokumen(<?= $dokumen->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
+                        <th>Aksi</th>
                         <?php endif; ?>
-                    </tr>
-                    <?php endforeach; else: ?>
-                    <tr>
-                        <td class="text-center" colspan="<?= $editStatus ? 3 : 2 ?>">Tidak ada data</td>
-                    </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if(count($dataDokumen) > 0): foreach ($dataDokumen as $dokumen) : ?>
+                        <tr>
+                            <td><?= $dokumen->namaDokumen ?></td>
+                            <td>
+                                <?= !empty($dokumen->nomorDokumen) ? $dokumen->nomorDokumen : "-" ?>
+                            </td>
+                            <?php if($editStatus): ?>
+                            <td>
+                                <button class="btn btn-danger btn-sm hapusDokumen"
+                                    onclick="hapusDokumen(<?= $dokumen->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm editDokumen"
+                                    onclick="editDokumen(<?= $dokumen->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
+                            <?php endif; ?>
+                        </tr>
+                        <?php endforeach; else: ?>
+                        <tr>
+                            <td class="text-center" colspan="<?= $editStatus ? 3 : 2 ?>">Tidak ada data</td>
+                        </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <section class="d-flex justify-content-end">
             <form method="get" autocomplete="off">
@@ -269,7 +279,7 @@
     <script>
     $("#editDataDiri").click(() => {
         Swal.fire({
-            title: 'Edit Data Diri',
+            title: 'Ubah Data Diri',
             html: `
                     <form id="formDataDiri" class="px-1 mt-3" style="text-align: left !important" enctype="multipart/form-data" autocomplete="off">
                         <div class="mb-1 d-flex justify-content-center">
@@ -320,12 +330,13 @@
                                 <option value="O" <?= $dataPribadi->golonganDarah != NULL && $dataPribadi->golonganDarah == "O" ? "selected" : "" ?> >O</option>
                             </select>
                         </div>
+                        <?php if($this->session->role == "Administrator"): ?>
                         <div class="mb-1">
                             <label class="form-label">Jenis Gradasi</label>
                             <select name="jenisGradasi" class="form-select" required>
                                 <option value="" hidden <?= $dataPribadi->statusKeanggotaan == NULL && "selected" ?> >Pilih Status Keanggotaan</option>
                                 <?php foreach($gradasiAnggota as $gradasi): ?>
-                                <option value="<?= $gradasi->kodeGradasi ?>" <?= $dataPribadi->statusKeanggotaan != NULL && ($dataPribadi->jenisGradasi === $gradasi->kodeGradasi) ? "selected" : "" ?> ><?= $gradasi->namaGradasi ?></option>
+                                <option value="<?= $gradasi->id ?>" <?= $dataPribadi->statusKeanggotaan != NULL && ($dataPribadi->jenisGradasi === $gradasi->id) ? "selected" : "" ?> ><?= $gradasi->namaGradasi ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -337,7 +348,6 @@
                                 <option value=1 <?= $dataPribadi->statusMeninggal != NULL && $dataPribadi->statusMeninggal ? "selected" : "" ?> >Sudah Meninggal</option>
                             </select>
                         </div>
-                        <?php if($this->session->role == "Administrator"): ?>
                         <div class="mb-1">
                             <label class="form-label">Role Anggota</label>
                             <select name="idRole" class="form-select" required>
@@ -408,7 +418,7 @@
             const formData = new FormData($("#formDataDiri")[0]);
             formData.append("editDataDiri", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -425,7 +435,7 @@
                         icon: data.status,
                     });
                 }
-            })
+            }).catch((error) => console.log(error));
         });
 
         $("#profilePicture").change(() => {
@@ -489,7 +499,7 @@
             const formData = new FormData($("#formPendidikan")[0]);
             formData.append("tambahPendidikan", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -519,11 +529,11 @@
 
     const editPendidikan = (id) => {
         let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataPendidikan") ?>?idPendidikan=${id}`).then(
+        axios.get(`<?= base_url("api/dataPendidikan") ?>?idPendidikan=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
-                    title: 'Edit Data Pendidikan',
+                    title: 'Ubah Data Pendidikan',
                     html: `
                     <form id="formEditPendidikan" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
@@ -568,7 +578,7 @@
                     const formData = new FormData($("#formEditPendidikan")[0]);
                     formData.append("editPendidikan", 1);
                     formData.append("id", id);
-                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;
                             if (data.status == "success") {
@@ -612,7 +622,7 @@
                 const formData = new FormData();
                 formData.append("hapusPendidikan", 1);
                 formData.append("id", id);
-                axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                     res => {
                         const data = res.data;
                         if (data.status == "success") {
@@ -667,7 +677,7 @@
             const formData = new FormData($("#formSakramen")[0]);
             formData.append("tambahSakramen", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -690,11 +700,11 @@
 
     const editSakramen = (id) => {
         let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataSakramen") ?>?idSakramen=${id}`).then(
+        axios.get(`<?= base_url("api/dataSakramen") ?>?idSakramen=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
-                    title: 'Edit Data Sakramen',
+                    title: 'Ubah Data Sakramen',
                     html: `
                     <form id="formEditSakramen" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
@@ -724,7 +734,7 @@
                     const formData = new FormData($("#formEditSakramen")[0]);
                     formData.append("editSakramen", 1);
                     formData.append("id", id);
-                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;
                             if (data.status == "success") {
@@ -768,7 +778,7 @@
                 const formData = new FormData();
                 formData.append("hapusSakramen", 1);
                 formData.append("id", id);
-                axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                     res => {
                         const data = res.data;
                         if (data.status == "success") {
@@ -838,7 +848,7 @@
             const formData = new FormData($("#formBahasa")[0]);
             formData.append("tambahBahasa", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -861,7 +871,7 @@
 
     const editBahasa = (id) => {
         let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataBahasa") ?>?idBahasa=${id}`).then(
+        axios.get(`<?= base_url("api/dataBahasa") ?>?idBahasa=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
@@ -909,7 +919,7 @@
                     const formData = new FormData($("#formEditBahasa")[0]);
                     formData.append("editBahasa", 1);
                     formData.append("id", id);
-                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;
                             if (data.status == "success") {
@@ -953,7 +963,7 @@
                 const formData = new FormData();
                 formData.append("hapusBahasa", 1);
                 formData.append("id", id);
-                axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                     res => {
                         const data = res.data;
                         if (data.status == "success") {
@@ -1016,7 +1026,7 @@
             const formData = new FormData($("#formDokumen")[0]);
             formData.append("tambahDokumen", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -1039,11 +1049,11 @@
 
     const editDokumen = (id) => {
         let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataDokumen") ?>?idDokumen=${id}`).then(
+        axios.get(`<?= base_url("api/dataDokumen") ?>?idDokumen=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
-                    title: 'Edit Data Dokumen',
+                    title: 'Ubah Data Dokumen',
                     html: `
                     <form id="formEditDokumen" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
@@ -1071,7 +1081,7 @@
                     const formData = new FormData($("#formEditDokumen")[0]);
                     formData.append("editDokumen", 1);
                     formData.append("id", id);
-                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;
                             if (data.status == "success") {
@@ -1115,7 +1125,7 @@
                 const formData = new FormData();
                 formData.append("hapusDokumen", 1);
                 formData.append("id", id);
-                axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                     res => {
                         const data = res.data;
                         if (data.status == "success") {

@@ -31,41 +31,43 @@
                 <h3>Orang Tua</h3>
             </div>
             <?php if(count($dataOrangTua) > 0): foreach ($dataOrangTua as $orangTua): ?>
-            <table class="table my-3">
-                <?php if($editStatus): ?>
-                <tr>
-                    <td>Aksi</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $orangTua->id ?>)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                        <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $orangTua->id ?>)">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                    </td>
-                </tr>
-                <?php endif; ?>
-                <tr>
-                    <td><?= $orangTua->namaRelasi ?></td>
-                    <td><?= $orangTua->namaLengkap ?></td>
-                </tr>
-                <tr>
-                    <td>Alamat</td>
-                    <td><?= $orangTua->alamat ?></td>
-                </tr>
-                <tr>
-                    <td>Pekerjaan</td>
-                    <td><?= $orangTua->pekerjaan ?></td>
-                </tr>
-                <tr>
-                    <td>Nomor Telepon</td>
-                    <td><?= $orangTua->nomorTelepon?></td>
-                </tr>
-                <tr>
-                    <td>Status</td>
-                    <td><?= $orangTua->statusMeninggal ? "Sudah Meninggal" : "Masih Ada" ?></td>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class="table my-3">
+                    <?php if($editStatus): ?>
+                    <tr>
+                        <td>Aksi</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $orangTua->id ?>)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $orangTua->id ?>)">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <td><?= $orangTua->namaRelasi ?></td>
+                        <td><?= $orangTua->namaLengkap ?></td>
+                    </tr>
+                    <tr>
+                        <td>Alamat</td>
+                        <td><?= $orangTua->alamat ?></td>
+                    </tr>
+                    <tr>
+                        <td>Pekerjaan</td>
+                        <td><?= $orangTua->pekerjaan ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nomor Telepon</td>
+                        <td><?= $orangTua->nomorTelepon?></td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td><?= $orangTua->statusMeninggal ? "Sudah Meninggal" : "Masih Ada" ?></td>
+                    </tr>
+                </table>
+            </div>
             <?php endforeach; else: ?>
             <div class="col-12 text-center" colspan="4">Tidak ada data</div>
             <?php endif; ?>
@@ -76,49 +78,53 @@
             </div>
             <div class="d-flex">
                 <?php if(count($dataSaudaraKandung) > 0): foreach ($dataSaudaraKandung as $saudaraKandung): ?>
-                <table class="table my-3">
-                    <?php if($editStatus): ?>
-                    <tr>
-                        <td>Aksi</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $saudaraKandung->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $saudaraKandung->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <?php endif; ?>
-                    <tr>
-                        <td>Nama</td>
-                        <td><?= $saudaraKandung->namaLengkap ?></td>
-                    </tr>
-                    <tr>
-                        <td>Jenis Relasi</td>
-                        <td><?= $saudaraKandung->namaRelasi ?></td>
-                    </tr>
-                    <tr>
-                        <td>Alamat</td>
-                        <td><?= $saudaraKandung->alamat ?></td>
-                    </tr>
-                    <tr>
-                        <td>Pekerjaan</td>
-                        <td><?= $saudaraKandung->pekerjaan ?></td>
-                    </tr>
-                    <tr>
-                        <td>Nomor Telepon</td>
-                        <td><?= $saudaraKandung->nomorTelepon?></td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td><?= $saudaraKandung->email?></td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
-                        <td><?= $saudaraKandung->statusMeninggal ? "Sudah Meninggal" : "Masih Ada" ?></td>
-                    </tr>
-                </table>
+                <div class="table-responsive">
+                    <table class="table my-3">
+                        <?php if($editStatus): ?>
+                        <tr>
+                            <td>Aksi</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="hapusKeluarga(<?= $saudaraKandung->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm"
+                                    onclick="editKeluarga(<?= $saudaraKandung->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endif; ?>
+                        <tr>
+                            <td>Nama</td>
+                            <td><?= $saudaraKandung->namaLengkap ?></td>
+                        </tr>
+                        <tr>
+                            <td>Jenis Relasi</td>
+                            <td><?= $saudaraKandung->namaRelasi ?></td>
+                        </tr>
+                        <tr>
+                            <td>Alamat</td>
+                            <td><?= $saudaraKandung->alamat ?></td>
+                        </tr>
+                        <tr>
+                            <td>Pekerjaan</td>
+                            <td><?= $saudaraKandung->pekerjaan ?></td>
+                        </tr>
+                        <tr>
+                            <td>Nomor Telepon</td>
+                            <td><?= $saudaraKandung->nomorTelepon?></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><?= $saudaraKandung->email?></td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td><?= $saudaraKandung->statusMeninggal ? "Sudah Meninggal" : "Masih Ada" ?></td>
+                        </tr>
+                    </table>
+                </div>
                 <?php endforeach; else: ?>
                 <div class="col-12 text-center" colspan="4">Tidak ada data</div>
                 <?php endif; ?>
@@ -129,45 +135,47 @@
                 <h3>Kontak Darurat</h3>
             </div>
             <?php if(count($dataKontakDarurat) > 0): foreach ($dataKontakDarurat as $kontakDarurat): ?>
-            <table class="table my-3">
-                <?php if($editStatus): ?>
-                <tr>
-                    <td>Aksi</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $kontakDarurat->id ?>)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                        <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $kontakDarurat->id ?>)">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                    </td>
-                </tr>
-                <?php endif; ?>
-                <tr>
-                    <td>Nama</td>
-                    <td><?= $kontakDarurat->namaLengkap ?></td>
-                </tr>
-                <tr>
-                    <td>Jenis Relasi</td>
-                    <td><?= $kontakDarurat->namaRelasi ?></td>
-                </tr>
-                <tr>
-                    <td>Alamat</td>
-                    <td><?= $kontakDarurat->alamat ?></td>
-                </tr>
-                <tr>
-                    <td>Pekerjaan</td>
-                    <td><?= $kontakDarurat->pekerjaan ?></td>
-                </tr>
-                <tr>
-                    <td>Nomor Telepon</td>
-                    <td><?= $kontakDarurat->nomorTelepon?></td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><?= $kontakDarurat->email?></td>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class="table my-3">
+                    <?php if($editStatus): ?>
+                    <tr>
+                        <td>Aksi</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $kontakDarurat->id ?>)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $kontakDarurat->id ?>)">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <td>Nama</td>
+                        <td><?= $kontakDarurat->namaLengkap ?></td>
+                    </tr>
+                    <tr>
+                        <td>Jenis Relasi</td>
+                        <td><?= $kontakDarurat->namaRelasi ?></td>
+                    </tr>
+                    <tr>
+                        <td>Alamat</td>
+                        <td><?= $kontakDarurat->alamat ?></td>
+                    </tr>
+                    <tr>
+                        <td>Pekerjaan</td>
+                        <td><?= $kontakDarurat->pekerjaan ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nomor Telepon</td>
+                        <td><?= $kontakDarurat->nomorTelepon?></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td><?= $kontakDarurat->email?></td>
+                    </tr>
+                </table>
+            </div>
             <?php endforeach; else: ?>
             <div class="col-12 text-center" colspan="4">Tidak ada data</div>
             <?php endif; ?>
@@ -252,7 +260,7 @@
             const formData = new FormData($("#formRelasi")[0]);
             formData.append("tambahRelasi", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -275,11 +283,11 @@
 
     const editKeluarga = (id) => {
         let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataRelasi") ?>?idRelasi=${id}`).then(
+        axios.get(`<?= base_url("api/dataRelasi") ?>?idRelasi=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
-                    title: 'Edit Data Relasi',
+                    title: 'Ubah Data Relasi',
                     html: `
                     <form id="formEditRelasi" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
@@ -339,7 +347,7 @@
                     const formData = new FormData($("#formEditRelasi")[0]);
                     formData.append("editRelasi", 1);
                     formData.append("id", id);
-                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;
                             if (data.status == "success") {
@@ -376,7 +384,7 @@
                 const formData = new FormData();
                 formData.append("hapusRelasi", 1);
                 formData.append("id", id);
-                axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                     res => {
                         const data = res.data;
                         if (data.status == "success") {

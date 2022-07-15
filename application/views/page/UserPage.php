@@ -48,7 +48,7 @@
     });
 
     const displayList = (searchQuery = '') => {
-        axios.get("<?= base_url("/index.php/api/listuser") ?>").then(res => {
+        axios.get("<?= base_url("api/listuser") ?>").then(res => {
             let data = res.data.Personal;
             console.log(data);
             if (searchQuery != '') {
@@ -63,14 +63,11 @@
                                     <td>${user.idAnggota}</td>
                                     <td>${user.username}</td>
                                     <td>
-                                        <a href="<?= base_url('index.php/anggota/pribadi?id=') ?>${user.idAnggota}" target="_blank">${user.namaLengkap}</a>
+                                        <a href="<?= base_url('anggota/pribadi?id=') ?>${user.idAnggota}" target="_blank">${user.namaLengkap}</a>
                                     </td>
                                     <td>
                                         <button class="btn btn-danger btn-sm" onclick="handleDeletePersonal('${user.idAnggota}');">
                                             <i class="fa fa-trash"></i>
-                                        </button>
-                                        <button class="btn btn-primary btn-sm" onclick="handleEditPersonal('${user.idAnggota}');">
-                                            <i class="fa fa-pencil"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -100,7 +97,7 @@
                 const formData = new FormData();
                 formData.append("deletePersonal", true);
                 formData.append("idAnggota", idAnggota);
-                axios.post("<?= base_url("/index.php/api/listuser") ?>", formData).then((res) => {
+                axios.post("<?= base_url("api/listuser") ?>", formData).then((res) => {
                     $('#tableKuria tbody').empty()
                     displayList();
                     Swal.fire({
@@ -177,7 +174,7 @@
             event.preventDefault();
             const formData = new FormData($("#formAddPersonal")[0]);
             formData.append("addPersonal", true);
-            axios.post("<?= base_url("/index.php/api/listuser") ?>", formData).then((res) => {
+            axios.post("<?= base_url("api/listuser") ?>", formData).then((res) => {
                 $('#tableKuria tbody').empty()
                 displayList();
                 Swal.fire({

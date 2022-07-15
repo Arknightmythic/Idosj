@@ -1,7 +1,7 @@
 <!-- Section Submenu -->
 <div class="header-profile my-5">
     <div class="d-flex flex-column flex-md-row profile align-items-center">
-        <div class="col-12 col-md-6 position-relative d-flex justify-content-center">
+        <div class="profile-div col-12 col-md-6 position-relative d-flex justify-content-center">
             <img class="position-absolute overlay" src="<?= base_url("/assets/images/ihs-bw-overlay.png") ?>"
                 alt="IHS Background Overlay">
             <div class="profile-container">
@@ -20,15 +20,13 @@
         </div>
     </div>
     <div class="subnav d-flex justify-content-between">
-        <a class="links" href="<?= base_url("index.php/anggota/pribadi?id=" . $this->input->get('id')) ?>">Pribadi</a>
-        <a class="links" href="<?= base_url("index.php/anggota/keluarga?id=" . $this->input->get('id')) ?>">Keluarga</a>
-        <a class="links" href="<?= base_url("index.php/anggota/formasi?id=" . $this->input->get('id')) ?>">Formasi</a>
-        <a class="links"
-            href="<?= base_url("index.php/anggota/perutusan?id=" . $this->input->get('id')) ?>">Perutusan</a>
-        <a class="links"
-            href="<?= base_url("index.php/anggota/perjalanan?id=" . $this->input->get('id')) ?>">Perjalanan</a>
-        <a class="links" href="<?= base_url("index.php/anggota/catatan?id=" . $this->input->get('id')) ?>">Catatan</a>
-        <a class="links" href="<?= base_url("index.php/anggota/dokumen?id=" . $this->input->get('id')) ?>">Dokumen</a>
+        <a class="links" href="<?= base_url("anggota/pribadi?id=" . $this->input->get('id')) ?>">Pribadi</a>
+        <a class="links" href="<?= base_url("anggota/keluarga?id=" . $this->input->get('id')) ?>">Keluarga</a>
+        <a class="links" href="<?= base_url("anggota/formasi?id=" . $this->input->get('id')) ?>">Formasi</a>
+        <a class="links" href="<?= base_url("anggota/perutusan?id=" . $this->input->get('id')) ?>">Perutusan</a>
+        <a class="links" href="<?= base_url("anggota/perjalanan?id=" . $this->input->get('id')) ?>">Perjalanan</a>
+        <a class="links" href="<?= base_url("anggota/catatan?id=" . $this->input->get('id')) ?>">Catatan</a>
+        <a class="links" href="<?= base_url("anggota/dokumen?id=" . $this->input->get('id')) ?>">Dokumen</a>
     </div>
 </div>
 <!-- End Section of Submenu -->

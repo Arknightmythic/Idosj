@@ -21,37 +21,77 @@
         <section>
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Perjalanan</h3>
-                <a href="#" download class="btn btn-warning" style="height: max-content">Download Form Kuning</a>
+                <a href="<?= base_url("formkuning") ?>" class="btn btn-warning" style="height: max-content">Ajukan Form
+                    Kuning</a>
             </div>
-            <table class="table table-stiped">
-                <thead>
-                    <th>Sponsor, Tempat</th>
-                    <th>Waktu</th>
-                    <th>Keperluan</th>
-                    <th>Kartu Kuning</th>
-                </thead>
-                <tbody>
-                    <?php foreach($dataPerjalanan as $data): ?>
-                    <tr>
-                        <td><?= $data->keterangan ?></td>
-                        <td><?= date_format(date_create($data->tanggalMulai), "d/m/y") . " - " . date_format(date_create($data->tanggalBerakhir), "d/m/y") ?>
-                        </td>
-                        <td><?= $data->keperluan ?></td>
-                        <?php if(!empty($data->fileKartuKuning)):?>
-                        <td><a class="btn btn-primary"
-                                href="<?= base_url('/uploads/kk-perjalanan/') . $data->fileKartuKuning ?>" type="file"
-                                download>Download</a>
-                        </td>
-                        <?php else: ?>
-                        <td>-</td>
-                        <?php endif ?>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </section>
-        <section>
-
+            <div class="table-responsive">
+                <table class="table table-stiped">
+                    <thead>
+                        <th>Sponsor, Tempat</th>
+                        <th>Waktu</th>
+                        <th>Keperluan</th>
+                        <th>Dokumen</th>
+                    </thead>
+                    <tbody>
+                        <?php foreach($dataPerjalanan as $data): 
+                        $status = 0;
+                        if($data->statusProvinsial){
+                            $status = 2;
+                        } else if($data->statusSuperior){
+                            $status = 1;
+                        }
+                    ?>
+                        <tr>
+                            <td><?= $data->q7.", ".$data->q3 ?></td>
+                            <td>
+                                <?= date_format(date_create($data->q1), "d/m/y")." - ".date_format(date_create($data->q2), "d/m/y") ?>
+                            </td>
+                            <td><?= $data->q4 ?></td>
+                            <td>
+                                <?php
+                                if($this->session->role == "Administrator"){
+                                    if($status == 0){
+                                        echo "<span class='hi-block'>Menunggu persetujuan Superior</span>";
+                                    } else if($status == 1){
+                                        echo "
+                                            <form action='".base_url("formkuning/approval")."' method='POST'>
+                                                <input name='approvalProvinsial' value='true' hidden />
+                                                <input name='idAnggota' value='".$dataPribadi->id."' hidden />
+                                                <button class='btn btn-warning'><i class='fa fa-file-lines'></i></button>
+                                            </form>
+                                        ";
+                                    } else if($status == 2){
+                                        echo "<button class='btn btn-primary'><i class='fa fa-file-lines'></i></button>";
+                                    }
+                                } else if($this->session->role == "Superior"){
+                                    if($status == 0){
+                                        echo "
+                                        <form action='".base_url("formkuning/approval")."' method='POST'>
+                                            <input name='approvalSuperior' value='true' hidden />
+                                            <input name='idAnggota' value='".$dataPribadi->id."' hidden />
+                                            <button class='btn btn-warning'><i class='fa fa-file-lines'></i></button>
+                                        </form>";
+                                    } else if($status == 1){
+                                        echo "<span class='hi-block'>Menunggu persetujuan Pater Provinsial</span>";
+                                    } else if($status == 2){
+                                        echo "<button class='btn btn-primary'><i class='fa fa-file-lines'></i></button>";
+                                    }
+                                } else {
+                                    if($status == 0){
+                                        echo "<span class='hi-block'>Menunggu persetujuan Superior</span>";
+                                    } else if($status == 1){
+                                        echo "<span class='hi-block'>Menunggu persetujuan Pater Provinsial</span>";
+                                    } else if($status == 2){
+                                        echo "<button class='btn btn-primary'><i class='fa fa-file-lines'></i></button>";
+                                    }
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
     <?= $footer ?>

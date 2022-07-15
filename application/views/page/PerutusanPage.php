@@ -25,47 +25,50 @@
                 <button id="tambahPerutusan" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-stiped">
-                <thead>
-                    <th>Tempat Perutusan</th>
-                    <th>Tugas dan Jabatan</th>
-                    <th>Tahun Masuk</th>
-                    <th>Tahun Berakhir</th>
-                    <?php if(!$editStatus): ?>
-                    <th>Surat Keterangan</th>
-                    <?php else: ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                    <?php foreach($dataPerutusan as $data): ?>
-                    <tr>
-                        <td><?= !empty($data->tempatPerutusan) ? $data->tempatPerutusan : "-" ?></td>
-                        <td><?= !empty($data->keterangan) ? $data->keterangan : "-" ?></td>
-                        <td><?= !empty($data->tahunMasuk) ? $data->tahunMasuk : "-" ?></td>
-                        <td><?= !empty($data->tahunBerakhir) ? $data->tahunBerakhir : "now" ?></td>
+            <div class="table-responsive">
+                <table class="table table-stiped">
+                    <thead>
+                        <th>Tempat Perutusan</th>
+                        <th>Tugas dan Jabatan</th>
+                        <th>Tahun Masuk</th>
+                        <th>Tahun Berakhir</th>
                         <?php if(!$editStatus): ?>
-                        <?php if(!empty($data->fileSK)):?>
-                        <td><a class="btn btn-primary" href="<?= base_url('/uploads/sk-perutusan/') . $data->fileSK ?>"
-                                type="file" download>Download</a>
-                        </td>
+                        <th>Surat Keterangan</th>
                         <?php else: ?>
-                        <td>-</td>
-                        <?php endif ?>
-                        <?php else: ?>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="hapusPerutusan(<?= $data->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm" onclick="editPerutusan(<?= $data->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
+                        <th>Aksi</th>
                         <?php endif; ?>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach($dataPerutusan as $data): ?>
+                        <tr>
+                            <td><?= !empty($data->tempatPerutusan) ? $data->tempatPerutusan : "-" ?></td>
+                            <td><?= !empty($data->keterangan) ? $data->keterangan : "-" ?></td>
+                            <td><?= !empty($data->tahunMasuk) ? $data->tahunMasuk : "-" ?></td>
+                            <td><?= !empty($data->tahunBerakhir) ? $data->tahunBerakhir : "now" ?></td>
+                            <?php if(!$editStatus): ?>
+                            <?php if(!empty($data->fileSK)):?>
+                            <td><a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/sk-perutusan/') . $data->fileSK ?>" target="_blank"><i
+                                        class="fa fa-file-lines"></i></a>
+                            </td>
+                            <?php else: ?>
+                            <td>-</td>
+                            <?php endif ?>
+                            <?php else: ?>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="hapusPerutusan(<?= $data->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="editPerutusan(<?= $data->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
+                            <?php endif; ?>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <section class="d-flex justify-content-end">
             <form method="get" autocomplete="off">
@@ -125,7 +128,7 @@
             const formData = new FormData($("#formPerutusan")[0]);
             formData.append("tambahPerutusan", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -155,11 +158,11 @@
 
     const editPerutusan = (id) => {
         let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataPerutusan") ?>?idPerutusan=${id}`).then(
+        axios.get(`<?= base_url("api/dataPerutusan") ?>?idPerutusan=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
-                    title: 'Edit Data Perutusan',
+                    title: 'Ubah Data Perutusan',
                     html: `
                     <form id="formEditPerutusan" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
@@ -200,7 +203,7 @@
                     formData.append("editPerutusan", 1);
                     formData.append("id", id);
                     formData.append("lastFile", tempData.fileSK);
-                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;
                             if (data.status == "success") {
@@ -232,7 +235,7 @@
 
     const hapusPerutusan = (id) => {
         let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataPerutusan") ?>?idPerutusan=${id}`).then(
+        axios.get(`<?= base_url("api/dataPerutusan") ?>?idPerutusan=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
@@ -249,7 +252,7 @@
                         formData.append("hapusPerutusan", 1);
                         formData.append("id", id);
                         formData.append("lastFile", tempData.fileSK);
-                        axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                        axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                             res => {
                                 const data = res.data;
                                 if (data.status == "success") {

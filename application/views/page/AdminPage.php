@@ -49,8 +49,8 @@
     });
 
     const displayList = (searchQuery = '') => {
-        axios.get("<?= base_url("/index.php/api/listuser") ?>").then(res => {
-            let data = [...res.data.Administrator, ...res.data.Officiales, ...res.data.Komisiones, ...res
+        axios.get("<?= base_url("api/listuser") ?>").then(res => {
+            let data = [...res.data.Administrator, ...res.data.Delegat, ...res
                 .data.Superior
             ];
             console.log(data);
@@ -99,7 +99,7 @@
                 const formData = new FormData();
                 formData.append("deleteAdmin", true);
                 formData.append("userID", userID);
-                axios.post("<?= base_url("/index.php/api/listuser") ?>", formData).then((res) => {
+                axios.post("<?= base_url("api/listuser") ?>", formData).then((res) => {
                     $('#tableKuria tbody').empty()
                     displayList();
                     Swal.fire({
@@ -168,7 +168,7 @@
             event.preventDefault();
             const formData = new FormData($("#formAddAdmin")[0]);
             formData.append("addAdmin", true);
-            axios.post("<?= base_url("/index.php/api/listuser") ?>", formData).then((res) => {
+            axios.post("<?= base_url("api/listuser") ?>", formData).then((res) => {
                 $('#tableKuria tbody').empty()
                 displayList();
                 Swal.fire({

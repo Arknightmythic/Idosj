@@ -34,7 +34,7 @@
             delete_cookie('login');
             delete_cookie('userId');
             delete_cookie('key');
-            $this->session->sess_destroy();
+            $this->session->unset_userdata(array('namaLengkap', 'role', 'idAnggota'));
             return false;
         }
     }

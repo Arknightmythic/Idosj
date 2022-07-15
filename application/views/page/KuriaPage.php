@@ -39,7 +39,7 @@
     <script>
     const displayList = (role) => {
         $.ajax({
-            url: '<?= base_url("/index.php/api/listuser") ?>',
+            url: '<?= base_url("api/listuser") ?>',
             type: 'GET',
             success: (data) => {
                 if (data[role].length > 0) {

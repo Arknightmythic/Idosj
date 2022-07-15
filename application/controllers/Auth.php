@@ -44,7 +44,14 @@
                 set_cookie('login', true, $cookieDuration);
                 set_cookie('userId', $username, $cookieDuration);
                 set_cookie('key', $key, $cookieDuration);
-                redirect('/');
+
+                if(!empty($this->session->userdata('redirect'))){
+                    $redirect = $this->session->userdata('redirect');
+                    $this->session->unset_userdata('redirect');
+                    redirect($redirect);
+                } else {
+                    redirect('/');
+                }
             } else {
                 $this->session->set_flashdata('login', 'Username atau password salah.');
             }

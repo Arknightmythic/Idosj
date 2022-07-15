@@ -9,6 +9,12 @@
             $this->form_validation->set_error_delimiters('', '');
 
             if(!$this->auth_model->verifyCookies()){
+                if (!empty($_SERVER['QUERY_STRING'])) {
+                    $uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
+                } else {
+                    $uri = uri_string();
+                }
+                $this->session->set_userdata('redirect', $uri);
                 redirect('/auth');
             }
         }

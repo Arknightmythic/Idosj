@@ -10,6 +10,12 @@
             $this->form_validation->set_error_delimiters('', '');
 
             if(!$this->auth_model->verifyCookies()){
+                if (!empty($_SERVER['QUERY_STRING'])) {
+                    $uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
+                } else {
+                    $uri = uri_string();
+                }
+                $this->session->set_userdata('redirect', $uri);
                 redirect('/auth');
             }
 
@@ -130,6 +136,9 @@
             $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
             $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
             $data["dataSerikat"] = $this->anggota_model->getDataSerikat($idAnggota);
+            $data["dataInfo"] = $this->anggota_model->getDataInformationes($idAnggota);
+            $data["dataKomentar"] = $this->anggota_model->getDataKomentar($idAnggota);
+            $data["dataKaulAkhir"] = $this->anggota_model->getDataKaulAkhir($idAnggota);
             $this->load->view('page/FormasiPage.php', $data, FALSE);
         }
     }

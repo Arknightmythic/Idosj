@@ -25,75 +25,125 @@
                 <button id="tambahSerikat" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-stiped">
-                <thead>
-                    <th>Keterangan</th>
-                    <th>Tanggal & Tempat</th>
-                    <th>Pembimbing</th>
-                    <?php if(!$editStatus): ?>
-                    <th>Dokumen</th>
-                    <?php else: ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                    <?php foreach($dataSerikat as $serikat): ?>
-                    <tr>
-                        <td><?= !empty($serikat->keterangan) ? $serikat->keterangan : "-" ?></td>
-                        <td><?= !empty($serikat->tanggalTempat) ? $serikat->tanggalTempat : "-" ?></td>
-                        <td><?= !empty($serikat->pembimbing) ? $serikat->pembimbing : "-" ?></td>
+            <div class="table-responsive">
+                <table class="table table-stiped">
+                    <thead>
+                        <th>Keterangan</th>
+                        <th>Tanggal & Tempat</th>
+                        <th>Pembimbing</th>
                         <?php if(!$editStatus): ?>
-                        <td>
-                            <a class="btn btn-primary"
-                                href="<?= base_url('/uploads/dokumen-serikat/') . $serikat->dokumen ?>" type="file"
-                                download>Download</a>
-                        </td>
+                        <th>Dokumen</th>
                         <?php else: ?>
-                        <td>
-                            <button class="btn btn-danger btn-sm hapusBahasa"
-                                onclick="hapusSerikat(<?= $serikat->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm editBahasa"
-                                onclick="editSerikat(<?= $serikat->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
+                        <th>Aksi</th>
                         <?php endif; ?>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach($dataSerikat as $serikat): ?>
+                        <tr>
+                            <td><?= !empty($serikat->keterangan) ? $serikat->keterangan : "-" ?></td>
+                            <td><?= !empty($serikat->tanggalTempat) ? $serikat->tanggalTempat : "-" ?></td>
+                            <td><?= !empty($serikat->pembimbing) ? $serikat->pembimbing : "-" ?></td>
+                            <?php if(!$editStatus): ?>
+                            <td>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-serikat/') . $serikat->dokumen ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                            </td>
+                            <?php else: ?>
+                            <td>
+                                <button class="btn btn-danger btn-sm hapusBahasa"
+                                    onclick="hapusSerikat(<?= $serikat->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm editBahasa"
+                                    onclick="editSerikat(<?= $serikat->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                            </td>
+                            <?php endif; ?>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <?php if($this->session->role == "Administrator" || $this->session->idAnggota == $dataPribadi->idSuperior || $this->session->idAnggota == $dataPribadi->idDelegat): ?>
         <section>
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Informationes</h3>
                 <?php if($editStatus): ?>
-                <button id="tambahInfo" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
+                <div class="d-flex">
+                    <button id="ubahInfo" class="btn btn-secondary"><i class="fa fa-pencil"></i></button>
+                </div>
                 <?php endif; ?>
             </div>
-            <table class="table table-stiped">
-                <thead>
-                    <th>Institusi</th>
-                    <th>Sebelum Teologi</th>
-                    <th>Sebelum Tahbisan</th>
-                    <th>Sebelum Kaul Akhir</th>
-                    <?php if($editStatus): ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
-                    <?= $editStatus ? "" : "disabled" ?>></textarea>
-                <label for="floatingTextarea">Komentar</label>
+            <div class="table-responsive">
+                <table class="table table-stiped">
+                    <thead>
+                        <th>Deskripsi</th>
+                        <th>Dokumen</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Institusi</td>
+                            <td>
+                                <?php if(!empty($dataInfo->institusi)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-informationes/') . $dataInfo->institusi ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sebelum Teologi</td>
+                            <td>
+                                <?php if(!empty($dataInfo->sebelumTeologi)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-informationes/') . $dataInfo->sebelumTeologi ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sebelum Tahbisan</td>
+                            <td>
+                                <?php if(!empty($dataInfo->sebelumTahbisan)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-informationes/') . $dataInfo->sebelumTahbisan ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sebelum Kaul Akhir</td>
+                            <td>
+                                <?php if(!empty($dataInfo->sebelumKaulAkhir)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-informationes/') . $dataInfo->sebelumKaulAkhir ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-floating mt-4">
+                <textarea class="form-control" placeholder="Leave a comment here" id="komentar"
+                    <?= !empty($dataKomentar->textKomentar) ? "rows='10'" : "rows='3'" ?> style="height:100%;"
+                    <?= $editStatus ? "" : "disabled" ?>><?= !empty($dataKomentar->textKomentar) ? $dataKomentar->textKomentar : "" ?></textarea>
+                <label for="komentar">Komentar</label>
             </div>
             <?php if($editStatus): ?>
             <div class="mt-2 d-flex justify-content-end">
-                <button class="btn btn-primary btn-sm">
+                <button class="btn btn-primary btn-sm" id="simpanKomentar">
                     <i class="fa fa-save"></i>
                     <span>Simpan Komentar</span>
                 </button>
@@ -105,20 +155,88 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Kaul Akhir</h3>
                 <?php if($editStatus): ?>
-                <button id="tambahKaul" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
+                <button id="ubahKaul" class="btn btn-secondary"><i class="fa fa-pencil"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-stiped">
-                <thead>
-                    <th>Deskripsi</th>
-                    <th>Dokumen</th>
-                    <?php if($editStatus): ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-stiped">
+                    <thead>
+                        <th>Deskripsi</th>
+                        <th>Keterangan</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tanggal Kaul Akhir</td>
+                            <td><?= !empty($dataKaulAkhir->tanggalKaulAkhir) ? date_format(date_create($dataKaulAkhir->tanggalKaulAkhir), 'd F Y') : "-" ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>jenisGradasi</td>
+                            <td><?= !empty($dataKaulAkhir->jenisGradasi) ? $dataKaulAkhir->jenisGradasi : "-" ?></td>
+                        </tr>
+                        <tr>
+                            <td>Surat Pribadi</td>
+                            <td>
+                                <?php if(!empty($dataKaulAkhir->suratPribadi)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-kaul-akhir/') . $dataKaulAkhir->suratPribadi ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Dekrit Kaul</td>
+                            <td>
+                                <?php if(!empty($dataKaulAkhir->dekritKaul)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-kaul-akhir/') . $dataKaulAkhir->dekritKaul ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Teks Kaul (Profes - Coadjutor)</td>
+                            <td>
+                                <?php if(!empty($dataKaulAkhir->teksKaul)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-kaul-akhir/') . $dataKaulAkhir->teksKaul ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Teks Pelepasan Harta Milik</td>
+                            <td>
+                                <?php if(!empty($dataKaulAkhir->teksPelepasan)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-kaul-akhir/') . $dataKaulAkhir->teksPelepasan ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Testamen Notaris</td>
+                            <td>
+                                <?php if(!empty($dataKaulAkhir->testamenNotaris)):?>
+                                <a class="btn btn-primary"
+                                    href="<?= base_url('/uploads/dokumen-kaul-akhir/') . $dataKaulAkhir->testamenNotaris ?>"
+                                    target="_blank"><i class="fa fa-file-lines"></i></a>
+                                <?php else: ?>
+                                -
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <section>
             <div class="d-flex justify-content-between align-items-center">
@@ -127,19 +245,21 @@
                 <button id="tambahKeahlian" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-stiped">
-                <thead>
-                    <th>Studi Khusus & Kursus</th>
-                    <th>Institusi</th>
-                    <th>Level Keahlian</th>
-                    <th>Catatan</th>
-                    <?php if($editStatus): ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-stiped">
+                    <thead>
+                        <th>Studi Khusus & Kursus</th>
+                        <th>Institusi</th>
+                        <th>Level Keahlian</th>
+                        <th>Catatan</th>
+                        <?php if($editStatus): ?>
+                        <th>Aksi</th>
+                        <?php endif; ?>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <section>
             <div class="d-flex justify-content-between align-items-center">
@@ -148,19 +268,21 @@
                 <button id="tambahPublikasi" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
             </div>
-            <table class="table table-stiped">
-                <thead>
-                    <th>Judul</th>
-                    <th>Tahun Terbit</th>
-                    <th>Penerbit</th>
-                    <th>Jenis</th>
-                    <?php if($editStatus): ?>
-                    <th>Aksi</th>
-                    <?php endif; ?>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-stiped">
+                    <thead>
+                        <th>Judul</th>
+                        <th>Tahun Terbit</th>
+                        <th>Penerbit</th>
+                        <th>Jenis</th>
+                        <?php if($editStatus): ?>
+                        <th>Aksi</th>
+                        <?php endif; ?>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- End of Content -->
@@ -225,7 +347,7 @@
             const formData = new FormData($("#formSerikat")[0]);
             formData.append("tambahSerikat", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -248,11 +370,11 @@
 
     const editSerikat = (id) => {
         let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataSerikat") ?>?idSerikat=${id}`).then(
+        axios.get(`<?= base_url("api/dataSerikat") ?>?idSerikat=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
-                    title: 'Edit Data Serikat',
+                    title: 'Ubah Data Serikat',
                     html: `
                     <form id="formEditSerikat" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
@@ -295,7 +417,7 @@
                     formData.append("editSerikat", 1);
                     formData.append("id", id);
                     formData.append("lastFile", tempData.dokumen);
-                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;
                             if (data.status == "success") {
@@ -319,7 +441,7 @@
     }
 
     const hapusSerikat = (id) => {
-        axios.get(`<?= base_url("/index.php/api/dataSerikat") ?>?idSerikat=${id}`).then(
+        axios.get(`<?= base_url("api/dataSerikat") ?>?idSerikat=${id}`).then(
             res => {
                 tempData = res.data;
                 Swal.fire({
@@ -336,7 +458,7 @@
                         formData.append("hapusSerikat", 1);
                         formData.append("id", id);
                         formData.append("lastFile", tempData.dokumen);
-                        axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
+                        axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                             res => {
                                 const data = res.data;
                                 if (data.status == "success") {
@@ -360,9 +482,9 @@
             })
     }
 
-    $("#tambahInfo").click(() => {
+    $("#ubahInfo").click(() => {
         Swal.fire({
-            title: 'Tambah Data Informationes',
+            title: 'Ubah Data Informationes',
             html: `
                     <form id="formInfo" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
@@ -377,7 +499,7 @@
                         </div>
                         <div class="mb-1">
                             <label>Dokumen</label>
-                            <input type="file" class="form-control" name="fileData" required />
+                            <input type="file" class="form-control" name="fileData" accept="application/pdf" required />
                         </div>
                         <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
                             <button class="btn btn-primary px-5">Tambah</button>
@@ -392,9 +514,9 @@
         $("#formInfo").submit(() => {
             event.preventDefault();
             const formData = new FormData($("#formInfo")[0]);
-            formData.append("tambahInfo", 1);
+            formData.append("editInfo", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(res => {
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
                     Swal.fire({
@@ -415,109 +537,103 @@
         });
     })
 
-    const editInfo = (id) => {
-        let tempData;
-        axios.get(`<?= base_url("/index.php/api/dataInformationes") ?>?idInformationes=${id}`).then(
-            res => {
-                tempData = res.data;
-                Swal.fire({
-                    title: 'Edit Data Informationes',
-                    html: `
-                    <form id="formEditInfo" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
+    $("#simpanKomentar").click(() => {
+        const komentar = $("#komentar").val();
+        if (komentar.length > 0) {
+            const formData = new FormData();
+            formData.append("komentar", 1);
+            formData.append("textKomentar", komentar);
+            formData.append("idAnggota", "<?= $dataPribadi->id ?>");
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(
+                res => {
+                    const data = res.data;
+                    if (data.status == "success") {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: "success",
+                        }).then(() => {
+                            document.location.reload(true)
+                        });
+                    } else {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: data.status,
+                        });
+                    }
+                })
+        }
+    })
+
+    $("#ubahKaul").click(() => {
+        Swal.fire({
+            title: 'Ubah Data Kaul Akhir',
+            html: `
+                    <form id="formKaul" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
-                            <label>Jenis Informationes</label>
-                            <select class="form-select" name="jenisInformationes" required>
-                                <option value="" hidden>Pilih Jenis Informationes</option>
-                                <option value=1>Institusi</option>
-                                <option value=2>Sebelum Teologi</option>
-                                <option value=3>Sebelum Tahbisan</option>
-                                <option value=4>Sebelum Kaul Akhir</option>
-                            </select>
+                            <label>Tanggal Kaul Akhir</label>
+                            <input type="date" class="form-control" name="tanggalKaulAkhir" required />
                         </div>
                         <div class="mb-1">
-                            <label>Dokumen</label>
-                            <input type="file" class="form-control" name="fileData" required />
+                            <label>jenisGradasi</label>
+                            <input class="form-control" name="jenisGradasi" required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Surat Pribadi</label>
+                            <input class="form-control" name="fileSuratPribadi" type="file" accept="application/pdf" />
+                        </div>
+                        <div class="mb-1">
+                            <label>Dekrit Kaul</label>
+                            <input class="form-control" name="fileDekritKaul" type="file" accept="application/pdf" />
+                        </div>
+                        <div class="mb-1">
+                            <label>Teks Kaul</label>
+                            <input class="form-control" name="fileTeksKaul" type="file" accept="application/pdf" />
+                        </div>
+                        <div class="mb-1">
+                            <label>Teks Pelepasan</label>
+                            <input class="form-control" name="fileTeksPelepasan" type="file" accept="application/pdf" />
+                        </div>
+                        <div class="mb-1">
+                            <label>Testamen Notaris</label>
+                            <input class="form-control" name="fileTestamenNotaris" type="file" accept="application/pdf" />
                         </div>
                         <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
                             <button class="btn btn-primary px-5">Tambah</button>
                         </div>
                     </form>
                 `,
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                    allowOutsideClick: false,
-                })
+            showConfirmButton: false,
+            showCloseButton: true,
+            allowOutsideClick: false,
+        })
 
-                $("#formEditInfo").submit(() => {
-                    event.preventDefault();
-                    const formData = new FormData($("#formEditInfo")[0]);
-                    formData.append("editInfo", 1);
-                    formData.append("id", id);
-                    formData.append("lastFile", tempData.dokumen);
-                    axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
-                        res => {
-                            const data = res.data;
-                            if (data.status == "success") {
-                                Swal.fire({
-                                    title: data.title,
-                                    text: data.message,
-                                    icon: "success",
-                                }).then(() => {
-                                    document.location.reload(true)
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: data.title,
-                                    text: data.message,
-                                    icon: data.status,
-                                });
-                            }
-                        })
-                });
+        $("#formKaul").submit(() => {
+            event.preventDefault();
+            const formData = new FormData($("#formKaul")[0]);
+            formData.append("editKaul", 1);
+            formData.append("id", "<?= $dataPribadi->id ?>");
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
+                const data = res.data;
+                if (data.status == "success") {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: "success",
+                    }).then(() => {
+                        document.location.reload(true)
+                    });
+                } else {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: data.status,
+                    });
+                }
             })
-    }
-
-    const hapusInfo = (id) => {
-        axios.get(`<?= base_url("/index.php/api/dataInformationes") ?>?idInformationes=${id}`).then(
-            res => {
-                tempData = res.data;
-                Swal.fire({
-                    title: 'Hapus Data Informationes',
-                    text: "Apakah anda yakin ingin menghapus data ini?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Ya, Hapus!"
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        const formData = new FormData();
-                        formData.append("hapusInfo", 1);
-                        formData.append("id", id);
-                        formData.append("lastFile", tempData.dokumen);
-                        axios.post("<?= base_url("/index.php/api/editanggota") ?>", formData).then(
-                            res => {
-                                const data = res.data;
-                                if (data.status == "success") {
-                                    Swal.fire({
-                                        title: data.title,
-                                        text: data.message,
-                                        icon: "success",
-                                    }).then(() => {
-                                        document.location.reload(true)
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: data.title,
-                                        text: data.message,
-                                        icon: data.status,
-                                    });
-                                }
-                            })
-                    }
-                })
-            })
-    }
+        });
+    })
     </script>
     <?php endif; ?>
 
