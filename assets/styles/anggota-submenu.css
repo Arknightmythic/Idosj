@@ -39,6 +39,10 @@
 	width: 100%;
 }
 
+.subnav .links.active {
+	background-color: var(--ihs-red-hover);
+}
+
 .subnav .links:hover {
 	background-color: var(--ihs-red-hover);
 	color: white;

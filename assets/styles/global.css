@@ -74,6 +74,7 @@ footer {
 	height: 5rem;
 	display: flex;
 	align-items: center;
-	background-color: var(--ihs-orange);
+	background-color: var(--ihs-red);
 	color: white;
+	box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
 }

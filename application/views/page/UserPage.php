@@ -143,7 +143,7 @@
                             <select class="form-select" name="jenisGradasi" required>
                                 <option selected hidden value="">Pilih Status</option>
                                 ${jenisGradasi.map(gradasi => `
-                                    <option value="${gradasi.kodeGradasi}">${gradasi.namaGradasi}</option>
+                                    <option value="${gradasi.id}">${gradasi.namaGradasi}</option>
                                 `).join('')}
                             </select>
                         </div>

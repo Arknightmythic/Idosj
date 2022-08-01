@@ -171,8 +171,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>jenisGradasi</td>
-                            <td><?= !empty($dataKaulAkhir->jenisGradasi) ? $dataKaulAkhir->jenisGradasi : "-" ?></td>
+                            <td>Gradus</td>
+                            <td><?= !empty($dataKaulAkhir->tanggalKaulAkhir) ? $dataPribadi->namaGradasi : "-" ?></td>
                         </tr>
                         <tr>
                             <td>Surat Pribadi</td>
@@ -251,12 +251,37 @@
                         <th>Studi Khusus & Kursus</th>
                         <th>Institusi</th>
                         <th>Level Keahlian</th>
-                        <th>Catatan</th>
-                        <?php if($editStatus): ?>
+                        <?php if(!$editStatus): ?>
+                        <th>Sertifikat</th>
+                        <?php else: ?>
                         <th>Aksi</th>
                         <?php endif; ?>
                     </thead>
                     <tbody>
+                        <?php foreach($dataKeahlian as $keahlian): ?>
+                        <tr>
+                            <td><?= $keahlian->studiKhusus ?></td>
+                            <td><?= $keahlian->namaInstitusi ?></td>
+                            <td><?= $keahlian->levelKeahlian ?></td>
+                            <?php if(!$editStatus): ?>
+                            <td>
+                                <a href="<?= base_url("/uploads/sertifikat-keahlian/").$keahlian->dokumen ?>"
+                                    class="btn btn-primary" target="_blank"><i class="fa fa-file-lines"></i></a>
+                            </td>
+                            <?php else: ?>
+                            <td>
+                                <button class="btn btn-primary btn-sm" id="ubahKeahlian"
+                                    onClick="editKeahlian(<?= $keahlian->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" id="hapusKeahlian"
+                                    onClick="hapusKeahlian(<?= $keahlian->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                            <?php endif; ?>
+                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -280,6 +305,24 @@
                         <?php endif; ?>
                     </thead>
                     <tbody>
+                        <?php foreach($dataPublikasi as $publikasi): ?>
+                        <tr>
+                            <td><?= $publikasi->judul ?></td>
+                            <td><?= $publikasi->tahunTerbit ?></td>
+                            <td><?= $publikasi->penerbit ?></td>
+                            <td><?= $publikasi->jenis ?></td>
+                            <?php if($editStatus): ?>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onClick="editPublikasi(<?= $publikasi->id ?>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onClick="hapusPublikasi(<?= $publikasi->id ?>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                            <?php endif; ?>
+                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -287,16 +330,13 @@
 
         <!-- End of Content -->
         <section class="d-flex justify-content-end">
-            <form method="get" autocomplete="off">
-                <?php if($editStatus): ?>
-                <input name="id" value="<?= $dataPribadi->id ?>" hidden />
-                <button class="btn btn-success px-5 btn-lg">Selesai</button>
-                <?php else: ?>
-                <input name="id" value="<?= $dataPribadi->id ?>" hidden />
-                <input name="edit" value="1" hidden />
-                <button class="btn btn-primary px-5 btn-lg">Sunting</button>
-                <?php endif; ?>
-            </form>
+            <?php if($editStatus): ?>
+            <a href="<?= base_url("/anggota/formasi/$dataPribadi->id") ?>"><button
+                    class="btn btn-success px-5 btn-lg">Selesai</button></a>
+            <?php else: ?>
+            <a href="<?= base_url("/anggota/formasi/$dataPribadi->id?edit=true") ?>"><button
+                    class="btn btn-primary px-5 btn-lg">Sunting</button></a>
+            <?php endif; ?>
         </section>
     </div>
     <?= $footer ?>
@@ -576,10 +616,6 @@
                             <input type="date" class="form-control" name="tanggalKaulAkhir" required />
                         </div>
                         <div class="mb-1">
-                            <label>jenisGradasi</label>
-                            <input class="form-control" name="jenisGradasi" required />
-                        </div>
-                        <div class="mb-1">
                             <label>Surat Pribadi</label>
                             <input class="form-control" name="fileSuratPribadi" type="file" accept="application/pdf" />
                         </div>
@@ -633,7 +669,332 @@
                 }
             })
         });
+
     })
+
+    $("#tambahKeahlian").click(() => {
+        Swal.fire({
+            title: 'Tambah Data Keahlian',
+            html: `
+                    <form id="formKeahlian" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
+                        <div class="mb-1">
+                            <label>Studi Khusus atau Kursus</label>
+                            <input class="form-control" name="studiKhusus" required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Institusi Pemberi Sertifikat</label>
+                            <input class="form-control" name="namaInstitusi" required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Level Keahlian</label>
+                            <input class="form-control" name="levelKeahlian" required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Serifikat Keahlian</label>
+                            <input type="file" class="form-control" name="fileData" required />
+                        </div>
+                        <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
+                            <button class="btn btn-primary px-5">Tambah</button>
+                        </div>
+                    </form>
+                `,
+            showConfirmButton: false,
+            showCloseButton: true,
+            allowOutsideClick: false,
+        })
+
+        $("#formKeahlian").submit(() => {
+            event.preventDefault();
+            const formData = new FormData($("#formKeahlian")[0]);
+            formData.append("tambahKeahlian", 1);
+            formData.append("id", "<?= $dataPribadi->id ?>");
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
+                const data = res.data;
+                if (data.status == "success") {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: "success",
+                    }).then(() => {
+                        document.location.reload(true)
+                    });
+                } else {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: data.status,
+                    });
+                }
+            })
+        });
+    })
+
+    const editKeahlian = (id) => {
+        axios.get(`<?= base_url("api/datakeahlian?idKeahlian=") ?>${id}`).then(res => {
+            const data = res.data;
+            Swal.fire({
+                title: 'Edit Data Keahlian',
+                html: `
+                    <form id="formKeahlian" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
+                        <div class="mb-1">
+                            <label>Studi Khusus atau Kursus</label>
+                            <input class="form-control" name="studiKhusus" value='${data.studiKhusus}' required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Institusi Pemberi Sertifikat</label>
+                            <input class="form-control" name="namaInstitusi" value='${data.namaInstitusi}' required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Level Keahlian</label>
+                            <input class="form-control" name="levelKeahlian" value='${data.levelKeahlian}' required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Serifikat Keahlian</label>
+                            <input type="file" class="form-control" name="fileData" accept="application/pdf, image/png, image/jpeg" />
+                            <small class="form-text text-muted">${data.dokumen}</small>
+                        </div>
+                        <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
+                            <button class="btn btn-primary px-5">Simpan</button>
+                        </div>
+                    </form>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                allowOutsideClick: false,
+            })
+
+            $("#formKeahlian").submit(() => {
+                event.preventDefault();
+                const formData = new FormData($("#formKeahlian")[0]);
+                formData.append("editKeahlian", 1);
+                formData.append("lastFile", data.dokumen);
+                formData.append("id", id);
+                axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
+                    const data = res.data;
+                    if (data.status == "success") {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: "success",
+                        }).then(() => {
+                            document.location.reload(true)
+                        });
+                    } else {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: data.status,
+                        });
+                    }
+                })
+            });
+        })
+    }
+
+    const hapusKeahlian = (id) => {
+        let tempData;
+        axios.get(`<?= base_url("api/dataKeahlian") ?>?idKeahlian=${id}`).then(
+            res => {
+                tempData = res.data;
+                Swal.fire({
+                    title: 'Hapus Data Keahlian',
+                    text: "Apakah anda yakin ingin menghapus data ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, Hapus!"
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData();
+                        formData.append("hapusKeahlian", 1);
+                        formData.append("id", id);
+                        formData.append("lastFile", tempData.dokumen);
+                        axios.post("<?= base_url("api/editanggota") ?>", formData).then(
+                            res => {
+                                const data = res.data;
+                                if (data.status == "success") {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: "success",
+                                    }).then(() => {
+                                        document.location.reload(true)
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: data.status,
+                                    });
+                                }
+                            })
+                    }
+                })
+            })
+    }
+
+    $("#tambahPublikasi").click(() => {
+        Swal.fire({
+            title: 'Tambah Data Publikasi',
+            html: `
+                    <form id="formPublikasi" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
+                        <div class="mb-1">
+                            <label>Judul</label>
+                            <input class="form-control" name="judul" required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Tahun Terbit</label>
+                            <input type="number" class="form-control onlyYears" name="tahunTerbit" maxlength="4" required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Penerbit</label>
+                            <input class="form-control" name="penerbit" required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Jenis</label>
+                            <input class="form-control" name="jenis" required />
+                        </div>
+                        <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
+                            <button class="btn btn-primary px-5">Tambah</button>
+                        </div>
+                    </form>
+                `,
+            showConfirmButton: false,
+            showCloseButton: true,
+            allowOutsideClick: false,
+        })
+
+        $("#formPublikasi").submit(() => {
+            event.preventDefault();
+            const formData = new FormData($("#formPublikasi")[0]);
+            formData.append("tambahPublikasi", 1);
+            formData.append("id", "<?= $dataPribadi->id ?>");
+            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
+                const data = res.data;
+                if (data.status == "success") {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: "success",
+                    }).then(() => {
+                        document.location.reload(true)
+                    });
+                } else {
+                    Swal.fire({
+                        title: data.title,
+                        text: data.message,
+                        icon: data.status,
+                    });
+                }
+            })
+        });
+
+        $(".onlyYears").datepicker({
+            format: "yyyy",
+            viewMode: "years",
+            minViewMode: "years",
+            orientation: "bottom auto"
+        });
+    })
+
+    const editPublikasi = (id) => {
+        axios.get(`<?= base_url("api/datapublikasi?idPublikasi=") ?>${id}`).then(res => {
+            const data = res.data;
+            Swal.fire({
+                title: 'Edit Data Publikasi',
+                html: `
+                    <form id="formPublikasi" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
+                        <div class="mb-1">
+                            <label>Judul</label>
+                            <input class="form-control" name="judul" value='${data.judul}' required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Tahun Terbit</label>
+                            <input type="number" class="form-control onlyYears" name="tahunTerbit" maxlength="4" value='${data.tahunTerbit}' required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Penerbit</label>
+                            <input class="form-control" name="penerbit" value='${data.penerbit}' required />
+                        </div>
+                        <div class="mb-1">
+                            <label>Jenis</label>
+                            <input class="form-control" name="jenis" value='${data.jenis}' required />
+                        </div>
+                        <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
+                            <button class="btn btn-primary px-5">Tambah</button>
+                        </div>
+                    </form>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                allowOutsideClick: false,
+            })
+
+            $("#formPublikasi").submit(() => {
+                event.preventDefault();
+                const formData = new FormData($("#formPublikasi")[0]);
+                formData.append("editPublikasi", 1);
+                formData.append("lastFile", data.dokumen);
+                formData.append("id", id);
+                axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
+                    const data = res.data;
+                    if (data.status == "success") {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: "success",
+                        }).then(() => {
+                            document.location.reload(true)
+                        });
+                    } else {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: data.status,
+                        });
+                    }
+                })
+            });
+        })
+    }
+
+    const hapusPublikasi = (id) => {
+        Swal.fire({
+            title: 'Hapus Data Publikasi',
+            text: "Apakah anda yakin ingin menghapus data ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, Hapus!"
+        }).then(result => {
+            if (result.isConfirmed) {
+                const formData = new FormData();
+                formData.append("hapusPublikasi", 1);
+                formData.append("id", id);
+                axios.post("<?= base_url("api/editanggota") ?>", formData).then(
+                    res => {
+                        const data = res.data;
+                        if (data.status == "success") {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                            }).then(() => {
+                                document.location.reload(true)
+                            });
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: data.status,
+                            });
+                        }
+                    })
+            }
+        })
+    }
     </script>
     <?php endif; ?>
 

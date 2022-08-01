@@ -3,7 +3,16 @@
 
     class Anggota_Model extends CI_Model {
         public function getDataPribadi($idAnggota){
-            $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan, u.idRole, r.namaRole FROM anggota a, gradasi_anggota g, user u, `role` r WHERE a.jenisGradasi = g.id AND u.idRole = r.id AND u.idAnggota = a.id AND a.id = ?";
+            // $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan, u.idRole, r.namaRole, k.nama `namaKomunitas`, k.residensi `namaResidensi` FROM anggota a, gradasi_anggota g, user u, `role` r, komunitas k WHERE a.jenisGradasi = g.id AND u.idRole = r.id AND u.idAnggota = a.id AND k.id = a.komunitas AND a.id = ?";
+            $query = "  SELECT a.*, g.namaGradasi, g.statusKeanggotaan, u.idRole, r.namaRole,
+                        case when a.komunitas is not null then k.nama else null end as `namaKomunitas`,
+                        case when a.komunitas is not null then k.residensi else null end as `namaResidensi`,
+                        case when a.komunitas is not null then k.alamatResidensi else null end as `alamat`
+                        FROM anggota a, gradasi_anggota g, user u, `role` r, komunitas k
+                        WHERE a.jenisGradasi = g.id AND u.idRole = r.id AND u.idAnggota = a.id
+                        AND CASE WHEN a.komunitas IS NOT NULL THEN k.id = a.komunitas else a.komunitas is null end
+                        AND a.id = ? LIMIT 1
+                    ";
             return $this->db->query($query, array($idAnggota))->row();
         }
 
@@ -71,6 +80,46 @@
 
         public function getDataKaulAkhir($idAnggota){
             return $this->db->get_where("kaul_akhir", array('idAnggota' => $idAnggota))->row();
+        }
+
+        public function getDataKeahlian($idAnggota){
+            return $this->db->get_where("keahlian_anggota", array('idAnggota' => $idAnggota))->result();
+        }
+
+        public function getDataPublikasi($idAnggota){
+            return $this->db->get_where("publikasi_anggota", array('idAnggota' => $idAnggota))->result();
+        }
+
+        public function checkIsAnggotaExist($idAnggota){
+            if($this->db->get_where('anggota', array('id' => $idAnggota))->num_rows() > 0){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function getAllKomunitas($onlyKomunitas = false){
+            if($onlyKomunitas){
+                $this->db->group_by('nama');
+            }
+            
+            $this->db->order_by('nama', 'asc');
+            return $this->db->get('komunitas')->result();
+        }
+
+        public function getAllResidensi($namaKomunitas){
+            $this->db->where('nama', $namaKomunitas);
+            return $this->db->get('komunitas')->result();
+        }
+
+        public function getAllAnggotaByResidensi($idResidensi){
+            $this->db->where('komunitas', $idResidensi);
+            return $this->db->get('anggota')->result();
+        }
+
+        public function getAllDokumenBersama(){
+            $this->db->order_by('jenisDokumen asc', 'namaDokumen asc');
+            return $this->db->get('dokumen')->result();
         }
     }
 

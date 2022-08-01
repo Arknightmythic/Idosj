@@ -18,18 +18,24 @@
                 $this->session->set_userdata('redirect', $uri);
                 redirect('/auth');
             }
+        }
 
-            if(empty($this->input->get('id'))){
+        private function _checkIsIdValid($idAnggota){
+            if(empty($idAnggota)){
                 redirect('/');
+            } else {
+                if(!$this->anggota_model->checkIsAnggotaExist($idAnggota)){
+                    show_404();
+                } else if($this->session->role == "Personal" && $this->session->idAnggota !== $idAnggota){
+                    redirect('anggota/pribadi/' . $this->session->idAnggota);
+                }
             }
         }
 
-        public function index(){
-            redirect('anggota/pribadi?id=' . $this->input->get('id'));
-        }
-
         // Page Pribadi
-        public function pribadi() {
+        public function pribadi($idAnggota = NULL) {
+            $this->_checkIsIdValid($idAnggota);
+
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
@@ -48,18 +54,21 @@
                 $data["editStatus"] = false;
             }
 
-            $idAnggota = $this->input->get('id');
             $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
+            $data["activeNav"] = "pribadi";
             $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
             $data["dataPendidikan"] = $this->anggota_model->getDataPendidikan($idAnggota);
             $data["dataSakramen"] = $this->anggota_model->getDataSakramen($idAnggota);
             $data["dataBahasa"] = $this->anggota_model->getDataBahasa($idAnggota);
             $data["dataDokumen"] = $this->anggota_model->getDataDokumen($idAnggota);
+            $data["dataKomunitas"] = $this->anggota_model->getAllKomunitas();
             
             $this->load->view('page/PribadiPage.php', $data, FALSE);
         }
 
-        public function keluarga() {
+        public function keluarga($idAnggota = NULL) {
+            $this->_checkIsIdValid($idAnggota);
+
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
@@ -73,8 +82,8 @@
                 $data["editStatus"] = false;
             }
             
-            $idAnggota = $this->input->get('id');
             $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
+            $data["activeNav"] = "keluarga";
             $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
             $data["dataOrangTua"] = $this->anggota_model->getDataOrangTua($idAnggota);
             $data["dataSaudaraKandung"] = $this->anggota_model->getDataSaudaraKandung($idAnggota);
@@ -83,7 +92,9 @@
             $this->load->view('page/KeluargaPage.php', $data, FALSE);
         }
 
-        public function perutusan() {
+        public function perutusan($idAnggota = NULL) {
+            $this->_checkIsIdValid($idAnggota);
+
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
@@ -96,30 +107,34 @@
                 $data["editStatus"] = false;
             }
             
-            $idAnggota = $this->input->get('id');
             $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
+            $data["activeNav"] = "perutusan";
             $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
             $data["dataPerutusan"] = $this->anggota_model->getDataPerutusan($idAnggota);
 
             $this->load->view('page/PerutusanPage.php', $data, FALSE);
         }
 
-        public function perjalanan() {
+        public function perjalanan($idAnggota = NULL) {
+            $this->_checkIsIdValid($idAnggota);
+
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
             $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
             $data["title"] = "IDO SJ | Perjalanan";
             
-            $idAnggota = $this->input->get('id');
             $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
+            $data["activeNav"] = "perjalanan";
             $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
             $data["dataPerjalanan"] = $this->anggota_model->getDataPerjalanan($idAnggota);
 
             $this->load->view('page/PerjalananPage.php', $data, FALSE);
         }
 
-        public function formasi(){
+        public function formasi($idAnggota = NULL){
+            $this->_checkIsIdValid($idAnggota);
+            
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
@@ -132,14 +147,36 @@
                 $data["editStatus"] = false;
             }
             
-            $idAnggota = $this->input->get('id');
             $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
+            $data["activeNav"] = "formasi";
             $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
             $data["dataSerikat"] = $this->anggota_model->getDataSerikat($idAnggota);
             $data["dataInfo"] = $this->anggota_model->getDataInformationes($idAnggota);
             $data["dataKomentar"] = $this->anggota_model->getDataKomentar($idAnggota);
             $data["dataKaulAkhir"] = $this->anggota_model->getDataKaulAkhir($idAnggota);
+            $data["dataKeahlian"] = $this->anggota_model->getDataKeahlian($idAnggota);
+            $data["dataPublikasi"] = $this->anggota_model->getDataPublikasi($idAnggota);
             $this->load->view('page/FormasiPage.php', $data, FALSE);
+        }
+
+        public function catatan($idAnggota = NULL){
+            $this->_checkIsIdValid($idAnggota);
+        }
+
+        public function dokumen($idAnggota = NULL){
+            $this->_checkIsIdValid($idAnggota);
+
+            $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
+            $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
+            $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["title"] = "IDO SJ | Dokumen";
+
+            $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
+            $data["activeNav"] = "dokumen";
+            $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
+            $data["dataDokumen"] = $this->anggota_model->getAllDokumenBersama();
+            $this->load->view("page/DokumenPage.php", $data, FALSE);
         }
     }
 ?>

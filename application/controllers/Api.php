@@ -9,7 +9,7 @@
             $this->form_validation->set_error_delimiters('', '');
 
             if(!$this->auth_model->verifyCookies()){
-                if (!empty($_SERVER['QUERY_STRING'])) {
+                if(!empty($_SERVER['QUERY_STRING'])) {
                     $uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
                 } else {
                     $uri = uri_string();
@@ -103,7 +103,7 @@
                 $config['overwrite'] = true;
                 $this->load->library('upload', $config);
                 $data->fotoProfile = NULL;
-                if ($this->upload->do_upload('profilePicture')){
+                if($this->upload->do_upload('profilePicture')){
                     $data->fotoProfile = $this->upload->data('file_name');
                 }
                 $this->api_model->updateDataDiri($data);
@@ -176,7 +176,7 @@
                 $config['overwrite'] = true;
                 $this->load->library('upload', $config);
                 $data->fileSK = NULL;
-                if ($this->upload->do_upload('fileData')){
+                if($this->upload->do_upload('fileData')){
                     $data->fileSK = $this->upload->data('file_name');
                 }
 
@@ -190,7 +190,7 @@
                 $config['overwrite'] = true;
                 $this->load->library('upload', $config);
                 $data->fileSK = NULL;
-                if ($this->upload->do_upload('fileData')){
+                if($this->upload->do_upload('fileData')){
                     $data->fileSK = $this->upload->data('file_name');
                 }
                 
@@ -209,7 +209,7 @@
                 $config['overwrite'] = true;
                 $this->load->library('upload', $config);
                 $data->dokumen = NULL;
-                if ($this->upload->do_upload('fileData')){
+                if($this->upload->do_upload('fileData')){
                     $data->dokumen = $this->upload->data('file_name');
                 }
 
@@ -223,7 +223,7 @@
                 $config['overwrite'] = true;
                 $this->load->library('upload', $config);
                 $data->dokumen = NULL;
-                if ($this->upload->do_upload('fileData')){
+                if($this->upload->do_upload('fileData')){
                     $data->dokumen = $this->upload->data('file_name');
                 }
 
@@ -242,7 +242,7 @@
                 $config['overwrite'] = true;
                 $this->load->library('upload', $config);
                 $data->dokumen = NULL;
-                if ($this->upload->do_upload('fileData')){
+                if($this->upload->do_upload('fileData')){
                     $data->dokumen = $this->upload->data('file_name');
                 }
 
@@ -267,7 +267,7 @@
                     $config['file_name'] = "Dokumen_Surat_Pribadi_" . $data->id;
                     $this->load->library('upload', $config);
                     
-                    if ($this->upload->do_upload('fileSuratPribadi')){
+                    if($this->upload->do_upload('fileSuratPribadi')){
                         $data->suratPribadi = $this->upload->data('file_name');
                     }
                 }
@@ -276,7 +276,7 @@
                     $config['file_name'] = "Dokumen_Dekrit_Kaul_" . $data->id;
                     $this->load->library('upload', $config);
 
-                    if ($this->upload->do_upload('fileDekritKaul')){
+                    if($this->upload->do_upload('fileDekritKaul')){
                         $data->dekritKaul = $this->upload->data('file_name');
                     }
                 }
@@ -285,7 +285,7 @@
                     $config['file_name'] = "Dokumen_Teks_Kaul_" . $data->id;
                     $this->load->library('upload', $config);
 
-                    if ($this->upload->do_upload('fileTeksKaul')){
+                    if($this->upload->do_upload('fileTeksKaul')){
                         $data->teksKaul = $this->upload->data('file_name');
                     }
                 }
@@ -294,7 +294,7 @@
                     $config['file_name'] = "Dokumen_Teks_Pelepasan_Harta_Milik_" . $data->id;
                     $this->load->library('upload', $config);
 
-                    if ($this->upload->do_upload('fileTeksPelepasan')){
+                    if($this->upload->do_upload('fileTeksPelepasan')){
                         $data->teksPelepasan = $this->upload->data('file_name');
                     }
                 }
@@ -303,13 +303,62 @@
                     $config['file_name'] = "Dokumen_Tetamen_Notaris_" . $data->id;
                     $this->load->library('upload', $config);
 
-                    if ($this->upload->do_upload('fileTestamenNotaris')){
+                    if($this->upload->do_upload('fileTestamenNotaris')){
                         $data->testamenNotaris = $this->upload->data('file_name');
                     }
                 }
 
                 $this->api_model->updateKaul($data);
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data Kaul Akhir berhasil diubah.");
+            
+            } else if(!empty($this->input->post('tambahKeahlian'))){
+                $config['upload_path'] = FCPATH.'/uploads/sertifikat-keahlian/';
+                $config['allowed_types'] = 'pdf|png|jpg|jpeg';
+                $config['file_name'] = "Sertifikat_Keahlian_" . $data->id ."_". time() . rand(100, 999);
+                $data->dokumen = NULL;
+                $this->load->library('upload', $config);
+
+                if($this->upload->do_upload('fileData')){
+                    $data->dokumen = $this->upload->data('file_name');
+                }
+
+                $this->api_model->addKeahlian($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data keahlian berhasil ditambahkan.");
+            
+            } else if(!empty($this->input->post('editKeahlian'))){
+                $config['upload_path'] = FCPATH.'/uploads/sertifikat-keahlian/';
+                $config['allowed_types'] = 'pdf|png|jpg|jpeg';
+                $config['file_name'] = $data->lastFile;
+                $config['overwrite'] = true;
+
+                if(!empty($_FILES['fileData'])){
+                    $this->load->library('upload', $config);
+                    $data->dokumen = NULL;
+                    if($this->upload->do_upload('fileData')){
+                        $data->dokumen = $this->upload->data('file_name');
+                    }
+                }
+                
+                $this->api_model->updateKeahlian($data);    
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data keahlian berhasil diubah.");
+            
+            } else if(!empty($this->input->post('hapusKeahlian'))){
+                $this->api_model->deleteKeahlian($data->id);
+                unlink(FCPATH.'/uploads/sertifikat-keahlian/'.$data->lastFile);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data keahlian berhasil dihapus.");
+            
+            } else if(!empty($this->input->post('tambahPublikasi'))){
+                $this->api_model->addPublikasi($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data publikasi berhasil ditambahkan.");
+
+            } else if(!empty($this->input->post('editPublikasi'))){
+                $this->api_model->updatePublikasi($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data publikasi berhasil diubah.");
+
+            } else if(!empty($this->input->post('hapusPublikasi'))){
+                $this->api_model->deletePublikasi($data->id);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data publikasi berhasil dihapus.");
+
             }
             
             else {
@@ -415,6 +464,50 @@
             echo json_encode($result, JSON_PRETTY_PRINT);
         }
 
+        public function dataKeahlian(){
+            if(!empty($this->input->get("idKeahlian"))){
+                $result = $this->api_model->getDataKeahlianById($this->input->get("idKeahlian"));
+            } else if(!empty($this->input->get("idAnggota"))){
+                $result = $this->api_model->getAllKeahlianAnggota($this->input->get("idAnggota"));
+            } else {
+                $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
+            }
+            header('Content-Type: application/json');
+            echo json_encode($result, JSON_PRETTY_PRINT);
+        }
+
+        public function dataPublikasi(){
+            if(!empty($this->input->get("idPublikasi"))){
+                $result = $this->api_model->getDataPublikasiById($this->input->get("idPublikasi"));
+            } else if(!empty($this->input->get("idAnggota"))){
+                $result = $this->api_model->getAllPublikasiAnggota($this->input->get("idAnggota"));
+            } else {
+                $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
+            }
+            header('Content-Type: application/json');
+            echo json_encode($result, JSON_PRETTY_PRINT);
+        }
+
+        public function dataKomunitas(){
+            $data = (object) $_POST;
+            if(!empty($this->input->get("idKomunitas"))){
+                $result = $this->api_model->getDataKomunitasById($this->input->get("idKomunitas"));
+            } else if(!empty($this->input->post("addKomunitas"))){
+                $this->api_model->addKomunitas($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Komunitas baru berhasil dibuat.");
+            } else if(!empty($this->input->post("editKomunitas"))){
+                $this->api_model->updateKomunitas($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Komunitas berhasil diubah.");
+            } else if(!empty($this->input->post("hapusKomunitas"))){
+                $this->api_model->deleteKomunitas($data->id);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Komunitas berhasil dihapus.");
+            } else {
+                $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
+            }
+            header('Content-Type: application/json');
+            echo json_encode($result, JSON_PRETTY_PRINT);
+        }
+
         public function sendEmail(){
             $config = array(
                 'protocol' => 'smtp',
@@ -446,12 +539,46 @@
         }
 
         public function formKuning(){
+            $data = (object) $_POST;
+
             if(!empty($this->input->post("addFormKuning"))){
-                $data = (object) $_POST;
                 $this->api_model->addFormKuning($data);
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Permohonan berhasil dikirim.");
-            } else {
+            } else if(!empty($this->input->get("formId"))){
+                $result = $this->api_model->getFormKuningById($this->input->get("formId"));
+            } else if(!empty($this->input->post('formId'))){
+                $this->api_model->updateFormKuning($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Permohonan berhasil diperbaharui.");
+            }
+            else {
                 $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode($result, JSON_PRETTY_PRINT);
+        }
+
+        public function dataDokumenBersama(){
+            $data = (object) $_POST;
+
+            if(!empty($this->input->post('addDokumen'))){
+                $config['upload_path'] = FCPATH.'/uploads/dokumen/';
+                $config['allowed_types'] = 'pdf';
+                $config['file_name'] = "Dokumen_" . $data->namaDokumen ."_". time() . rand(100, 999);
+                $config['overwrite'] = true;
+                $data->fileDokumen = NULL;
+
+                if(!empty($_FILES['fileData'])){
+                    $this->load->library('upload', $config);
+                    if($this->upload->do_upload('fileData')){
+                        $data->fileDokumen = $this->upload->data('file_name');
+                    }
+                }
+
+                $this->api_model->addDokumenBersama($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Dokumen berhasil ditambahkan.");
+            } else {
+                $result = (object) $this->api_model->getAllDokumenBersama();
             }
 
             header('Content-Type: application/json');

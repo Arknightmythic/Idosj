@@ -35,9 +35,20 @@
         }
 
         public function print() {
-            $pdf = new \Mpdf\Mpdf();
-            $pdf->WriteHTML('<h1>Print Test PDF</h1>');
-            $pdf->Output();
+            if(!empty($this->input->post('formId'))){
+                $pdf = new \Mpdf\Mpdf();
+                $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
+                $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
+                $data["formData"] = $this->formkuning_model->getFormData($this->input->post('formId'));
+                $css = file_get_contents(base_url('assets/styles/eprints-form-kuning.css'));
+                $html = $this->load->view('print/PrintsFormKuning.php', $data, TRUE);
+                $pdf->WriteHTML($css, 1);
+                $pdf->WriteHTML($html);
+                $pdf->SetTitle('Form Kuning');
+                $pdf->Output('test.pdf', 'I');
+            } else {
+                show_404();
+            }
         }
     }
 ?>

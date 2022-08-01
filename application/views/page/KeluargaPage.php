@@ -181,16 +181,13 @@
             <?php endif; ?>
         </section>
         <section class="d-flex justify-content-end">
-            <form method="get" autocomplete="off">
-                <?php if($editStatus): ?>
-                <input name="id" value="<?= $dataPribadi->id ?>" hidden />
-                <button class="btn btn-success px-5 btn-lg">Selesai</button>
-                <?php else: ?>
-                <input name="id" value="<?= $dataPribadi->id ?>" hidden />
-                <input name="edit" value="1" hidden />
-                <button class="btn btn-primary px-5 btn-lg">Sunting</button>
-                <?php endif; ?>
-            </form>
+            <?php if($editStatus): ?>
+            <a href="<?= base_url("/anggota/keluarga/$dataPribadi->id") ?>"><button
+                    class="btn btn-success px-5 btn-lg">Selesai</button></a>
+            <?php else: ?>
+            <a href="<?= base_url("/anggota/keluarga/$dataPribadi->id?edit=true") ?>"><button
+                    class="btn btn-primary px-5 btn-lg">Sunting</button></a>
+            <?php endif; ?>
         </section>
     </div>
     <?= $footer ?>

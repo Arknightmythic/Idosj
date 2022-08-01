@@ -102,7 +102,6 @@
                 'tempatLahir' => $data->tempatLahir,
                 'tanggalLahir' => date('Y-m-d G:i:s', strtotime($data->tanggalLahir)),
                 'golonganDarah' => $data->golonganDarah,
-                'alamat' => $data->alamat,
                 'komunitas' => $data->komunitas,
                 'email' => $data->email,
                 'nomorTelepon' => $data->nomorTelepon
@@ -480,7 +479,6 @@
         public function updateKaul($data){
             $dataKaul = array(
                 'tanggalKaulAkhir' => $data->tanggalKaulAkhir,
-                'jenisGradasi' => $data->jenisGradasi,
                 'idAnggota' => $data->id,
             );
             if(!empty($data->suratPribadi)){
@@ -525,6 +523,151 @@
             
             $this->db->insert('form_kuning_anggota', $dataPermohonan);
         }
-    }   
+
+        public function getFormKuningById($id){
+            $query = "SELECT fka.*, a.namaDepan `ndAnggota`, a.namaBelakang `nbAnggota`, a.komunitas FROM form_kuning_anggota fka, anggota a WHERE fka.id = $id AND a.id = fka.idAnggota";
+            return $this->db->query($query)->row();
+        }
+
+        public function updateFormKuning($data){
+            $dataPermohonan = array();
+
+            if(!empty($data->statusProvinsial)){
+                $dataPermohonan['statusProvinsial'] = $data->statusProvinsial == "true" ? 1 : 0;
+                $dataPermohonan['tanggapanProvinsial'] = $data->statusProvinsial == "true" ? $data->tanggapan : NULL;
+            } else if(!empty($data->statusSuperior)){
+                $dataPermohonan['statusSuperior'] = $data->statusSuperior == "true" ? 1 : 0;
+                $dataPermohonan['tanggapanSuperior'] = $data->statusSuperior == "true" ? $data->tanggapan : NULL;
+            }
+
+            $this->db->where('id', $data->formId);
+            $this->db->update('form_kuning_anggota', $dataPermohonan);
+        }
+
+        public function addKeahlian($data){
+            $dataKeahlian = array(
+                "studiKhusus" => $data->studiKhusus,
+                "namaInstitusi" => $data->namaInstitusi,
+                "levelKeahlian" => $data->levelKeahlian,
+                "dokumen" => $data->dokumen,
+                "idAnggota" => $data->id,
+            );
+
+            $this->db->insert('keahlian_anggota', $dataKeahlian);
+        }
+
+        public function updateKeahlian($data){
+            $dataKeahlian = array(
+                "studiKhusus" => $data->studiKhusus,
+                "namaInstitusi" => $data->namaInstitusi,
+                "levelKeahlian" => $data->levelKeahlian,
+            );
+            
+            if(!empty($data->dokumen)){
+                $dataKeahlian['dokumen'] = $data->dokumen;
+            }
+
+            $this->db->where('id', $data->id);
+            $this->db->update('keahlian_anggota', $dataKeahlian);
+        }
+
+        public function deleteKeahlian($id){
+            $this->db->where('id', $id);
+            $this->db->delete('keahlian_anggota');
+        }
+
+        public function getDataKeahlianById($id){
+            $this->db->where('id', $id);
+            return $this->db->get('keahlian_anggota')->row();
+        }
+
+        public function getAllKeahlianAnggota(){
+            return $this->db->get('keahlian_anggota')->result();
+        }
+
+        public function addPublikasi($data){
+            $dataPublikasi = array(
+                "judul" => $data->judul,
+                "tahunTerbit" => $data->tahunTerbit,
+                "penerbit" => $data->penerbit,
+                "jenis" => $data->jenis,
+                "idAnggota" => $data->id,
+            );
+
+            $this->db->insert('publikasi_anggota', $dataPublikasi);
+        }
+
+        public function updatePublikasi($data){
+            $dataPublikasi = array(
+                "judul" => $data->judul,
+                "tahunTerbit" => $data->tahunTerbit,
+                "penerbit" => $data->penerbit,
+                "jenis" => $data->jenis,
+            );
+            
+
+            $this->db->where('id', $data->id);
+            $this->db->update('publikasi_anggota', $dataPublikasi);
+        }
+
+        public function deletePublikasi($id){
+            $this->db->where('id', $id);
+            $this->db->delete('publikasi_anggota');
+        }
+
+        public function getDataPublikasiById($id){
+            $this->db->where('id', $id);
+            return $this->db->get('publikasi_anggota')->row();
+        }
+
+        public function getAllPublikasiAnggota(){
+            return $this->db->get('publikasi_anggota')->result();
+        }
+
+        public function getDataKomunitasById($id){
+            $this->db->where('id', $id);
+            return $this->db->get('komunitas')->row();
+        }
+
+        public function addKomunitas($data){
+            $dataKomunitas = array(
+                "nama" => $data->nama,
+                "residensi" => $data->residensi,
+                "alamatResidensi" => $data->alamatResidensi,
+            );
+
+            $this->db->insert('komunitas', $dataKomunitas);
+        }
+
+        public function updateKomunitas($data){
+            $dataKomunitas = array(
+                "nama" => $data->nama,
+                "residensi" => $data->residensi,
+            );
+
+            $this->db->where('id', $data->id);
+            $this->db->update('komunitas', $dataKomunitas);
+        }
+
+        public function deleteKomunitas($id){
+            $this->db->where('id', $id);
+            $this->db->delete('komunitas');
+        }
+
+        public function getAllDokumenBersama(){
+            $this->db->order_by('jenisDokumen asc', 'namaDokumen asc');
+            return $this->db->get('dokumen')->result();
+        }
+
+        public function addDokumenBersama($data){
+            $dataDokumen = array(
+                "namaDokumen" => $data->namaDokumen,
+                "jenisDokumen" => $data->jenisDokumen,
+                "fileDokumen" => $data->fileDokumen,
+            );
+
+            $this->db->insert('dokumen', $dataDokumen);
+        }
+    }
 
 ?>

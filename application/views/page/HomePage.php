@@ -34,14 +34,15 @@
             </div>
         </div>
         <div class="row submenu mt-3">
-            <a href="<?= base_url('home/kuria') ?>" class="links col-12 col-md-3">Kuria</a>
-            <a href="<?= base_url('home/komunitas') ?>" class="links col-12 col-md-3">Komunitas</a>
-            <a href="<?= base_url('home/formasi') ?>" class="links col-12 col-md-3">Formasi</a>
-            <a href="<?= base_url('home/karya') ?>" class="links col-12 col-md-3">Karya</a>
-            <a href="<?= base_url('home/indexdata') ?>" class="links col-12 col-md-3">Index</a>
-            <a href="<?= base_url('home/statistik') ?>" class="links col-12 col-md-3">Statistik</a>
-            <a href="<?= base_url('home/admin') ?>" class="links col-12 col-md-3">User Admin</a>
-            <a href="<?= base_url('home/user') ?>" class="links col-12 col-md-3">User</a>
+            <a href="<?= base_url('home/kuria') ?>" class="links col-12 col-md-4">Kuria</a>
+            <a href="<?= base_url('home/komunitas') ?>" class="links col-12 col-md-4">Komunitas</a>
+            <a href="<?= base_url('home/formasi') ?>" class="links col-12 col-md-4">Formasi</a>
+            <a href="<?= base_url('home/karya') ?>" class="links col-12 col-md-4">Karya</a>
+            <a href="<?= base_url('home/indexdata') ?>" class="links col-12 col-md-4">Index</a>
+            <a href="<?= base_url('home/statistik') ?>" class="links col-12 col-md-4">Statistik</a>
+            <a href="<?= base_url('home/admin') ?>" class="links col-12 col-md-4">User Admin</a>
+            <a href="<?= base_url('home/user') ?>" class="links col-12 col-md-4">User</a>
+            <a href="<?= base_url('home/dokumen') ?>" class="links col-12 col-md-4">Dokumen</a>
         </div>
         <div class="my-5 d-flex flex-column align-items-center">
             <div class="my-3 col-6">
@@ -85,7 +86,6 @@
     <?= $footer ?>
 
     <script>
-    <?= "const baseURL = '" . base_url() . "';"; ?>
     $(document).ready(() => {
         $('#searchForm').submit(() => {
             event.preventDefault();
@@ -104,7 +104,7 @@
                                 <tr>
                                     <td>${index+1}</td>
                                     <td>${anggota.id}</td>
-                                    <td class="fw-bold"><a href="${baseURL}index.php/anggota?id=${anggota.id}">${anggota.namaBelakang}, ${anggota.namaDepan}</a></td>
+                                    <td class="fw-bold"><a href="<?= base_url("/anggota/pribadi/") ?>${anggota.id}">${anggota.namaBelakang}, ${anggota.namaDepan}</a></td>
                                     <td>${anggota.namaGradasi}</td>
                                     <td>${anggota.statusKeanggotaan}</td>
                                 </tr>
@@ -137,7 +137,7 @@
                                 <tr>
                                     <td>${index+1}</td>
                                     <td>${anggota.id}</td>
-                                    <td class="fw-bold"><a href="${baseURL}index.php/anggota?id=${anggota.id}">${anggota.namaBelakang}, ${anggota.namaDepan}</a></td>
+                                    <td class="fw-bold"><a href="<?= base_url("/anggota/pribadi/") ?>${anggota.id}">${anggota.namaBelakang}, ${anggota.namaDepan}</a></td>
                                     <td>${anggota.namaGradasi}</td>
                                     <td>${anggota.statusKeanggotaan}</td>
                                 </tr>

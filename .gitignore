@@ -34,3 +34,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 #Vscode cache files
 /.vscode
+
+#Bat files
+database_backup.bat

@@ -261,16 +261,13 @@
             </div>
         </section>
         <section class="d-flex justify-content-end">
-            <form method="get" autocomplete="off">
-                <?php if($editStatus): ?>
-                <input name="id" value="<?= $dataPribadi->id ?>" hidden />
-                <button class="btn btn-success px-5 btn-lg">Selesai</button>
-                <?php else: ?>
-                <input name="id" value="<?= $dataPribadi->id ?>" hidden />
-                <input name="edit" value="1" hidden />
-                <button class="btn btn-primary px-5 btn-lg">Sunting</button>
-                <?php endif; ?>
-            </form>
+            <?php if($editStatus): ?>
+            <a href="<?= base_url("/anggota/pribadi/$dataPribadi->id") ?>"><button
+                    class="btn btn-success px-5 btn-lg">Selesai</button></a>
+            <?php else: ?>
+            <a href="<?= base_url("/anggota/pribadi/$dataPribadi->id?edit=true") ?>"><button
+                    class="btn btn-primary px-5 btn-lg">Sunting</button></a>
+            <?php endif; ?>
         </section>
     </div>
     <?= $footer ?>
@@ -297,12 +294,13 @@
                             <input name="namaBelakang" class="form-control" required value="<?= !empty($dataPribadi->namaBelakang) ? $dataPribadi->namaBelakang : "" ?>" />
                         </div>
                         <div class="mb-1">
-                            <label class="form-label">Komunitas</label>
-                            <input name="komunitas" class="form-control" required value="<?= $dataPribadi->komunitas ?>" />
-                        </div>
-                        <div class="mb-1">
-                            <label class="form-label">Alamat</label>
-                            <input name="alamat" class="form-control" required value="<?= $dataPribadi->alamat ?>" />
+                            <label class="form-label">Komunitas - Residensi</label>
+                            <select name="komunitas" class="form-select" required>
+                                <option value="" hidden <?= $dataPribadi->komunitas == NULL && "selected"?> >Pilih Komunitas</option>
+                                <?php foreach($dataKomunitas as $komunitas): ?>
+                                <option value="<?= $komunitas->id ?>" <?= $dataPribadi->komunitas != NULL && $dataPribadi->komunitas == $komunitas->id ? "selected" : ""?> ><?= $komunitas->nama." - ".$komunitas->residensi ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="mb-1">
                             <label class="form-label">Email</label>
