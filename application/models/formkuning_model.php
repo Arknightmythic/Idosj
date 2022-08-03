@@ -8,8 +8,8 @@
         }
 
         public function getFormData($formId){
-            $query = "SELECT fka.*, a.namaDepan `ndAnggota`, a.namaBelakang `nbAnggota`, a.komunitas FROM form_kuning_anggota fka, anggota a WHERE fka.id = 6 AND a.id = fka.idAnggota";
-            return $this->db->query($query)->row();
+            $query = "SELECT fka.*, a.namaDepan `ndAnggota`, a.namaBelakang `nbAnggota`, k.nama `komunitas` FROM form_kuning_anggota fka, anggota a, komunitas k WHERE fka.id = ? AND a.id = fka.idAnggota and a.komunitas = k.id";
+            return $this->db->query($query, array($formId))->row();
         }
     }
 

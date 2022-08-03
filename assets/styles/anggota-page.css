@@ -35,6 +35,30 @@ section h3 {
 	padding: 0.3rem;
 }
 
+.subnav {
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.subnav .links {
+	text-decoration: none;
+	background-color: var(--ihs-red);
+	color: white;
+	text-align: center;
+	padding: 1rem 0;
+	transition: all 0.3s ease-in-out;
+	width: 100%;
+}
+
+.subnav .links.active {
+	background-color: var(--ihs-red-hover);
+}
+
+.subnav .links:hover {
+	background-color: var(--ihs-red-hover);
+	color: white;
+}
+
 /* // Large devices (desktops, 992px and up) */
 @media screen and (max-width: 992px) {
 	section {

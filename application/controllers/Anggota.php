@@ -161,6 +161,26 @@
 
         public function catatan($idAnggota = NULL){
             $this->_checkIsIdValid($idAnggota);
+
+            $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
+            $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
+            $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["title"] = "IDO SJ | Catatan";
+
+            if(!empty($this->input->get('edit'))){
+                $data["editStatus"] = true;
+            } else {
+                $data["editStatus"] = false;
+            }
+
+            $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
+            $data["activeNav"] = "catatan";
+            $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
+            $data["dataDimissi"] = $this->anggota_model->getDataDimissi($idAnggota);
+            $data["dataLaisasi"] = $this->anggota_model->getDataLaisasi($idAnggota);
+            $data["dataKematian"] = $this->anggota_model->getDataKematian($idAnggota);
+            $this->load->view("page/CatatanPage.php", $data, FALSE);
         }
 
         public function dokumen($idAnggota = NULL){
@@ -171,6 +191,7 @@
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
             $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
             $data["title"] = "IDO SJ | Dokumen";
+            
 
             $data["dataPribadi"] = $this->anggota_model->getDataPribadi($idAnggota);
             $data["activeNav"] = "dokumen";

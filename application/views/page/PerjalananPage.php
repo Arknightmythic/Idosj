@@ -53,15 +53,14 @@
                             <td>
                                 <?php
                                     if($status == 0){
-                                        echo "<div class='hi-block'>Menunggu persetujuan Superior</div>";
+                                        echo $data->statusSuperior == NULL ? "<div class='hi-block'>Menunggu persetujuan Superior</div>" : "<div class='hi-block'>Permohonan ditolak oleh Superior</div>";
                                     } else if($status == 1){
-                                        echo $data->statusProvinsial == NULL ? "<div class='hi-block'>Menunggu persetujuan Pater Provinsial</div>" : ($data->statusProvinsial == 0 ? "<div class='hi-block'>Permohonan ditolak oleh Pater Provinsial</div>" : "test");
+                                        echo $data->statusProvinsial == NULL ? "<div class='hi-block'>Menunggu persetujuan Pater Provinsial</div>" : "<div class='hi-block'>Permohonan ditolak oleh Pater Provinsial</div>";
                                     } else if($status == 2){
                                         echo "
-                                            <form action='".base_url("formkuning/print")."' method='POST' target='_blank'>
-                                                <input type='hidden' name='formId' value='$data->id' />
-                                                <button class='btn btn-primary'><i class='fa fa fa-file-lines'></i></button>
-                                            </form>";
+                                        <a href='".base_url("formkuning/print/")."$data->id' class='btn btn-primary' target='_blank'>
+                                            <i class='fa fa fa-file-lines'></i>
+                                        </a>";
                                 }
                                 ?>
                             </td>
@@ -69,7 +68,7 @@
                             <td>
                                 <?php
                                     $currRole = $this->session->role;
-                                    if(($this->session->role == "Administrator" && $status == 1) || ($this->session->role == "Superior" && $status == 0)){
+                                    if(($this->session->role == "Administrator" && $status == 1 && $data->statusProvinsial == NULL) || ($this->session->role == "Superior" && $status == 0 && $data->statusSuperior == NULL)){
                                         echo "<button class='btn btn-secondary' onClick='approval($data->id)'><i class='fa fa-external-link'></i></button>";
                                     } else {
                                         echo "<button class='btn btn-secondary' disabled><i class='fa fa-external-link'></i></button>";
@@ -115,10 +114,10 @@
                                 <td>Detail</td>
                                 <td>:</td>
                                 <td>
-                                    <form action="<?= base_url("formkuning/print") ?>" method="POST" target="_blank">
-                                        <input type="hidden" name="formId" value=${formId} />
-                                        <button class="btn btn-warning"><i class="fa fa fa-file-lines me-1"></i>Lihat Form Kuning</button>
-                                    </form>
+                                        <a class="btn btn-warning" href="<?= base_url("formkuning/print/") ?>${formId}" target="_blank">
+                                            <i class="fa fa fa-file-lines me-1"></i>
+                                            Lihat Form Kuning
+                                        </a>
                                 </td>
                             </tr>
                         </table>
@@ -152,6 +151,15 @@
                         },
                     }).then(res => {
                         if (res.isConfirmed) {
+                            Swal.fire({
+                                title: "Loading...",
+                                text: "Melakukan perubahan data pada server",
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
                             const formData = new FormData();
                             formData.append("formId", formId);
                             formData.append("tanggapan", res.value);
@@ -162,10 +170,15 @@
                             <?php endif; ?>
                             axios.post("<?= base_url("api/formkuning") ?>", formData).then(
                                 res => {
-                                    window.location.reload();
+                                    Swal.close();
+                                    Swal.fire({
+                                        title: res.data?.title,
+                                        text: res.data?.message,
+                                        icon: res.data?.status,
+                                    }).then(() => window.location.reload());
                                 }).catch(err => {
                                 console.log(err);
-                            });
+                            })
                         }
                     })
                 } else if (result.isDenied) {
@@ -178,6 +191,15 @@
                         confirmButtonColor: '#d33',
                     }).then(res => {
                         if (res.isConfirmed) {
+                            Swal.fire({
+                                title: "Loading...",
+                                text: "Melakukan perubahan data pada server",
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
                             const formData = new FormData();
                             formData.append("formId", formId);
                             <?php if($this->session->role == "Administrator"): ?>
@@ -187,7 +209,12 @@
                             <?php endif; ?>
                             axios.post("<?= base_url("api/formkuning") ?>", formData).then(
                                 res => {
-                                    // window.location.reload();
+                                    Swal.close();
+                                    Swal.fire({
+                                        title: res.data?.title,
+                                        text: res.data?.message,
+                                        icon: res.data?.status,
+                                    }).then(() => window.location.reload());
                                 }).catch(err => {
                                 console.log(err);
                             });
@@ -196,31 +223,6 @@
                 }
             })
         }).catch(err => console.log(err));
-
-        // $("#formPendidikan").submit(() => {
-        //     event.preventDefault();
-        //     const formData = new FormData($("#formPendidikan")[0]);
-        //     formData.append("tambahPendidikan", 1);
-        //     formData.append("id", "<?= $dataPribadi->id ?>");
-        //     axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
-        //         const data = res.data;
-        //         if (data.status == "success") {
-        //             Swal.fire({
-        //                 title: data.title,
-        //                 text: data.message,
-        //                 icon: "success",
-        //             }).then(() => {
-        //                 document.location.reload(true)
-        //             });
-        //         } else {
-        //             Swal.fire({
-        //                 title: data.title,
-        //                 text: data.message,
-        //                 icon: data.status,
-        //             });
-        //         }
-        //     })
-        // });
     }
     </script>
 

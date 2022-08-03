@@ -41,9 +41,8 @@
     <?= $footer ?>
 
     <script>
-    <?= "const activeUser = '" . $this->input->cookie('userId') . "';" ; ?>
     let jenisGradasi = [];
-    axios.get('http://localhost/idosj/index.php/api/listgradasi').then(res => {
+    axios.get("<?= base_url("api/listgradasi"); ?>").then(res => {
         jenisGradasi = res.data;
     });
 

@@ -121,6 +121,21 @@
             $this->db->order_by('jenisDokumen asc', 'namaDokumen asc');
             return $this->db->get('dokumen')->result();
         }
+
+        public function getDataDimissi($idAnggota){
+            $this->db->where('idAnggota', $idAnggota);
+            return $this->db->get('dimissi_anggota')->row();
+        }
+
+        public function getDataLaisasi($idAnggota){
+            $this->db->where('idAnggota', $idAnggota);
+            return $this->db->get('laisasi_anggota')->row();
+        }
+
+        public function getDataKematian($idAnggota){
+            $this->db->where('idAnggota', $idAnggota);
+            return $this->db->get('kematian_anggota')->row();
+        }
     }
 
 ?>

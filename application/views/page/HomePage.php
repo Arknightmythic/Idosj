@@ -38,17 +38,20 @@
             <a href="<?= base_url('home/komunitas') ?>" class="links col-12 col-md-4">Komunitas</a>
             <a href="<?= base_url('home/formasi') ?>" class="links col-12 col-md-4">Formasi</a>
             <a href="<?= base_url('home/karya') ?>" class="links col-12 col-md-4">Karya</a>
-            <a href="<?= base_url('home/indexdata') ?>" class="links col-12 col-md-4">Index</a>
+            <a href="<?= base_url('home/index-data') ?>" class="links col-12 col-md-4">Index</a>
             <a href="<?= base_url('home/statistik') ?>" class="links col-12 col-md-4">Statistik</a>
+            <?php if($this->session->role == "Administrator" || $this->session->role == "Sekretariat"): ?>
             <a href="<?= base_url('home/admin') ?>" class="links col-12 col-md-4">User Admin</a>
             <a href="<?= base_url('home/user') ?>" class="links col-12 col-md-4">User</a>
             <a href="<?= base_url('home/dokumen') ?>" class="links col-12 col-md-4">Dokumen</a>
+            <?php endif ?>
         </div>
         <div class="my-5 d-flex flex-column align-items-center">
             <div class="my-3 col-6">
                 <form class="input-group rounded" id="searchForm" autocomplete="off">
-                    <input id="searchInput" type="search" class="form-control rounded" placeholder="Search"
-                        aria-label="Search" aria-describedby="search-addon" />
+                    <input id="searchInput" type="search" class="form-control rounded"
+                        placeholder="Cari berdasarkan nama atau ID" aria-label="Search"
+                        aria-describedby="search-addon" />
                     <button class="input-group-text border-0 bg-transparent" id="search-addon">
                         <i class="bi-search"></i>
                     </button>

@@ -78,3 +78,7 @@ footer {
 	color: white;
 	box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
 }
+
+footer.orange {
+	background-color: var(--ihs-orange) !important;
+}

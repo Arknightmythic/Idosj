@@ -40,7 +40,7 @@
                         </td>
                         <td><?= $dokumen->jenisDokumen ?></td>
                         <td>
-                            <button class="btn btn-primary" onclick="deleteDokumen(<?= $dokumen->id ?>)">
+                            <button class="btn btn-primary" onclick="editDokumen(<?= $dokumen->id ?>)">
                                 <i class="fa fa-pencil"></i>
                             </button>
                             <button class="btn btn-danger" onclick="deleteDokumen(<?= $dokumen->id ?>)">
@@ -75,7 +75,7 @@
                         </div>
                         <div class="mb-1 form-group">
                             <label class="form-label">File Dokumen</label>
-                            <input type="file" class="form-control" name="fileData" required />
+                            <input type="file" class="form-control" name="fileData" accept="application/pdf" required />
                         </div>
                         <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
                             <button class="btn btn-primary">Tambah</button>
@@ -99,6 +99,99 @@
             });
         })
     });
+
+    const editDokumen = (id) => {
+        axios.get(`<?= base_url("api/dataDokumenBersama?idDokumen=") ?>${id}`).then((res) => {
+            const data = res.data;
+            Swal.fire({
+                title: 'Tambah Dokumen',
+                html: `
+                    <form id="formEditDokumen" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
+                        <div class="mb-1 form-group">
+                            <label class="form-label">Nama Dokumen</label>
+                            <input type="text" class="form-control" name="namaDokumen" value='${data.namaDokumen}' required/>
+                        </div>
+                        <div class="mb-1 form-group">
+                            <label class="form-label">Jenis Dokumen</label>
+                            <select class="form-select" name="jenisDokumen" required>
+                                <option value="" hidden>Pilih jenis dokumen</option>
+                                <option value="Provinsial" ${data.jenisDokumen == "Provinsial" && "selected"}>Provinsial</option>
+                                <option value="Universal" ${data.jenisDokumen == "Universal" && "selected"}>Universal</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 form-group">
+                            <label class="form-label">File Dokumen</label>
+                            <input type="file" class="form-control" name="fileData" accept="application/pdf" />
+                            <small class="form-text text-muted">${data.fileDokumen}</small>
+                        </div>
+                        <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
+                            <button class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+            })
+
+            $("#formEditDokumen").submit(() => {
+                event.preventDefault();
+                const formData = new FormData($("#formEditDokumen")[0]);
+                formData.append("editDokumen", true);
+                formData.append("lastFile", data.fileDokumen);
+                formData.append("id", id);
+                axios.post("<?= base_url("api/dataDokumenBersama") ?>", formData).then((res) => {
+                    Swal.fire({
+                        title: res.data?.title,
+                        text: res.data?.message,
+                        icon: res.data?.status,
+                    }).then(() => window.location.reload());
+                });
+            })
+        })
+    }
+
+    const deleteDokumen = (id) => {
+        let tempData;
+        axios.get(`<?= base_url("api/dataDokumenBersama?idDokumen=") ?>${id}`).then(
+            res => {
+                tempData = res.data;
+                Swal.fire({
+                    title: 'Hapus Dokumen',
+                    text: "Apakah anda yakin ingin menghapus dokumen ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, Hapus!"
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData();
+                        formData.append("hapusDokumen", 1);
+                        formData.append("id", id);
+                        formData.append("lastFile", tempData.fileDokumen);
+                        axios.post("<?= base_url("api/dataDokumenBersama") ?>", formData).then(
+                            res => {
+                                const data = res.data;
+                                if (data.status == "success") {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: "success",
+                                    }).then(() => {
+                                        document.location.reload(true)
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: data.status,
+                                    });
+                                }
+                            })
+                    }
+                })
+            })
+    }
     </script>
 </body>
 

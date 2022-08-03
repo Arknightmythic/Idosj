@@ -39,12 +39,15 @@
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                         required>
                 </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                    <label class="form-check-label" for="remember">Remember me</label>
+                <div class="d-flex justify-content-between">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                        <label class="form-check-label" for="remember">Remember me</label>
+                    </div>
+                    <a href="<?= base_url("/auth/forgot-password") ?>" class="text-primary">Forgot password?</a>
                 </div>
                 <div class="form-group d-flex flex-row-reverse">
-                    <button type="submit" class="btn btn-primary mt-3">Login</button>
+                    <button type="submit" class="btn btn-primary mt-4 px-4 py-2">Login</button>
                 </div>
             </form>
         </div>

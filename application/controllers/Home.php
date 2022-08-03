@@ -24,11 +24,17 @@
             }
         }
 
+        private function _checkIsAdmin(){
+            if($this->session->role != "Administrator" && $this->session->role != "Sekretariat"){
+                redirect("/");
+            }
+        }
+
         public function index() {
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
-            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", array("isHome" => TRUE), TRUE);
             $data["title"] = "IDO SJ | Home";
             $data['daftarAnggota'] = $this->api_model->getAllAnggota();
             $data['jumlahAnggota'] = $this->api_model->getJumlahAnggota();
@@ -40,7 +46,7 @@
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
-            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", array("isHome" => TRUE), TRUE);
             $data["title"] = "IDO SJ | Kuria";
             $data['daftarAnggota'] = $this->api_model->getAllAnggota();
             
@@ -48,10 +54,12 @@
         }
 
         public function admin(){
+            $this->_checkIsAdmin();
+
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
-            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", array("isHome" => TRUE), TRUE);
             $data["title"] = "IDO SJ | List Admin";
             $data['daftarAnggota'] = $this->api_model->getAllAnggota();
             
@@ -59,10 +67,12 @@
         }
 
         public function user(){
+            $this->_checkIsAdmin();
+
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
-            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", array("isHome" => TRUE), TRUE);
             $data["title"] = "IDO SJ | List User";
             $data['daftarAnggota'] = $this->api_model->getAllAnggota();
 
@@ -73,7 +83,7 @@
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
-            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", array("isHome" => TRUE), TRUE);
 
             if(empty($param)){
                 $data["title"] = "IDO SJ | List Komunitas";
@@ -92,14 +102,31 @@
         }
 
         public function dokumen(){
+            $this->_checkIsAdmin();
+            
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
-            $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", array("isHome" => TRUE), TRUE);
 
             $data["title"] = "IDO SJ | List Dokumen";
             $data["dataDokumen"] = $this->anggota_model->getAllDokumenBersama();
             $this->load->view('page/AddDokumenPage.php', $data, FALSE);
+        }
+
+        public function index_data($fileDir = NULL, $filepath = NULL) {
+            $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
+            $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
+            $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", array("isHome" => TRUE), TRUE);
+            $data["title"] = "IDO SJ | Index";
+            
+            if(!empty($fileDir) && !empty($filepath)){
+                $data["activeNav"] = str_replace("-", "", $filepath);
+                $this->load->view("page/static/$fileDir/".str_replace('-', '', $filepath).".php", $data, FALSE);
+            } else {
+                $this->load->view("page/IndexPage.php", $data, FALSE);
+            }
         }
     }
 ?>

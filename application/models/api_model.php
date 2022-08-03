@@ -15,12 +15,12 @@
             return $this->db->query($query)->result();
         }
 
-        public function getAnggotaBySearch($name, $idSupDeg = NULL){
+        public function getAnggotaBySearch($searchQuery, $idSupDeg = NULL){
             $query = "SELECT a.*, g.namaGradasi, g.statusKeanggotaan FROM anggota a, gradasi_anggota g WHERE a.jenisGradasi = g.id";
             if($idSupDeg != NULL){
                 $query .= " AND (a.idSuperior = '$idSupDeg' OR a.idDelegat = '$idSupDeg' OR a.id = '$idSupDeg')";
             }
-            $query .= " AND (namaDepan LIKE '%$name%' OR namaBelakang LIKE '%$name%')";
+            $query .= " AND (namaDepan LIKE '%$searchQuery%' OR namaBelakang LIKE '%$searchQuery%' OR a.id LIKE '%$searchQuery%')";
             return $this->db->query($query)->result();
         }
 
@@ -659,6 +659,11 @@
             return $this->db->get('dokumen')->result();
         }
 
+        public function getDokumenBersamaById($id){
+            $this->db->where('id', $id);
+            return $this->db->get('dokumen')->row();
+        }
+
         public function addDokumenBersama($data){
             $dataDokumen = array(
                 "namaDokumen" => $data->namaDokumen,
@@ -667,6 +672,79 @@
             );
 
             $this->db->insert('dokumen', $dataDokumen);
+        }
+
+        public function updateDokumenBersama($data){
+            $dataDokumen = array(
+                "namaDokumen" => $data->namaDokumen,
+                "jenisDokumen" => $data->jenisDokumen,
+            );
+
+            if(!empty($data->fileDokumen)){
+                $dataDokumen['fileDokumen'] = $data->fileDokumen;
+            }
+
+            $this->db->where('id', $data->id);
+            $this->db->update('dokumen', $dataDokumen);
+        }
+
+        public function deleteDokumenBersama($id){
+            $this->db->delete('dokumen', array('id' => $id));
+        }
+        
+        public function updateDimissi($data){
+            $dataDimissi = array(
+                "idAnggota" => $data->idAnggota,
+            );
+            $dataDimissi["$data->jenisDokumen"] = $data->dokumen;
+
+            $isExist = $this->db->get_where("dimissi_anggota", array('idAnggota' => $data->idAnggota))->num_rows();
+            if($isExist > 0){
+                $this->db->where('idAnggota', $data->idAnggota);
+                $this->db->update('dimissi_anggota', $dataDimissi);
+            } else {
+                $this->db->insert("dimissi_anggota", $dataDimissi);
+            }
+        }
+
+        public function updateLaisasi($data){
+            $dataLaisasi = array(
+                "idAnggota" => $data->idAnggota,
+            );
+            $dataLaisasi["$data->jenisDokumen"] = $data->dokumen;
+
+            $isExist = $this->db->get_where("laisasi_anggota", array('idAnggota' => $data->idAnggota))->num_rows();
+            if($isExist > 0){
+                $this->db->where('idAnggota', $data->idAnggota);
+                $this->db->update('laisasi_anggota', $dataLaisasi);
+            } else {
+                $this->db->insert("laisasi_anggota", $dataLaisasi);
+            }
+        }
+
+        public function updateKematian($data){
+            $dataKematian = array(
+                "tanggal" => $data->tanggal,
+                "tempat" => $data->tempat,
+                "waktu" => $data->waktu,
+                "makam" => $data->makam,
+                "aktaKematian" => $data->aktaKematian,
+                "keteranganKematian" => $data->keteranganKematian,
+                "idAnggota" => $data->idAnggota,
+            );
+
+            $isExist = $this->db->get_where("kematian_anggota", array('idAnggota' => $data->idAnggota))->num_rows();
+            if($isExist > 0){
+                $this->db->where('idAnggota', $data->idAnggota);
+                $this->db->update('kematian_anggota', $dataKematian);
+            } else {
+                $this->db->insert("kematian_anggota", $dataKematian);
+            }
+        }
+
+        public function getEmailByIdAnggota($idAnggota){
+            $this->db->where('id', $idAnggota);
+            return $this->db->get('anggota')->row()->email;
         }
     }
 

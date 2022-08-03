@@ -27,7 +27,7 @@
             </p>
             <?php endif; ?>
             <p class="m-0">
-                <?= !empty($dataPribadi->nomorTelepon) ? "<a class='fw-bold' href='https://wa.me/62".substr($dataPribadi->nomorTelepon,1)."' target='_blank'>$dataPribadi->nomorTelepon ( Telp ) / ( Whatsapp )</a>" : "" ?>
+                <?= !empty($dataPribadi->nomorTelepon) ? "<a class='fw-bold' href='https://wa.me/62".substr($dataPribadi->nomorTelepon,1)."' target='_blank'>$dataPribadi->nomorTelepon ( Telp )/( Whatsapp )</a>" : "" ?>
             </p>
         </div>
     </div>

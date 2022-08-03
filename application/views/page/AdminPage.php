@@ -42,16 +42,15 @@
     <?= $footer ?>
 
     <script>
-    <?= "const activeUser = '" . $this->input->cookie('userId') . "';" ; ?>
     let roles = [];
-    axios.get('http://localhost/idosj/index.php/api/listrole').then(res => {
+    axios.get("<?= base_url("api/listrole") ?>").then(res => {
         roles = res.data.filter(role => role.namaRole != "Personal");
     });
 
     const displayList = (searchQuery = '') => {
         axios.get("<?= base_url("api/listuser") ?>").then(res => {
             let data = [...res.data.Administrator, ...res.data.Delegat, ...res
-                .data.Superior
+                .data.Superior, ...res.data.Sekretariat
             ];
             console.log(data);
             if (searchQuery != '') {
@@ -68,7 +67,7 @@
                                     <td>${user.username}</td>
                                     <td>${user.namaRole}</td>
                                     <td>
-                                        ${activeUser === user.username ? `` : `
+                                        ${user.username === "<?= $this->input->cookie('userId') ?>" ? `` : `
                                             <button class="btn btn-danger btn-sm" onclick="handleDeleteUser(${user.id})">Hapus</button>
                                             `}
                                     </td>

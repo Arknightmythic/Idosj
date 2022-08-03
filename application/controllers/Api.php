@@ -23,6 +23,32 @@
             show_404();
         }
 
+        private function _sendEmail($subject, $message, $to) {
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.gmail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'idosj@jesuits.id',
+                'smtp_pass' => 'Argopuro_24',
+                'mailtype' => 'html',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE,
+                'newline' => "\r\n"
+            );
+            
+            $this->email->initialize($config);
+            $this->email->from($config['smtp_user']);
+            $this->email->subject($subject);
+            $this->email->message($message);
+            $this->email->to($to);
+
+            if($this->email->send()){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
         public function anggota(){
             if(!empty($this->input->get('letter'))){
                 $letter = $this->input->get('letter');
@@ -107,7 +133,7 @@
                     $data->fotoProfile = $this->upload->data('file_name');
                 }
                 $this->api_model->updateDataDiri($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data anggota berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data anggota berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('tambahPendidikan'))){
                 $this->api_model->addPendidikanAnggota($data);
@@ -115,7 +141,7 @@
             
             } else if(!empty($this->input->post('editPendidikan'))){
                 $this->api_model->updatePendidikanAnggota($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Pendidikan anggota berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Pendidikan anggota berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('hapusPendidikan'))){
                 $this->api_model->deletePendidikanAnggota($data->id);
@@ -127,7 +153,7 @@
             
             } else if(!empty($this->input->post('editSakramen'))){
                 $this->api_model->updateSakramenAnggota($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Sakramen anggota berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Sakramen anggota berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('hapusSakramen'))){
                 $this->api_model->deleteSakramenAnggota($data->id);
@@ -139,7 +165,7 @@
             
             } else if(!empty($this->input->post('editBahasa'))){
                 $this->api_model->updateBahasaAnggota($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Bahasa anggota berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Bahasa anggota berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('hapusBahasa'))){
                 $this->api_model->deleteBahasaAnggota($data->id);
@@ -151,7 +177,7 @@
             
             } else if(!empty($this->input->post('editDokumen'))){
                 $this->api_model->updateDokumenAnggota($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Dokumen anggota berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Dokumen anggota berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('hapusDokumen'))){
                 $this->api_model->deleteDokumenAnggota($data->id);
@@ -163,7 +189,7 @@
             
             } else if(!empty($this->input->post('editRelasi'))){
                 $this->api_model->updateRelasiAnggota($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Relasi anggota berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Relasi anggota berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('hapusRelasi'))){
                 $this->api_model->deleteRelasiAnggota($data->id);
@@ -195,7 +221,7 @@
                 }
                 
                 $this->api_model->updatePerutusanAnggota($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Perutusan anggota berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Perutusan anggota berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('hapusPerutusan'))){
                 unlink(FCPATH.'/uploads/sk-perutusan/'.$data->lastFile);
@@ -228,7 +254,7 @@
                 }
 
                 $this->api_model->updateSerikat($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Serikat anggota berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Serikat anggota berhasil diperbaharui.");
                 
             } else if(!empty($this->input->post('hapusSerikat'))){
                 unlink(FCPATH.'/uploads/dokumen-serikat/'.$data->lastFile);
@@ -309,7 +335,7 @@
                 }
 
                 $this->api_model->updateKaul($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data Kaul Akhir berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data Kaul Akhir berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('tambahKeahlian'))){
                 $config['upload_path'] = FCPATH.'/uploads/sertifikat-keahlian/';
@@ -340,7 +366,7 @@
                 }
                 
                 $this->api_model->updateKeahlian($data);    
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data keahlian berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data keahlian berhasil diperbaharui.");
             
             } else if(!empty($this->input->post('hapusKeahlian'))){
                 $this->api_model->deleteKeahlian($data->id);
@@ -353,7 +379,7 @@
 
             } else if(!empty($this->input->post('editPublikasi'))){
                 $this->api_model->updatePublikasi($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data publikasi berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Data publikasi berhasil diperbaharui.");
 
             } else if(!empty($this->input->post('hapusPublikasi'))){
                 $this->api_model->deletePublikasi($data->id);
@@ -497,7 +523,7 @@
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Komunitas baru berhasil dibuat.");
             } else if(!empty($this->input->post("editKomunitas"))){
                 $this->api_model->updateKomunitas($data);
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Komunitas berhasil diubah.");
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Komunitas berhasil diperbaharui.");
             } else if(!empty($this->input->post("hapusKomunitas"))){
                 $this->api_model->deleteKomunitas($data->id);
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Komunitas berhasil dihapus.");
@@ -508,45 +534,74 @@
             echo json_encode($result, JSON_PRETTY_PRINT);
         }
 
-        public function sendEmail(){
-            $config = array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'ssl://smtp.gmail.com',
-                'smtp_port' => 465,
-                'smtp_user' => 'idosj@jesuits.id',
-                'smtp_pass' => 'Argopuro_24',
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE,
-                'newline' => "\r\n"
-            );
-            
-            $this->email->initialize($config);
-            $this->email->from($config['smtp_user']);
-            $this->email->to('adrianfinantyo@gmail.com');
-            $this->email->subject('Dear User');
-            $message = "Halo test test test";
-            $this->email->message($message);
-
-            if($this->email->send()){
-                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Email berhasil dikirim.");
-            }else{
-                $result = (object) array("status" => "error", "title" => "Gagal!", "message" => "Email gagal dikirim.");
-            }
-
-            header('Content-Type: application/json');
-            echo json_encode($result, JSON_PRETTY_PRINT);
-        }
-
         public function formKuning(){
             $data = (object) $_POST;
 
             if(!empty($this->input->post("addFormKuning"))){
                 $this->api_model->addFormKuning($data);
+                $this->_sendEmail(
+                        "Persetujuan Form Kuning $data->idAnggota - Superior Komunitas",
+                        "<p>
+                            Anggota komunitas Anda baru saja melakukan pengajuan form kuning dan menunggu persetujuan Anda.
+                            <br><br>
+                            Silahkan klik link dibawah ini untuk melihat detail form kuning tersebut.
+                            <br>
+                            <a href='".base_url("/anggota/perjalanan/$data->idAnggota")."' target='_blank'>".base_url("/anggota/perjalanan/$data->idAnggota")."</a>
+                        </p>", 
+                        $this->api_model->getEmailByIdAnggota($data->idSuperior));
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Permohonan berhasil dikirim.");
             } else if(!empty($this->input->get("formId"))){
                 $result = $this->api_model->getFormKuningById($this->input->get("formId"));
             } else if(!empty($this->input->post('formId'))){
+                $form = $this->api_model->getFormKuningById($this->input->post("formId"));
+                if(!empty($data->statusSuperior) && $data->statusSuperior == "true" && !empty($data->tanggapan)){
+                    $this->_sendEmail(
+                            "Persetujuan Form Kuning $form->idAnggota - Provinsial",
+                            "<p>
+                            Anda baru saja menerima pengajuan form kuning dan menunggu disetujui.
+                            <br><br>
+                            Silahkan klik link dibawah ini untuk melihat detail form kuning tersebut.
+                            <br>
+                            <a href='".base_url("/anggota/perjalanan/$form->idAnggota")."' target='_blank'>".base_url("/anggota/perjalanan/$form->idAnggota")."</a>
+                            </p>", 
+                            "provincial@jesuits.id"
+                        );
+                } else if(!empty($data->statusSuperior) && $data->statusSuperior == "false"){
+                    $this->_sendEmail(
+                            "Pengajuan Form Kuning - Ditolak",
+                            "<p>Pengajuan form kuning Anda ditolak oleh superior komunitas</p>",
+                            $this->api_model->getEmailByIdAnggota($form->idAnggota));
+                } else if(!empty($data->statusProvinsial) && $data->statusProvinsial == "false"){
+                    $this->_sendEmail(
+                            "Pengajuan Form Kuning - Ditolak",
+                            "<p>Pengajuan form kuning Anda ditolak oleh pater provinsial</p>",
+                            $this->api_model->getEmailByIdAnggota($form->idAnggota));
+                } else if(!empty($data->statusProvinsial) && $data->statusProvinsial == "true" && !empty($data->tanggapan)){
+                    $this->_sendEmail(
+                            "Pengajuan Form Kuning - Diterima",
+                            "<div>
+                                <p>Pengajuan form kuning Anda telah diterima dan disetujui oleh provinsial</p>
+                                <br><br>
+                                Silahkan klik link dibawah ini untuk membaca form kuning tersebut.
+                                <br>
+                                <a href='".base_url("/formkuning/print/$form->id")."' target='_blank'>".base_url("/formkuning/print/$form->id")."</a>
+                            </div>",
+                            $this->api_model->getEmailByIdAnggota($form->idAnggota));
+
+                    $this->_sendEmail(
+                            "Pengajuan Form Kuning $form->idAnggota - Diterima",
+                            "<div>
+                                <p>Pengajuan form kuning oleh $form->ndAnggota $form->nbAnggota telah diterima dan disetujui oleh provinsial</p>
+                                <br><br>
+                                Silahkan klik link dibawah ini untuk membaca form kuning tersebut.
+                                <br>
+                                <a href='".base_url("/formkuning/print/$form->id")."' target='_blank'>".base_url("/formkuning/print/$form->id")."</a>
+                            </div>",
+                            array(
+                                $this->api_model->getEmailByIdAnggota($form->idSuperior),
+                                "socius@jesuits.id", "treasurer@jesuits.id"
+                            ));
+                }                
                 $this->api_model->updateFormKuning($data);
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Permohonan berhasil diperbaharui.");
             }
@@ -577,10 +632,83 @@
 
                 $this->api_model->addDokumenBersama($data);
                 $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Dokumen berhasil ditambahkan.");
+            } else if(!empty($this->input->get('idDokumen'))) {
+                $result = $this->api_model->getDokumenBersamaById($this->input->get('idDokumen'));
+            } else if(!empty($this->input->post('editDokumen'))){
+                $config['upload_path'] = FCPATH.'/uploads/dokumen/';
+                $config['allowed_types'] = 'pdf';
+                $config['file_name'] = $data->lastFile;
+                $config['overwrite'] = true;
+
+                if(!empty($_FILES['fileData'])){
+                    $this->load->library('upload', $config);
+                    if($this->upload->do_upload('fileData')){
+                        $data->fileDokumen = $this->upload->data('file_name');
+                    }
+                }
+
+                $this->api_model->updateDokumenBersama($data);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Dokumen berhasil diperbaharui.");
+            } else if(!empty($this->input->post('hapusDokumen'))){
+                unlink(FCPATH.'/uploads/dokumen/'.$data->lastFile);
+                $this->api_model->deleteDokumenBersama($data->id);
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Dokumen berhasil dihapus.");
             } else {
                 $result = (object) $this->api_model->getAllDokumenBersama();
             }
 
+            header('Content-Type: application/json');
+            echo json_encode($result, JSON_PRETTY_PRINT);
+        }
+
+        public function dataCatatan(){
+            $data = (object) $_POST;
+            if(!empty($this->input->post('addCatatan'))){
+                $config['upload_path'] = FCPATH.'/uploads/catatan/';
+                $config['allowed_types'] = 'pdf';
+                $config['overwrite'] = true;
+
+                if(!empty($this->input->post('dimissi'))){
+                    $config['file_name'] = "Dokumen Dimissi_" . $data->idAnggota . "_" . $data->jenisDokumen;
+                    if(!empty($_FILES['fileData'])){
+                        $this->load->library('upload', $config);
+                        if($this->upload->do_upload('fileData')){
+                            $data->dokumen = $this->upload->data('file_name');
+                        }
+                    }
+                    $this->api_model->updateDimissi($data);
+                } else if(!empty($this->input->post('laisasi'))){
+                    $config['file_name'] = "Dokumen Laisasi_" . $data->idAnggota . "_" . $data->jenisDokumen;
+                    if(!empty($_FILES['fileData'])){
+                        $this->load->library('upload', $config);
+                        if($this->upload->do_upload('fileData')){
+                            $data->dokumen = $this->upload->data('file_name');
+                        }
+                    }
+                    $this->api_model->updateLaisasi($data);
+                } else if(!empty($this->input->post('kematian'))){
+                    if(!empty($_FILES['fileData1'])){
+                        $config['file_name'] = "Dokumen Kematian_" . $data->idAnggota . "_" . "Akta Kematian";
+                        $this->load->library('upload', $config);
+                        if($this->upload->do_upload('fileData1')){
+                            $data->aktaKematian = $this->upload->data('file_name');
+                        }
+                    }
+
+                    if(!empty($_FILES['fileData2'])){
+                        $config['file_name'] = "Dokumen Kematian_" . $data->idAnggota . "_" . "Keterangan Kematian";
+                        $this->load->library('upload', $config);
+                        if($this->upload->do_upload('fileData2')){
+                            $data->keteranganKematian = $this->upload->data('file_name');
+                        }
+                    }
+                    $this->api_model->updateKematian($data);
+                }
+                
+                $result = (object) array("status" => "success", "title" => "Berhasil!", "message" => "Catatan berhasil ditambahkan.");
+            } else {
+                $result = (object) array("status" => "error", "title" => "Invalid!", "message" => "Parameter yang dikirimkan tidak valid.");
+            }
             header('Content-Type: application/json');
             echo json_encode($result, JSON_PRETTY_PRINT);
         }

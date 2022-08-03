@@ -64,10 +64,6 @@
         </section>
     </div>
     <?= $footer ?>
-
-    <script>
-    </script>
-
 </body>
 
 </html>

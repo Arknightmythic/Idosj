@@ -67,7 +67,7 @@
                 </table>
             </div>
         </section>
-        <?php if($this->session->role == "Administrator" || $this->session->idAnggota == $dataPribadi->idSuperior || $this->session->idAnggota == $dataPribadi->idDelegat): ?>
+        <?php if($this->session->role == "Administrator"): ?>
         <section>
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Informationes</h3>

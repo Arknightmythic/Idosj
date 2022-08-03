@@ -31,10 +31,12 @@
                     <?php foreach ($residensi->anggota as $anggota): ?>
                     <tr>
                         <td>
-                            <?= $this->session->role == "Administrator" ? "<a href='".base_url("/anggota/pribadi/$anggota->id")."' target='_blank'>$anggota->namaDepan $anggota->namaBelakang</a>" : "$anggota->namaDepan $anggota->namaBelakang" ?>
+                            <?= $this->session->role == "Administrator" ? "<a href='".base_url("/anggota/pribadi/$anggota->id")."' target='_blank'>$anggota->namaBelakang, $anggota->namaDepan</a>" : "$anggota->namaBelakang, $anggota->namaDepan" ?>
                         </td>
-                        <td><?= !empty($anggota->email) ? $anggota->email : "-" ?></td>
-                        <td><?= !empty($anggota->nomorTelepon) ? $anggota->nomorTelepon : "-" ?></td>
+                        <td><?= !empty($anggota->email) ? "<a href='mailto:$anggota->email' target='_blank'>$anggota->email</a>" : "-" ?>
+                        </td>
+                        <td><?= !empty($anggota->nomorTelepon) ? "<a href='tel:$anggota->nomorTelepon' target='_blank'>$anggota->nomorTelepon</a>" : "-" ?>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

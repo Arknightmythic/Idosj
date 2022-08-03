@@ -34,12 +34,25 @@
             $this->load->view('page/FormKuning.php', $data, FALSE);
         }
 
-        public function print() {
-            if(!empty($this->input->post('formId'))){
+        private function _checkIsIdValid($formId){
+            $form = $this->formkuning_model->getFormData($formId);
+
+            if(empty($formId) || $form == NULL || 
+                ($this->session->role == "Personal" && $this->session->idAnggota !== $form->idAnggota) || 
+                ($this->session->role == "Superior" && $this->session->idAnggota !== $form->idSuperior) || 
+                $this->session->role == "Delegat"){
+                show_404();
+            }
+        }
+
+        public function print($formId = NULL) {
+            $this->_checkIsIdValid($formId);
+            
+            if(!empty($formId)){
                 $pdf = new \Mpdf\Mpdf();
                 $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
                 $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
-                $data["formData"] = $this->formkuning_model->getFormData($this->input->post('formId'));
+                $data["formData"] = $this->formkuning_model->getFormData($formId);
                 $css = file_get_contents(base_url('assets/styles/eprints-form-kuning.css'));
                 $html = $this->load->view('print/PrintsFormKuning.php', $data, TRUE);
                 $pdf->WriteHTML($css, 1);
