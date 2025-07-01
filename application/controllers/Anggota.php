@@ -128,6 +128,7 @@
             $data["activeNav"] = "perjalanan";
             $data["submenu"] = $this->load->view("include/anggota_submenu.php", $data, TRUE);
             $data["dataPerjalanan"] = $this->anggota_model->getDataPerjalanan($idAnggota);
+            
 
             $this->load->view('page/PerjalananPage.php', $data, FALSE);
         }
@@ -139,7 +140,7 @@
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
             $data["footer"] = $this->load->view("include/footer.php", NULL, TRUE);
-            $data["title"] = "IDO SJ | Perutusan";
+            $data["title"] = "IDO SJ | Formasi";
 
             if(!empty($this->input->get('edit'))){
                 $data["editStatus"] = true;
@@ -153,9 +154,17 @@
             $data["dataSerikat"] = $this->anggota_model->getDataSerikat($idAnggota);
             $data["dataInfo"] = $this->anggota_model->getDataInformationes($idAnggota);
             $data["dataKomentar"] = $this->anggota_model->getDataKomentar($idAnggota);
+            $data["dataKaulPertama"] = $this->anggota_model->getDataKaulPertama($idAnggota);
+            $data["dataEntrance"] = $this->anggota_model->getEntrance($idAnggota);
+            $data["dataLektorAkolit"] = $this->anggota_model->getDataLektorAkolit($idAnggota);
+            $data["dataTahbisanDiakon"] = $this->anggota_model->getDataTahbisanDiakon($idAnggota);
+            $data["dataTahbisanImamat"] = $this->anggota_model->getDataTahbisanImamat($idAnggota);
+            $data["dataTersiat"] = $this->anggota_model->getDataTersiat($idAnggota);
             $data["dataKaulAkhir"] = $this->anggota_model->getDataKaulAkhir($idAnggota);
             $data["dataKeahlian"] = $this->anggota_model->getDataKeahlian($idAnggota);
             $data["dataPublikasi"] = $this->anggota_model->getDataPublikasi($idAnggota);
+            $data["dataKesehatan"] = $this->anggota_model->getDataKesehatan($idAnggota);
+            $data["dataNovisiatTersiat"] = $this->anggota_model->getDataNovisiatTersiat($idAnggota);
             $this->load->view('page/FormasiPage.php', $data, FALSE);
         }
 
@@ -183,7 +192,7 @@
             $this->load->view("page/CatatanPage.php", $data, FALSE);
         }
 
-        public function dokumen($idAnggota = NULL){
+        public function katalog($idAnggota = NULL){
             $this->_checkIsIdValid($idAnggota);
 
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
@@ -200,4 +209,3 @@
             $this->load->view("page/DokumenPage.php", $data, FALSE);
         }
     }
-?>

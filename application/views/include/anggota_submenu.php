@@ -31,21 +31,39 @@
             </p>
         </div>
     </div>
-    <div class="subnav d-flex justify-content-between">
+    <div class="subnav d-flex justify-content-between d-none d-md-flex">
         <a class="links <?= $activeNav == "pribadi" ? "active" : "" ?>"
-            href="<?= base_url("anggota/pribadi/" . $dataPribadi->id) ?>">Pribadi</a>
+            href="<?= base_url("anggota/pribadi/" . $dataPribadi->id) ?>">Personal</a>
         <a class="links <?= $activeNav == "keluarga" ? "active" : "" ?>"
-            href="<?= base_url("anggota/keluarga/" . $dataPribadi->id) ?>">Keluarga</a>
+            href="<?= base_url("anggota/keluarga/" . $dataPribadi->id) ?>">Family</a>
         <a class="links <?= $activeNav == "formasi" ? "active" : "" ?>"
-            href="<?= base_url("anggota/formasi/" . $dataPribadi->id) ?>">Formasi</a>
+            href="<?= base_url("anggota/formasi/" . $dataPribadi->id) ?>">Formation</a>
         <a class="links <?= $activeNav == "perutusan" ? "active" : "" ?>"
-            href="<?= base_url("anggota/perutusan/" . $dataPribadi->id) ?>">Perutusan</a>
+            href="<?= base_url("anggota/perutusan/" . $dataPribadi->id) ?>">Apostolate</a>
         <a class="links <?= $activeNav == "perjalanan" ? "active" : "" ?>"
-            href="<?= base_url("anggota/perjalanan/" . $dataPribadi->id) ?>">Perjalanan</a>
+            href="<?= base_url("anggota/perjalanan/" . $dataPribadi->id) ?>">Overseas Trip</a>
         <a class="links <?= $activeNav == "catatan" ? "active" : "" ?>"
-            href="<?= base_url("anggota/catatan/" . $dataPribadi->id) ?>">Catatan</a>
+            href="<?= base_url("anggota/catatan/" . $dataPribadi->id) ?>">Record</a>
         <a class="links <?= $activeNav == "dokumen" ? "active" : "" ?>"
-            href="<?= base_url("anggota/dokumen/" . $dataPribadi->id) ?>">Dokumen</a>
+            href="<?= base_url("anggota/katalog/" . $dataPribadi->id) ?>">Catalog</a>
+    </div>
+   
+    <div class="d-flex justify-content-center align-items-center mt-4">
+        <div class="dropdown d-lg-none d-sm-block">
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Menu
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item <?= $activeNav == "pribadi" ? "active" : "" ?>" href="<?= base_url("anggota/pribadi/" . $dataPribadi->id) ?>">Personal</a></li>
+                <li><a class="dropdown-item  <?= $activeNav == "keluarga" ? "active" : "" ?>" href="<?= base_url("anggota/keluarga/" . $dataPribadi->id) ?>">Family</a></li>
+                <li><a class="dropdown-item  <?= $activeNav == "formasi" ? "active" : "" ?>" href="<?= base_url("anggota/formasi/" . $dataPribadi->id) ?>">Formation</a></li>
+                <li><a class="dropdown-item  <?= $activeNav == "perutusan" ? "active" : "" ?>" href="<?= base_url("anggota/perutusan/" . $dataPribadi->id) ?>">Apostolate</a></li>
+                <li><a class="dropdown-item  <?= $activeNav == "perjalanan" ? "active" : "" ?>" href="<?= base_url("anggota/perjalanan/" . $dataPribadi->id) ?>">Overseas Trip</a></li>
+                <li><a class="dropdown-item  <?= $activeNav == "dokumen" ? "active" : "" ?>" href="<?= base_url("anggota/katalog/" . $dataPribadi->id) ?>">Document</a></li>
+                <li><a class="dropdown-item  <?= $activeNav == "catatan" ? "active" : "" ?>" href="<?= base_url("anggota/catatan/" . $dataPribadi->id) ?>">Record</a></li>
+            </ul>
+        </div>
+
     </div>
 </div>
 <!-- End Section of Submenu -->

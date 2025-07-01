@@ -1,8 +1,10 @@
 :root {
-	--ihs-orange: #ed8202;
-	--ihs-orange-hover: #da7a05;
-	--ihs-red: #c33;
-	--ihs-red-hover: rgb(168, 41, 41);
+	--ihs-orange: #587B89;
+	--ihs-orange-hover: #B5C7CC;
+	--ihs-red: #a40001;
+	--ihs-red-hover: #680808;
+	--ihs-dark-blue: #2a52bd;
+	--ihs-light-blue: #0088dd;
 }
 
 body {
@@ -20,7 +22,7 @@ body > .container {
 	transition: all 0.5s ease-in-out;
 }
 
-.nav-container *:not(button) {
+.nav-container h3 {
 	color: var(--ihs-red);
 }
 
@@ -52,7 +54,7 @@ body > .container {
 }
 
 .nav-container.onscroll nav img {
-	width: 50px;
+	width: 200px;
 }
 
 nav a {
@@ -60,12 +62,16 @@ nav a {
 	color: black;
 }
 
+.logout-btn i {
+	color: white;
+}
+
 nav a:hover {
 	color: black;
 }
 
 nav img {
-	width: 80px;
+	width: 250px;
 	height: auto;
 }
 

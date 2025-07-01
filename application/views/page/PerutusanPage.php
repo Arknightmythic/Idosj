@@ -20,7 +20,7 @@
         <!-- Section of Pribadi -->
         <section>
             <div class="d-flex justify-content-between align-items-center">
-                <h3>Perutusan</h3>
+                <h3>List of Assignments</h3>
                 <?php if($editStatus): ?>
                 <button id="tambahPerutusan" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
                 <?php endif; ?>
@@ -28,12 +28,12 @@
             <div class="table-responsive">
                 <table class="table table-stiped">
                     <thead>
-                        <th>Tempat Perutusan</th>
-                        <th>Tugas dan Jabatan</th>
-                        <th>Tahun Masuk</th>
-                        <th>Tahun Berakhir</th>
+                        <th>Place</th>
+                        <th>Assignment/Job</th>
+                        <th>Effective Date</th>
+                        <th>End Date</th>
                         <?php if(!$editStatus): ?>
-                        <th>Surat Keterangan</th>
+                        <th>Letter of Destination</th>
                         <?php else: ?>
                         <th>Aksi</th>
                         <?php endif; ?>
@@ -76,7 +76,7 @@
                     class="btn btn-success px-5 btn-lg">Selesai</button></a>
             <?php else: ?>
             <a href="<?= base_url("/anggota/perutusan/$dataPribadi->id?edit=true") ?>"><button
-                    class="btn btn-primary px-5 btn-lg">Sunting</button></a>
+                    class="btn btn-primary px-5 btn-lg">Edit</button></a>
             <?php endif; ?>
         </section>
     </div>
@@ -108,7 +108,7 @@
                         </div>
                         <div class="mb-1">
                             <label class="form-label">Surat Keterangan</label>
-                            <input name="fileData" type="file" class="form-control" accept="application/pdf" required />
+                            <input name="fileData" type="file" class="form-control" accept="application/pdf" />
                         </div>
                         <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
                             <button class="btn btn-primary px-5">Tambah</button>
@@ -125,6 +125,9 @@
             const formData = new FormData($("#formPerutusan")[0]);
             formData.append("tambahPerutusan", 1);
             formData.append("id", "<?= $dataPribadi->id ?>");
+            formData.append("namaDepan", "<?= $dataPribadi->namaDepan ?>");
+            formData.append("namaBelakang", "<?= $dataPribadi->namaBelakang ?>");
+            formData.append("idSuperior", "<?= $dataPribadi->idSuperior ?>")
             axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
                 const data = res.data;
                 if (data.status == "success") {
@@ -182,7 +185,7 @@
                         <div class="mb-1">
                             <label class="form-label">Surat Keterangan</label>
                             <input name="fileData" type="file" class="form-control" accept="application/pdf" />
-                            <small class="form-text text-muted">${tempData.fileSK}</small>
+                            <small class="form-text text-muted">${tempData.fileSK || ""}</small>
                         </div>
                         <div class="d-flex justify-content-end" style="margin-top: 1.5rem !important">
                             <button class="btn btn-primary px-5">Simpan</button>
@@ -199,7 +202,13 @@
                     const formData = new FormData($("#formEditPerutusan")[0]);
                     formData.append("editPerutusan", 1);
                     formData.append("id", id);
-                    formData.append("lastFile", tempData.fileSK);
+                    formData.append("namaDepan", "<?= $dataPribadi->namaDepan ?>");
+                    formData.append("namaBelakang", "<?= $dataPribadi->namaBelakang ?>");
+                    formData.append("idAnggota", "<?= $dataPribadi->id ?>")
+                    formData.append("idSuperior", "<?= $dataPribadi->idSuperior ?>")
+                    if (tempData.fileSK != "" && tempData.fileSK != null) {
+                        formData.append("lastFile", tempData.fileSK);
+                    }
                     axios.post("<?= base_url("api/editanggota") ?>", formData).then(
                         res => {
                             const data = res.data;

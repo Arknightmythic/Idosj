@@ -30,6 +30,10 @@
             $query = "SELECT * FROM bahasa b, bahasa_anggota ba  WHERE idAnggota = ? AND b.id = ba.idBahasa ORDER BY namaBahasa";
             return $this->db->query($query, array($idAnggota))->result();
         }
+        
+        public function getDataKeahlian($idAnggota){
+            return $this->db->get_where("keahlian_anggota", array('idAnggota' => $idAnggota))->result();
+        }
 
         public function getDataDokumen($idAnggota){
             $query = "SELECT * FROM dokumen_anggota WHERE idAnggota = ? ORDER BY namaDokumen";
@@ -81,13 +85,37 @@
         public function getDataKaulAkhir($idAnggota){
             return $this->db->get_where("kaul_akhir", array('idAnggota' => $idAnggota))->row();
         }
+        
+        public function getDataKaulPertama($idAnggota){
+            return $this->db->get_where("kaul_pertama", array('idAnggota' => $idAnggota))->row();
+        }
+        
+        public function getEntrance($idAnggota){
+            return $this->db->get_where("entrance", array('idAnggota' => $idAnggota))->row();
+        }
+        
+        public function getDataLektorAkolit($idAnggota){
+            return $this->db->get_where("lektor_akolit", array('idAnggota' => $idAnggota))->row();
+        }
+        
+        public function getDataTahbisanDiakon($idAnggota){
+            return $this->db->get_where("tahbisan_diakon", array('idAnggota' => $idAnggota))->row();
+        }
 
-        public function getDataKeahlian($idAnggota){
-            return $this->db->get_where("keahlian_anggota", array('idAnggota' => $idAnggota))->result();
+        public function getDataTahbisanImamat($idAnggota){
+            return $this->db->get_where("tahbisan_imamat", array('idAnggota' => $idAnggota))->row();
+        }
+
+        public function getDataTersiat($idAnggota){
+            return $this->db->get_where("tersiat", array('idAnggota' => $idAnggota))->row();
         }
 
         public function getDataPublikasi($idAnggota){
             return $this->db->get_where("publikasi_anggota", array('idAnggota' => $idAnggota))->result();
+        }
+        
+        public function getDataKesehatan($idAnggota){
+            return $this->db->get_where("kesehatan_anggota", array('idAnggota' => $idAnggota))->result();
         }
 
         public function checkIsAnggotaExist($idAnggota){
@@ -136,6 +164,9 @@
             $this->db->where('idAnggota', $idAnggota);
             return $this->db->get('kematian_anggota')->row();
         }
-    }
 
-?>
+        public function getDataNovisiatTersiat($idAnggota){
+            $this->db->where('idAnggota', $idAnggota);
+            return $this->db->get('informasi_novisiat_tersiat')->row();
+        }
+    }

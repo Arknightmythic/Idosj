@@ -15,7 +15,7 @@
     <?= $navbar?>
     <div class="container px-4 px-md-0">
         <section>
-            <h2 class="text-center mb-3">Komunitas <?= $dataResidensi[0]->nama ?></h2>
+            <h2 class="text-center mb-3"> <?= $dataResidensi[0]->nama ?> Community</h2>
             <?php foreach($dataResidensi as $residensi): ?>
             <div class="mt-5 mb-1">
                 <h4><?= $residensi->residensi ?></h4>
@@ -23,9 +23,9 @@
             </div>
             <table class="table table-striped">
                 <thead>
-                    <th>Nama Anggota</th>
+                    <th>Name</th>
                     <th>Email</th>
-                    <th>No. Telepon</th>
+                    <th>Phone</th>
                 </thead>
                 <tbody>
                     <?php foreach ($residensi->anggota as $anggota): ?>
@@ -35,7 +35,7 @@
                         </td>
                         <td><?= !empty($anggota->email) ? "<a href='mailto:$anggota->email' target='_blank'>$anggota->email</a>" : "-" ?>
                         </td>
-                        <td><?= !empty($anggota->nomorTelepon) ? "<a href='tel:$anggota->nomorTelepon' target='_blank'>$anggota->nomorTelepon</a>" : "-" ?>
+                        <td><?= !empty($anggota->nomorTelepon) ? "<a href='https://wa.me/62".substr($anggota->nomorTelepon,1)."' target='_blank'>$anggota->nomorTelepon</a>" : "-" ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>

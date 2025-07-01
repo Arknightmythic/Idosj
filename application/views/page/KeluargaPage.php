@@ -9,201 +9,200 @@
     <link rel="stylesheet" href="<?= base_url("/assets/styles/anggota-submenu.css"); ?>">
     <link rel="stylesheet" href="<?= base_url("/assets/styles/anggota-page.css"); ?>">
     <link rel="stylesheet" href="<?= base_url("/assets/styles/keluarga.css"); ?>">
-    <?= $css?>
-    <?= $js?>
+    <?= $css ?>
+    <?= $js ?>
 </head>
 
 <body>
-    <?= $navbar?>
+    <?= $navbar ?>
     <div class="container px-4 px-md-0">
         <?= $submenu ?>
         <!-- Section of Pribadi -->
-        <?php if($editStatus): ?>
-        <section>
-            <div class="d-flex justify-content-between align-items-center">
-                <h3>Tambah Data</h3>
-                <button id="tambahRelasi" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
-            </div>
-        </section>
+        <?php if ($editStatus) : ?>
+            <section>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3>Tambah Data</h3>
+                    <button id="tambahRelasi" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
+                </div>
+            </section>
         <?php endif; ?>
         <section>
             <div class="d-flex justify-content-between align-items-center">
-                <h3>Orang Tua</h3>
+                <h3>Parents</h3>
             </div>
-            <?php if(count($dataOrangTua) > 0): foreach ($dataOrangTua as $orangTua): ?>
-            <div class="table-responsive">
-                <table class="table my-3">
-                    <?php if($editStatus): ?>
-                    <tr>
-                        <td>Aksi</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $orangTua->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $orangTua->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <?php endif; ?>
-                    <tr>
-                        <td><?= $orangTua->namaRelasi ?></td>
-                        <td><?= $orangTua->namaLengkap ?></td>
-                    </tr>
-                    <tr>
-                        <td>Alamat</td>
-                        <td><?= $orangTua->alamat ?></td>
-                    </tr>
-                    <tr>
-                        <td>Pekerjaan</td>
-                        <td><?= $orangTua->pekerjaan ?></td>
-                    </tr>
-                    <tr>
-                        <td>Nomor Telepon</td>
-                        <td><?= $orangTua->nomorTelepon?></td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
-                        <td><?= $orangTua->statusMeninggal ? "Sudah Meninggal" : "Masih Ada" ?></td>
-                    </tr>
-                </table>
-            </div>
-            <?php endforeach; else: ?>
-            <div class="col-12 text-center" colspan="4">Tidak ada data</div>
+            <?php if (count($dataOrangTua) > 0) : foreach ($dataOrangTua as $orangTua) : ?>
+                    <div class="table-responsive">
+                        <table class="table my-3">
+                            <?php if ($editStatus) : ?>
+                                <tr>
+                                    <td>Aksi</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $orangTua->id ?>)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $orangTua->id ?>)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                            <tr>
+                                <td><?= $orangTua->namaRelasi ?></td>
+                                <td><?= $orangTua->namaLengkap ?></td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td><?= $orangTua->alamat ?></td>
+                            </tr>
+                            <tr>
+                                <td>Occupation</td>
+                                <td><?= $orangTua->pekerjaan ?></td>
+                            </tr>
+                            <tr>
+                                <td>Tel. No</td>
+                                <td><?= $orangTua->nomorTelepon ?></td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td><?= $orangTua->statusMeninggal ? "Passed Away" : "Alive" ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                <?php endforeach;
+            else : ?>
+                <div class="col-12 text-center" colspan="4">Tidak ada data</div>
             <?php endif; ?>
         </section>
         <section>
             <div class="d-flex justify-content-between align-items-center">
-                <h3>Saudara Kandung</h3>
+                <h3>Siblings</h3>
             </div>
-            <div class="d-flex">
-                <?php if(count($dataSaudaraKandung) > 0): foreach ($dataSaudaraKandung as $saudaraKandung): ?>
-                <div class="table-responsive">
-                    <table class="table my-3">
-                        <?php if($editStatus): ?>
-                        <tr>
-                            <td>Aksi</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm"
-                                    onclick="hapusKeluarga(<?= $saudaraKandung->id ?>)">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm"
-                                    onclick="editKeluarga(<?= $saudaraKandung->id ?>)">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <?php endif; ?>
-                        <tr>
-                            <td>Nama</td>
-                            <td><?= $saudaraKandung->namaLengkap ?></td>
-                        </tr>
-                        <tr>
-                            <td>Jenis Relasi</td>
-                            <td><?= $saudaraKandung->namaRelasi ?></td>
-                        </tr>
-                        <tr>
-                            <td>Alamat</td>
-                            <td><?= $saudaraKandung->alamat ?></td>
-                        </tr>
-                        <tr>
-                            <td>Pekerjaan</td>
-                            <td><?= $saudaraKandung->pekerjaan ?></td>
-                        </tr>
-                        <tr>
-                            <td>Nomor Telepon</td>
-                            <td><?= $saudaraKandung->nomorTelepon?></td>
-                        </tr>
-                        <tr>
-                            <td>Email</td>
-                            <td><?= $saudaraKandung->email?></td>
-                        </tr>
-                        <tr>
-                            <td>Status</td>
-                            <td><?= $saudaraKandung->statusMeninggal ? "Sudah Meninggal" : "Masih Ada" ?></td>
-                        </tr>
-                    </table>
-                </div>
-                <?php endforeach; else: ?>
-                <div class="col-12 text-center" colspan="4">Tidak ada data</div>
+            <div class="row">
+                <?php if (count($dataSaudaraKandung) > 0) : foreach ($dataSaudaraKandung as $saudaraKandung) : ?>
+                        <div class="table-responsive col-12 col-md-6">
+                            <table class="table my-3">
+                                <?php if ($editStatus) : ?>
+                                    <tr>
+                                        <td>Aksi</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $saudaraKandung->id ?>)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                            <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $saudaraKandung->id ?>)">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                                <tr>
+                                    <td>Name</td>
+                                    <td><?= $saudaraKandung->namaLengkap ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Relationship</td>
+                                    <td><?= $saudaraKandung->namaRelasi ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Adress</td>
+                                    <td><?= $saudaraKandung->alamat ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Occupation</td>
+                                    <td><?= $saudaraKandung->pekerjaan ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Tel. No</td>
+                                    <td><?= $saudaraKandung->nomorTelepon ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td><?= $saudaraKandung->email ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td><?= $saudaraKandung->statusMeninggal ? "Passed Away" : "Alive" ?></td>
+                                </tr>
+                            </table>
+                        </div>
+                    <?php endforeach;
+                else : ?>
+                    <div class="col-12 text-center" colspan="4">Tidak ada data</div>
                 <?php endif; ?>
             </div>
         </section>
         <section>
             <div class="d-flex justify-content-between align-items-center">
-                <h3>Kontak Darurat</h3>
+                <h3>Emergency Contacts</h3>
             </div>
-            <?php if(count($dataKontakDarurat) > 0): foreach ($dataKontakDarurat as $kontakDarurat): ?>
-            <div class="table-responsive">
-                <table class="table my-3">
-                    <?php if($editStatus): ?>
-                    <tr>
-                        <td>Aksi</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $kontakDarurat->id ?>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $kontakDarurat->id ?>)">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <?php endif; ?>
-                    <tr>
-                        <td>Nama</td>
-                        <td><?= $kontakDarurat->namaLengkap ?></td>
-                    </tr>
-                    <tr>
-                        <td>Jenis Relasi</td>
-                        <td><?= $kontakDarurat->namaRelasi ?></td>
-                    </tr>
-                    <tr>
-                        <td>Alamat</td>
-                        <td><?= $kontakDarurat->alamat ?></td>
-                    </tr>
-                    <tr>
-                        <td>Pekerjaan</td>
-                        <td><?= $kontakDarurat->pekerjaan ?></td>
-                    </tr>
-                    <tr>
-                        <td>Nomor Telepon</td>
-                        <td><?= $kontakDarurat->nomorTelepon?></td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td><?= $kontakDarurat->email?></td>
-                    </tr>
-                </table>
-            </div>
-            <?php endforeach; else: ?>
-            <div class="col-12 text-center" colspan="4">Tidak ada data</div>
+            <?php if (count($dataKontakDarurat) > 0) : foreach ($dataKontakDarurat as $kontakDarurat) : ?>
+                    <div class="table-responsive">
+                        <table class="table my-3">
+                            <?php if ($editStatus) : ?>
+                                <tr>
+                                    <td>Aksi</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="hapusKeluarga(<?= $kontakDarurat->id ?>)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" onclick="editKeluarga(<?= $kontakDarurat->id ?>)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                            <tr>
+                                <td>Name</td>
+                                <td><?= $kontakDarurat->namaLengkap ?></td>
+                            </tr>
+                            <tr>
+                                <td>Relationship</td>
+                                <td><?= $kontakDarurat->namaRelasi ?></td>
+                            </tr>
+                            <tr>
+                                <td>Adress</td>
+                                <td><?= $kontakDarurat->alamat ?></td>
+                            </tr>
+                            <tr>
+                                <td>Occupation</td>
+                                <td><?= $kontakDarurat->pekerjaan ?></td>
+                            </tr>
+                            <tr>
+                                <td>Tel. No</td>
+                                <td><?= $kontakDarurat->nomorTelepon ?></td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td><?= $kontakDarurat->email ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                <?php endforeach;
+            else : ?>
+                <div class="col-12 text-center" colspan="4">Tidak ada data</div>
             <?php endif; ?>
         </section>
         <section class="d-flex justify-content-end">
-            <?php if($editStatus): ?>
-            <a href="<?= base_url("/anggota/keluarga/$dataPribadi->id") ?>"><button
-                    class="btn btn-success px-5 btn-lg">Selesai</button></a>
-            <?php else: ?>
-            <a href="<?= base_url("/anggota/keluarga/$dataPribadi->id?edit=true") ?>"><button
-                    class="btn btn-primary px-5 btn-lg">Sunting</button></a>
+            <?php if ($editStatus) : ?>
+                <a href="<?= base_url("/anggota/keluarga/$dataPribadi->id") ?>"><button class="btn btn-success px-5 btn-lg">Done</button></a>
+            <?php else : ?>
+                <a href="<?= base_url("/anggota/keluarga/$dataPribadi->id?edit=true") ?>"><button class="btn btn-primary px-5 btn-lg">Edit</button></a>
             <?php endif; ?>
         </section>
     </div>
     <?= $footer ?>
 
-    <?php if($editStatus): ?>
-    <script>
-    $("#tambahRelasi").click(() => {
-        Swal.fire({
-            title: 'Tambah Data Relasi',
-            html: `
+    <?php if ($editStatus) : ?>
+        <script>
+            $("#tambahRelasi").click(() => {
+                Swal.fire({
+                    title: 'Tambah Data Relasi',
+                    html: `
                     <form id="formRelasi" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
                             <label class="form-label">Jenis Relasi</label>
                             <select name="idJenisRelasi" class="form-select" required>
                                 <option value="" hidden>Pilih Jenis Relasi</option>
-                                <?php foreach ($jenisRelasi as $j): ?>
+                                <?php foreach ($jenisRelasi as $j) : ?>
                                 <option value="<?= $j->id ?>"><?= $j->namaRelasi ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -247,51 +246,51 @@
                         </div>
                     </form>
                 `,
-            showConfirmButton: false,
-            showCloseButton: true,
-            allowOutsideClick: false,
-        })
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                })
 
-        $("#formRelasi").submit(() => {
-            event.preventDefault();
-            const formData = new FormData($("#formRelasi")[0]);
-            formData.append("tambahRelasi", 1);
-            formData.append("id", "<?= $dataPribadi->id ?>");
-            axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
-                const data = res.data;
-                if (data.status == "success") {
-                    Swal.fire({
-                        title: data.title,
-                        text: data.message,
-                        icon: "success",
-                    }).then(() => {
-                        document.location.reload(true)
-                    });
-                } else {
-                    Swal.fire({
-                        title: data.title,
-                        text: data.message,
-                        icon: data.status,
-                    });
-                }
+                $("#formRelasi").submit(() => {
+                    event.preventDefault();
+                    const formData = new FormData($("#formRelasi")[0]);
+                    formData.append("tambahRelasi", 1);
+                    formData.append("id", "<?= $dataPribadi->id ?>");
+                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(res => {
+                        const data = res.data;
+                        if (data.status == "success") {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: "success",
+                            }).then(() => {
+                                document.location.reload(true)
+                            });
+                        } else {
+                            Swal.fire({
+                                title: data.title,
+                                text: data.message,
+                                icon: data.status,
+                            });
+                        }
+                    })
+                });
             })
-        });
-    })
 
-    const editKeluarga = (id) => {
-        let tempData;
-        axios.get(`<?= base_url("api/dataRelasi") ?>?idRelasi=${id}`).then(
-            res => {
-                tempData = res.data;
-                Swal.fire({
-                    title: 'Ubah Data Relasi',
-                    html: `
+            const editKeluarga = (id) => {
+                let tempData;
+                axios.get(`<?= base_url("api/dataRelasi") ?>?idRelasi=${id}`).then(
+                    res => {
+                        tempData = res.data;
+                        Swal.fire({
+                            title: 'Ubah Data Relasi',
+                            html: `
                     <form id="formEditRelasi" class="px-1 mt-3" style="text-align: left !important" autocomplete="off">
                         <div class="mb-1">
                             <label class="form-label">Jenis Relasi</label>
                             <select name="idJenisRelasi" class="form-select" required>
                                 <option value="" hidden>Pilih Jenis Relasi</option>
-                                <?php foreach ($jenisRelasi as $j): ?>
+                                <?php foreach ($jenisRelasi as $j) : ?>
                                 <option value="<?= $j->id ?>" ${tempData.idJenisRelasi == <?= $j->id ?> ? "selected" : ""} ><?= $j->namaRelasi ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -334,76 +333,76 @@
                         </div>
                     </form>
                 `,
-                    showConfirmButton: false,
-                    showCloseButton: true,
-                    allowOutsideClick: false,
-                })
-
-                $("#formEditRelasi").submit(() => {
-                    event.preventDefault();
-                    const formData = new FormData($("#formEditRelasi")[0]);
-                    formData.append("editRelasi", 1);
-                    formData.append("id", id);
-                    axios.post("<?= base_url("api/editanggota") ?>", formData).then(
-                        res => {
-                            const data = res.data;
-                            if (data.status == "success") {
-                                Swal.fire({
-                                    title: data.title,
-                                    text: data.message,
-                                    icon: "success",
-                                }).then(() => {
-                                    document.location.reload(true)
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: data.title,
-                                    text: data.message,
-                                    icon: data.status,
-                                });
-                            }
+                            showConfirmButton: false,
+                            showCloseButton: true,
+                            allowOutsideClick: false,
                         })
-                });
-            })
-    }
 
-    const hapusKeluarga = (id) => {
-        Swal.fire({
-            title: 'Hapus Data Relasi',
-            text: "Apakah anda yakin ingin menghapus data ini?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Ya, Hapus!"
-        }).then((result) => {
-            if (result.value) {
-                const formData = new FormData();
-                formData.append("hapusRelasi", 1);
-                formData.append("id", id);
-                axios.post("<?= base_url("api/editanggota") ?>", formData).then(
-                    res => {
-                        const data = res.data;
-                        if (data.status == "success") {
-                            Swal.fire({
-                                title: data.title,
-                                text: data.message,
-                                icon: "success",
-                            }).then(() => {
-                                document.location.reload(true)
-                            });
-                        } else {
-                            Swal.fire({
-                                title: data.title,
-                                text: data.message,
-                                icon: data.status,
-                            });
-                        }
+                        $("#formEditRelasi").submit(() => {
+                            event.preventDefault();
+                            const formData = new FormData($("#formEditRelasi")[0]);
+                            formData.append("editRelasi", 1);
+                            formData.append("id", id);
+                            axios.post("<?= base_url("api/editanggota") ?>", formData).then(
+                                res => {
+                                    const data = res.data;
+                                    if (data.status == "success") {
+                                        Swal.fire({
+                                            title: data.title,
+                                            text: data.message,
+                                            icon: "success",
+                                        }).then(() => {
+                                            document.location.reload(true)
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: data.title,
+                                            text: data.message,
+                                            icon: data.status,
+                                        });
+                                    }
+                                })
+                        });
                     })
             }
-        })
-    }
-    </script>
+
+            const hapusKeluarga = (id) => {
+                Swal.fire({
+                    title: 'Hapus Data Relasi',
+                    text: "Apakah anda yakin ingin menghapus data ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, Hapus!"
+                }).then((result) => {
+                    if (result.value) {
+                        const formData = new FormData();
+                        formData.append("hapusRelasi", 1);
+                        formData.append("id", id);
+                        axios.post("<?= base_url("api/editanggota") ?>", formData).then(
+                            res => {
+                                const data = res.data;
+                                if (data.status == "success") {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: "success",
+                                    }).then(() => {
+                                        document.location.reload(true)
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: data.title,
+                                        text: data.message,
+                                        icon: data.status,
+                                    });
+                                }
+                            })
+                    }
+                })
+            }
+        </script>
     <?php endif; ?>
 </body>
 

@@ -25,8 +25,8 @@
             <?php endif; ?>
             <table class="table table-striped">
                 <thead>
-                    <th>Nama</th>
-                    <th>Jenis</th>
+                    <th>Name</th>
+                    <th>Type</th>
                     <th>Aksi</th>
                 </thead>
                 <tbody>
@@ -69,7 +69,7 @@
                             <label class="form-label">Jenis Dokumen</label>
                             <select class="form-select" name="jenisDokumen" required>
                                 <option value="" hidden>Pilih jenis dokumen</option>
-                                <option value="Provinsial">Provinsial</option>
+                                <option value="Provinsi">Provinsi</option>
                                 <option value="Universal">Universal</option>
                             </select>
                         </div>
@@ -115,7 +115,7 @@
                             <label class="form-label">Jenis Dokumen</label>
                             <select class="form-select" name="jenisDokumen" required>
                                 <option value="" hidden>Pilih jenis dokumen</option>
-                                <option value="Provinsial" ${data.jenisDokumen == "Provinsial" && "selected"}>Provinsial</option>
+                                <option value="Provinsi" ${data.jenisDokumen == "Provinsi" && "selected"}>Provinsi</option>
                                 <option value="Universal" ${data.jenisDokumen == "Universal" && "selected"}>Universal</option>
                             </select>
                         </div>

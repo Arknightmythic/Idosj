@@ -23,13 +23,12 @@
                 <tbody>
                     <tr>
                         <td>
-                            <a href="<?= base_url("/home/index-data/delegat-formasi/in-first-studies") ?>">Delegat
-                                Formasi</a>
+                            <a href="<?= base_url("/home/index-data/delegat-formasi/in-first-studies") ?>">Delegate for Formation</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a href="<?= base_url("/home/index-data/delegat-imam-muda/") ?>">Delegat Imam Muda</a>
+                            <a href="<?= base_url("/home/index-data/delegat-imam-muda/belum-tersiat") ?>">Delegate for On-going Formation</a>
                         </td>
                     </tr>
                 </tbody>

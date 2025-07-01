@@ -62,7 +62,7 @@
                                     <td>${user.idAnggota}</td>
                                     <td>${user.username}</td>
                                     <td>
-                                        <a href="<?= base_url('anggota/pribadi?id=') ?>${user.idAnggota}" target="_blank">${user.namaLengkap}</a>
+                                        <a href="<?= base_url('anggota/pribadi/') ?>${user.idAnggota}" target="_blank">${user.namaLengkap}</a>
                                     </td>
                                     <td>
                                         <button class="btn btn-danger btn-sm" onclick="handleDeletePersonal('${user.idAnggota}');">

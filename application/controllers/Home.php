@@ -18,7 +18,9 @@
                 $this->session->set_userdata('redirect', $uri);
                 redirect('/auth');
             }
+        }
 
+        private function _checkIsPersonal(){
             if($this->session->role == "Personal"){
                 redirect("/anggota/pribadi/".$this->session->idAnggota);
             }
@@ -31,6 +33,8 @@
         }
 
         public function index() {
+            $this->_checkIsPersonal();
+
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
@@ -38,11 +42,15 @@
             $data["title"] = "IDO SJ | Home";
             $data['daftarAnggota'] = $this->api_model->getAllAnggota();
             $data['jumlahAnggota'] = $this->api_model->getJumlahAnggota();
+            $data['jumlahAnggota'] = $this->api_model->getJumlahAnggotaPerStatusKeanggotaan();
+            $data['jumlahJesuit'] = $this->api_model->getJumlahAnggotaJesuit() ;
             
             $this->load->view('page/HomePage.php', $data, FALSE);
         }
 
         public function kuria(){
+            $this->_checkIsPersonal();
+            
             $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
             $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
             $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
@@ -123,10 +131,26 @@
             
             if(!empty($fileDir) && !empty($filepath)){
                 $data["activeNav"] = str_replace("-", "", $filepath);
-                $this->load->view("page/static/$fileDir/".str_replace('-', '', $filepath).".php", $data, FALSE);
+                $this->load->view("page/static/$fileDir/".strtolower($filepath).".php", $data, FALSE);
+            } else if(!empty($fileDir) && empty($filepath)){
+                $this->load->view("page/static/$fileDir/"."index.php", $data, FALSE);
             } else {
                 $this->load->view("page/IndexPage.php", $data, FALSE);
             }
+        }
+        
+        public function statistik() {
+            $data["js"] = $this->load->view("include/javascript.php", NULL, TRUE);
+            $data["css"] = $this->load->view("include/css.php", NULL, TRUE);
+            $data["navbar"] = $this->load->view("include/navbar.php", NULL, TRUE);
+            $data["footer"] = $this->load->view("include/footer.php", array("isHome" => TRUE), TRUE);
+            $data["anggotaPerDekad"] = $this->api_model->getJumlahAnggotaPerDekad();
+            $data['jumlahAnggota'] = $this->api_model->getJumlahAnggotaPerStatusKeanggotaan();
+            $data['jumlahJesuit'] = $this->api_model->getJumlahAnggotaJesuit() ;
+            $data['umurAnggota'] = $this->api_model->getRentangUmur();
+            //tambahan tahun
+            $data["title"] = "IDO SJ | Statistik";
+            $this->load->view('page/StatistikPage.php', $data, FALSE);
         }
     }
 ?>

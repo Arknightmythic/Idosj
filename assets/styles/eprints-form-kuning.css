@@ -1,4 +1,4 @@
-body {
+/* body {
 	font-family: sans-serif;
 }
 
@@ -51,4 +51,164 @@ p {
 
 @page {
 	margin: 2cm 3cm;
+} */
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #333;
+}
+
+h1 {
+    font-size: 18px;
+    margin: 20px 0 15px 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+h2 {
+    font-size: 16px;
+    margin: 15px 0 10px 0;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 14px;
+    margin: 15px 0 10px 0;
+    font-weight: bold;
+}
+
+p {
+    margin: 8px 0;
+    text-align: justify;
+}
+
+/* Header styles - sudah ditangani di controller */
+.form-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-title h1 {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 10px 0;
+}
+
+.nama-anggota {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.nama-anggota p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Content table styles */
+.content {
+    font-size: 12px;
+    margin: 20px 0;
+}
+
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content td {
+    vertical-align: top;
+    padding: 4px 8px 4px 0;
+}
+
+.content td:nth-child(1) {
+    width: 5%;
+    font-weight: bold;
+}
+
+.content td:nth-child(2) {
+    width: 15%;
+}
+
+.content td:nth-child(3) {
+    width: 5%;
+}
+
+.content td:nth-child(4) {
+    width: 75%;
+    text-align: justify;
+    line-height: 1.5;
+}
+
+/* Section styles */
+.tanggal-submit {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.tanggal-submit table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tanggal-submit th {
+    background-color: #f5f5f5;
+    padding: 8px;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tanggal-submit td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.tanggapan-persetujuan {
+    margin-top: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.tanggapan-persetujuan h3 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.tanggapan-persetujuan p {
+    text-align: justify;
+    margin: 10px 0;
+}
+
+/* Styling untuk emphasized text */
+em {
+    color: #666;
+    font-style: italic;
+}
+
+/* Table styling improvements */
+table {
+    border-collapse: collapse;
+}
+
+/* Page break handling */
+.page-break {
+    page-break-before: always;
+}
+
+/* Print-specific adjustments */
+/* @page {
+    margin: 0 !important;
+    
+} */
+
+/* Hide elements that shouldn't appear in print */
+.fa-trash,
+.no-print {
+    display: none;
 }

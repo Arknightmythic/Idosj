@@ -1,0 +1,5 @@
+[16-Aug-2022 15:19:15 Asia/jakarta] PHP Fatal error:  Cannot redeclare Api_Model::updateKeahlian() in /home/idom3681/public_html/new/application/models/Api_model.php on line 644
+[16-Aug-2022 15:19:16 Asia/jakarta] PHP Fatal error:  Cannot redeclare Api_Model::updateKeahlian() in /home/idom3681/public_html/new/application/models/Api_model.php on line 644
+[16-Aug-2022 15:19:33 Asia/jakarta] PHP Fatal error:  Cannot redeclare Api_Model::updateKeahlian() in /home/idom3681/public_html/new/application/models/Api_model.php on line 644
+[19-Sep-2022 16:01:08 Asia/jakarta] PHP Fatal error:  Cannot redeclare Anggota_Model::getDataKaulAkhir() in /home/idom3681/public_html/new/application/models/Anggota_model.php on line 89
+[19-Sep-2022 16:01:10 Asia/jakarta] PHP Fatal error:  Cannot redeclare Anggota_Model::getDataKaulAkhir() in /home/idom3681/public_html/new/application/models/Anggota_model.php on line 89

@@ -107,22 +107,9 @@
                 <td> : </td>
                 <td><?= $formData->q7 ?></td>
             </tr>
+            <?php if ($formData->q8 != "Superior"): ?>
             <tr>
                 <td><b>8.</b></td>
-                <td><b>Pertanyaan<b></td>
-                <td><b> : <b></td>
-                <td><b>Apa pendapat Superior Lokal atau Rektor Komunitas atau Uskup setempat mengenai rencana Anda akan
-                        ke
-                        luar negeri kali ini?</b></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Jawaban</td>
-                <td> : </td>
-                <td><?= $formData->q8 ?></td>
-            </tr>
-            <tr>
-                <td><b>9.</b></td>
                 <td><b>Pertanyaan<b></td>
                 <td><b> : <b></td>
                 <td><b>Bagaimana urusan pekerjaan selama Anda di luar negeri?</b></td>
@@ -134,7 +121,7 @@
                 <td><?= $formData->q9 ?></td>
             </tr>
             <tr>
-                <td><b>10.</b></td>
+                <td><b>9.</b></td>
                 <td><b>Pertanyaan<b></td>
                 <td><b> : <b></td>
                 <td><b>Sebelum ini, kapan Anda terakhir ke luar negeri? Dari (tanggal/bulan/tahun) hingga
@@ -146,16 +133,71 @@
                 <td> : </td>
                 <td><?= $formData->q10 ?></td>
             </tr>
+            <tr>
+                <td><b>10.</b></td>
+                <td><b>Pertanyaan<b></td>
+                <td><b> : <b></td>
+                <td><b>Apakah Anda membutuhkan Affidavit dan/atau Surat Keterangan Bank?</b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jawaban</td>
+                <td> : </td>
+                <td><?= $formData->q11 ?></td>
+            </tr>
+            <?php else:?>
+                <tr>
+                <td><b>8.</b></td>
+                <td><b>Pertanyaan<b></td>
+                <td><b> : <b></td>
+                <td><b>Bagaimana urusan pekerjaan selama Anda di luar negeri?</b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jawaban</td>
+                <td> : </td>
+                <td><?= $formData->q9 ?></td>
+            </tr>
+            <tr>
+                <td><b>9.</b></td>
+                <td><b>Pertanyaan<b></td>
+                <td><b> : <b></td>
+                <td><b>Sebelum ini, kapan Anda terakhir ke luar negeri? Dari (tanggal/bulan/tahun) hingga
+                        (tanggal/bulan/tahun)? Ke mana? Untuk keperluan apa? Siapa sponsornya?</b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jawaban</td>
+                <td> : </td>
+                <td><?= $formData->q10 ?></td>
+            </tr>
+            <tr>
+                <td><b>10.</b></td>
+                <td><b>Pertanyaan<b></td>
+                <td><b> : <b></td>
+                <td><b>Apakah Anda membutuhkan Affidavit dan/atau Surat Keterangan Bank?</b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jawaban</td>
+                <td> : </td>
+                <td><?= $formData->q11 ?></td>
+            </tr>
+            <?php endif; ?>
+            
         </table>
     </section>
+    
     <section class="tanggal-submit">
         <table>
+        <?php if ($formData->q8 != "Superior"): ?>
             <tr>
                 <td>Tanggal dikirim ke Superior</td>
                 <td> : </td>
                 <td><?= !empty($formData->tsToSuperior) ? date_format(date_create($formData->tsToSuperior), 'd F Y') : "-" ?>
                 </td>
             </tr>
+        <?php endif; ?>
             <tr>
                 <td>Tanggal dikirim ke Provinsial</td>
                 <td> : </td>
@@ -164,6 +206,7 @@
             </tr>
         </table>
     </section>
+    <?php if ($formData->q8 != "Superior"): ?>
     <section class="tanggapan-persetujuan">
         <h3>Tanggapan dan Persetujuan Superior</h3>
         <p><?= !empty($formData->tanggapanSuperior) ? $formData->tanggapanSuperior : "<em>(belum ada tanggapan)</em>" ?>
@@ -174,6 +217,7 @@
             <?= $formData->ndAnggota." ".$formData->nbAnggota ?>.</p>
         <?php endif; ?>
     </section>
+    <?php endif; ?>
     <section class="tanggapan-persetujuan">
         <h3>Tanggapan dan Persetujuan Pater Provinsial</h3>
         <p><?= !empty($formData->tanggapanProvinsial) ? $formData->tanggapanProvinsial : "<em>(belum ada tanggapan)</em>" ?>

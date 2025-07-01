@@ -15,7 +15,7 @@
     <?= $navbar?>
     <div class="container px-4 px-md-0">
         <section>
-            <h2 class="text-center mb-3">List Komunitas</h2>
+            <h2 class="text-center mb-3">List of Community</h2>
             <?php if($this->session->role == "Administrator"): ?>
             <div class="d-flex justify-content-end">
                 <button id="addKomunitas" class="btn btn-primary">
@@ -25,7 +25,7 @@
             <?php endif; ?>
             <table class="table table-striped">
                 <thead>
-                    <th>Nama Komunitas</th>
+                    <th>Name of Community</th>
                 </thead>
                 <tbody>
                     <?php foreach ($dataKomunitas as $komunitas): ?>
